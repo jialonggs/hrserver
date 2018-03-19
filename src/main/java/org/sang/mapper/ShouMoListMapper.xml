@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.ShouMoListMapper">
+    <!--查询收模列表-->
+    <resultMap type="org.sang.bean.responseEntity.ShouMoListResp" id="shouMoLisAndMouldInfo">
+        <id column="id" property="id"/>
+        <result column="clientCompanyName" property="clientCompanyName"/>
+        <result column="batch" property="batch"/>
+        <result column="freightType" property="freightType"/>
+        <result column="woodenCaseNum" property="woodenCaseNum"/>
+        <result column="palletNum" property="palletNum"/>
+        <result column="diaoHuanNum" property="diaoHuanNum"/>
+        <result column="jianBao" property="jianBao"/>
+        <result column="carNum" property="carNum"/>
+        <result column="driverPhone" property="driverPhone"/>
+        <result column="addUserId" property="addUserId"/>
+        <result column="addUserName" property="addUserName"/>
+        <result column="carNum" property="carNum"/>
+        <result column="driverPhone" property="driverPhone"/>
+        <result column="status" property="status"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="createTime" property="createTime"/>
+        <!-- 关联模具信息 -->
+        <collection property="mouldInfos" ofType="org.sang.bean.MouldInfo" column="id"
+            select="org.sang.mapper.MouldInfoMapper.getMouldInfoByShouMoId">
+        </collection>
+    </resultMap>
+    <select id="getAllShouMoList" resultType="org.sang.bean.ShouMoList">
+        SELECT * FROM work_shoumo_list WHERE isDeleted=FALSE ORDER BY id
+    </select>
+    <!-- 一对多查询-->
+    <select id="getShouMoList" resultMap="shouMoLisAndMouldInfo">
+        SELECT t1.* FROM work_shoumo_list t1 WHERE isDeleted=FALSE ORDER BY id
+    </select>
+
+    <insert id="createShouMo" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.ShouMoList">
+        INSERT INTO work_shoumo_list set clientCompanyName=#{clientCompanyName},batch=#{batch},freightType=#{freightType},woodenCaseNum=#{woodenCaseNum},palletNum=#{palletNum},diaoHuanNum=#{diaoHuanNum},jianBao=#{jianBao},
+        carNum=#{carNum},driverPhone=#{driverPhone},addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},remark=#{remark},isDeleted=FALSE,updateTime=now(),createTime=#{createTime}
+    </insert>
+
+    <select id="getShouMoByTime" resultMap="shouMoLisAndMouldInfo" parameterType="map">
+        SELECT t1.* FROM work_shoumo_list t1
+        <where>
+            <if test="begainTime != null and begainTime != ''">
+                AND createTime &gt;= #{begainTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND createTime &lt;= #{endTime}
+            </if>
+        </where>
+        AND isDeleted=FALSE ORDER BY id
+    </select>
+
+
+    <select id="getShouMoByTime2" resultMap="shouMoLisAndMouldInfo" parameterType="map">
+        SELECT t1.* FROM work_shoumo_list t1
+        <where>
+            <if test="begainTime != null and begainTime != ''">
+                AND createTime &gt;= #{begainTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND createTime &lt;= #{endTime}
+            </if>
+        </where>
+        AND isDeleted=FALSE ORDER BY id
+    </select>
+
+
+    <select id="getById" resultType="org.sang.bean.ShouMoList" >
+        SELECT t1.* FROM work_shoumo_list t1 where id = #{id}
+    </select>
+
+
+    <update id="updateShouMo">
+        update work_shoumo_list
+        <set>
+            <if test="shouMo.clientCompanyName != null">
+                clientCompanyName = #{shouMo.clientCompanyName,jdbcType=VARCHAR},
+            </if>
+            <if test="shouMo.batch != null">
+                batch = #{shouMo.batch,jdbcType=VARCHAR},
+            </if>
+            <if test="shouMo.freightType != null">
+                freightType = #{shouMo.freightType,jdbcType=VARCHAR},
+            </if>
+            <if test="shouMo.woodenCaseNum != null">
+                woodenCaseNum = #{shouMo.woodenCaseNum,jdbcType=INTEGER},
+            </if>
+            <if test="shouMo.palletNum != null">
+                palletNum = #{shouMo.palletNum,jdbcType=INTEGER},
+            </if>
+            <if test="shouMo.diaoHuanNum != null">
+                diaoHuanNum = #{shouMo.diaoHuanNum,jdbcType=INTEGER},
+            </if>
+            <if test="shouMo.jianBao != null">
+                jianBao = #{shouMo.jianBao},
+            </if>
+            <if test="shouMo.carNum != null">
+                carNum = #{shouMo.carNum,jdbcType=VARCHAR},
+            </if>
+            <if test="shouMo.driverPhone != null">
+                driverPhone = #{shouMo.driverPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="shouMo.addUserName != null">
+                addUserName = #{shouMo.addUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="shouMo.addUserId != null">
+                addUserId = #{shouMo.addUserId},
+            </if>
+            <if test="shouMo.status != null">
+                status = #{shouMo.status,jdbcType=VARCHAR},
+            </if>
+            <if test="shouMo.remark != null">
+                remark = #{shouMo.remark},
+            </if>
+            <if test="shouMo.createTime != null">
+                createTime = #{shouMo.createTime,jdbcType=DATE},
+            </if>
+            updateTime = now()
+        </set>
+        where id = #{shouMo.id}
+    </update>
+</mapper>

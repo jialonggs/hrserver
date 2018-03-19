@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.YuProductMapper">
+
+    <insert id="addYuProduct">
+        insert into work_yu_product (yuBaoJiaId, productName,
+        wenlidaima, productNum, area, dongMo,
+        coefficient, price, picUrls,
+        immutable, addUserId, addUserName,
+        status, remark, isDeleted,
+        updateTime, createTime
+        )
+        values
+        <foreach collection="product" item="emp" separator=",">
+            (#{emp.yuBaoJiaId}, #{emp.productName},
+            #{emp.wenlidaima}, #{emp.productNum}, #{emp.area},
+            #{emp.dongMo},
+            #{emp.coefficient}, #{emp.price}, #{emp.picUrls},
+            #{emp.immutable}, #{emp.addUserId}, #{emp.addUserName},
+            #{emp.status}, #{emp.remark}, #{emp.isDeleted},
+            #{emp.updateTime}, #{emp.createTime}
+            )
+        </foreach>
+    </insert>
+
+</mapper>

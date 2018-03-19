@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.CaiMoMapper">
+    <!--查询收模列表-->
+    <resultMap type="org.sang.bean.CaiMoList" id="getCaiMoList">
+        <id column="id" property="id"/>
+        <result column="mouldId" property="mouldId"/>
+        <result column="youSiWenNum" property="youSiWenNum"/>
+        <result column="wuSiWenNum" property="wuSiWenNum"/>
+        <result column="addUserId" property="addUserName"/>
+        <result column="status" property="remark"/>
+        <result column="isDeleted" property="isDeleted"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="createTime" property="createTime"/>
+    </resultMap>
+
+
+    <resultMap type="org.sang.bean.responseEntity.CaiMoListResp" id="getCaiMoAndMouldList">
+        <id column="id" property="id"/>
+        <result column="mouldId" property="mouldId"/>
+        <result column="youSiWenNum" property="youSiWenNum"/>
+        <result column="wuSiWenNum" property="wuSiWenNum"/>
+        <result column="addUserId" property="addUserId"/>
+        <result column="addUserName" property="addUserName"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="isDeleted" property="isDeleted"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="createTime" property="createTime"/>
+        <association property="mouldInfo" column="id" javaType="org.sang.bean.MouldInfo">
+            <result property="mouldName" column="mouldName" />
+            <result property="mouldNum" column="mouldNum" />
+            <result property="createTime" column="createTime" />
+        </association>
+    </resultMap>
+
+    <select id="getCaiMoList" resultMap="getCaiMoAndMouldList">
+       select c.id, c.mouldId, c.youSiWenNum, c.wuSiWenNum, c.addUserId, c.addUserName,
+        c.remark, t.mouldName, t.createTime, t.mouldNum from work_caimo_list c, work_mould_info t where c.mouldId=t.id and c.isDeleted=FALSE AND t.isDeleted=FALSE ORDER BY c.id
+    </select>
+
+    <insert id="addCaiMo" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.CaiMoList">
+        INSERT INTO work_caimo_list set mouldId=#{mouldId},youSiWenNum=#{youSiWenNum},wuSiWenNum=#{wuSiWenNum},addUserId=#{addUserId},addUserName=#{addUserName},remark=#{remark},
+        isDeleted=FALSE,updateTime=now(),createTime=now()
+    </insert>
+
+
+    <update id="updateCaiMo" parameterType="org.sang.bean.CaiMoList">
+        update work_caimo_list
+        <set>
+            <if test="caiMo.wuSiWenNum != null">
+                wuSiWenNum = #{caiMo.wuSiWenNum},
+            </if>
+            <if test="caiMo.youSiWenNum != null">
+                youSiWenNum = #{caiMo.youSiWenNum},
+            </if>
+            <if test="caiMo.remark != null">
+                remark = #{caiMo.remark},
+            </if>
+             updateTime = now()
+        </set>
+        where id = #{caiMo.id}
+    </update>
+
+</mapper>

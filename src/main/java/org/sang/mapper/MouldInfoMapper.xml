@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.MouldInfoMapper">
+    <!--查询收模列表-->
+    <resultMap type="org.sang.bean.MouldInfo" id="MouldInfoMap">
+        <id column="id" property="id"/>
+        <result column="mouldName" property="mouldName"/>
+        <result column="mouldNum" property="mouldNum"/>
+        <result column="picUrls" property="picUrls"/>
+        <result column="isSelected" property="isSelected"/>
+        <result column="selectId" property="selectId"/>
+        <result column="orderId" property="orderId"/>
+        <result column="shouMoId" property="shouMoId"/>
+        <result column="addUserId" property="addUserId"/>
+        <result column="addUserName" property="addUserName"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="isDeleted" property="isDeleted"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="createTime" property="createTime"/>
+
+    </resultMap>
+
+    <!-- 根据收模Id进行查询-->
+    <select id="getMouldInfoByShouMoId" resultMap="MouldInfoMap" parameterType="java.lang.Long">
+        SELECT e.* FROM work_mould_info e WHERE isDeleted=FALSE AND shouMoId=#{id}
+    </select>
+
+    <select id="getMouldById" resultMap="MouldInfoMap" parameterType="java.lang.Long">
+        SELECT e.* FROM work_mould_info e WHERE isDeleted=FALSE AND id=#{id}
+    </select>
+
+    <select id="getMouldByTime" resultMap="MouldInfoMap" >
+    select * from `work_mould_info`
+    <where>
+        <if test="begainTime != null ">
+            createTime &gt;= #{begainTime}
+        </if>
+        <if test="endTime != null ">
+            AND createTime &lt;= #{endTime}
+        </if>
+    </where>
+    AND isDeleted=FALSE ORDER BY id
+</select>
+
+
+    <select id="selectBy" resultMap="MouldInfoMap" >
+        select * from `work_mould_info`
+        <where>
+            <if test="mouldName != null ">
+                mouldName = #{mouldName}
+            </if>
+            <if test="addUserName != null ">
+                OR addUserName = #{addUserName}
+            </if>
+        </where>
+        AND isDeleted=FALSE ORDER BY id
+    </select>
+
+    <insert id="addMouldInfo" parameterType="org.sang.bean.MouldInfo">
+        INSERT INTO work_mould_info set mouldName=#{mouldName},mouldNum=#{mouldNum},picUrls=#{picUrls},isSelected=0,shouMoId=#{shouMoId},remark=#{remark},
+        addUserId=#{addUserId},addUserName=#{addUserName},isDeleted=0,createTime=now(),updateTime=now()
+    </insert>
+
+    <update id="updateMouldInfo" parameterType="org.sang.bean.MouldInfo">
+        update work_mould_info
+        <set>
+            <if test="mouldName != null">
+                mouldName=#{mouldName,jdbcType=VARCHAR},
+            </if>
+            <if test="mouldNum != null">
+                mouldNum=#{mouldNum},
+            </if>
+            <if test="selectId != null">
+                selectId= #{selectId},
+            </if>
+            <if test="orderId != null">
+                orderId=#{orderId},
+            </if>
+            <if test="remark != null">
+                remark=#{remark},
+            </if>
+            updateTime = now(), isDeleted = #{isDeleted}, isSelected = #{isSelected}
+        </set>
+         where id = #{id}
+    </update>
+
+    <update id="updateMouldInfoBySelected" >
+        update work_mould_info  SET
+        orderId = #{orderId},
+        selectId = #{selectId},
+        isSelected = TRUE,
+        updateTime = now()
+        where id = #{id}
+    </update>
+
+    <!--<update id="updateMouldInfoBySelected" >-->
+        <!--&lt;!&ndash; 接收list参数，循环着组装sql语句，注意for循环的写法-->
+             <!--separator=";" 代表着每次循环完，在sql后面放一个分号-->
+             <!--item="cus" 循环List的每条的结果集-->
+             <!--collection="list" list 即为 map传过来的参数key &ndash;&gt;-->
+        <!--<foreach collection="list" separator=";" item="cus">-->
+            <!--update work_mould_info  SET-->
+            <!--orderId = #{cus.orderId},-->
+            <!--selectId = #{cus.selectId}-->
+            <!--where id = #{cus.id}-->
+        <!--</foreach>-->
+    <!--</update>-->
+    <!--<update id="updateMouldInfoBySelected" parameterType="java.util.List">-->
+        <!--update-->
+        <!--work_mould_info-->
+        <!--set-->
+        <!--mark = CASE-->
+        <!--<foreach collection="list" item="m" index="index">-->
+            <!--<if test="m.orderId!= null">-->
+                <!--when id = #{m.id} then #{m.mark}-->
+            <!--</if>-->
+        <!--</foreach>-->
+        <!--END-->
+        <!--WHERE-->
+        <!--id in-->
+        <!--<foreach collection="list" item="m" index="index" open="(" separator="," close=")">-->
+            <!--#{m.id}-->
+        <!--</foreach>-->
+    <!--</update>-->
+</mapper>
