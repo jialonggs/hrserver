@@ -1,7 +1,6 @@
-package org.sang.Component;
+package org.sang.component;
 
 
-import com.sun.org.apache.xpath.internal.operations.Or;
 import org.sang.bean.Hr;
 import org.sang.bean.Order;
 import org.sang.service.HrService;
