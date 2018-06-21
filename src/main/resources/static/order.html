@@ -82,6 +82,7 @@
 	<div>
 		<div class="mui-btn-text" style="padding-left: 10px;">添  加 人:<span id="tianjiaren"></span></div>
 		<div class="mui-btn-text" style="padding-left: 10px;">订单名称:<span id="xiangmu"></span></div>
+		<div class="mui-btn-text" style="padding-left: 10px;">模具名称:<span id="moju"></span></div>
 		<div class="mui-btn-text" style="padding-left: 10px;">订单进度:<span id="jindu"></span></div>
 
 	</div>
@@ -206,9 +207,18 @@
         var success = function(response) {
             var res = JSON.stringify(response);
             var order=response.data.orderinfo;
+            var orderMoulds = order.mouldInfoList;
+            var mouldName = "";
+            if(orderMoulds !='' && orderMoulds.length > 0){
+                for (var i=0; i<orderMoulds.length; i++){
+                    var itemName=orderMoulds[i].mouldName;
+                    mouldName =itemName + "," + mouldName;
+                }
+			}
             document.getElementById("xiangmu").innerHTML=order.orderName;
             document.getElementById("gongsi").innerHTML=order.project.cilentCompanyName;
             document.getElementById("jindu").innerHTML=order.alreadyArea==0?"未加工":Math.round(order.alreadyArea*100/order.workArea)+"%";
+            document.getElementById("moju").innerHTML=mouldName;
 
             document.getElementById("tianjiaren").innerHTML=order.project.addUserName;
             document.getElementById("jiagongleixing").innerHTML=order.machiningType;
