@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.WuLiaoMapper">
+    <!--查询收模列表-->
+    <!--<resultMap type="org.sang.bean.Order" id="getOrdersMap">-->
+        <!--<id column="id" property="id"/>-->
+        <!--<result column="orderName" property="orderName"/>-->
+        <!--<result column="qrCode" property="qrCode"/>-->
+        <!--<result column="projectId" property="projectId"/>-->
+        <!--<result column="clientCompanyName" property="clientCompanyName"/>-->
+        <!--<result column="technologyId" property="technologyId"/>-->
+        <!--<result column="managerId" property="managerId"/>-->
+        <!--<result column="managerName" property="managerName"/>-->
+        <!--<result column="expected" property="expected"/>-->
+        <!--<result column="urgency" property="urgency"/>-->
+        <!--<result column="hasRemark" property="hasRemark"/>-->
+        <!--<result column="machiningType" property="machiningType"/>-->
+        <!--<result column="realityArea" property="realityArea"/>-->
+
+        <!--<result column="stayArea" property="stayArea"/>-->
+        <!--<result column="alreadyArea" property="alreadyArea"/>-->
+        <!--<result column="perfectArea" property="perfectArea"/>-->
+        <!--<result column="appliqueArea" property="appliqueArea"/>-->
+        <!--<result column="ygb" property="ygb"/>-->
+        <!--<result column="picUrls" property="picUrls"/>-->
+        <!--<result column="finishTime" property="finishTime"/>-->
+        <!--<result column="techId" property="techId"/>-->
+        <!--<result column="yaoJian" property="yaoJian"/>-->
+
+
+        <!--<result column="addUserId" property="addUserId"/>-->
+        <!--<result column="addUserName" property="addUserName"/>-->
+        <!--<result column="status" property="status"/>-->
+        <!--<result column="remark" property="remark"/>-->
+        <!--<result column="isDeleted" property="isDeleted"/>-->
+        <!--<result column="updateTime" property="updateTime"/>-->
+        <!--<result column="createTime" property="createTime"/>-->
+    <!--</resultMap>-->
+
+    <select id="getWuLiaoList" resultType="org.sang.bean.WuLiao">
+        SELECT * FROM work_wu_liao WHERE isDeleted=FALSE AND addUserId=#{addUserId} ORDER BY id
+    </select>
+
+    <select id="getWuLiaoListByStatus" resultType="org.sang.bean.WuLiao">
+        SELECT * FROM work_wu_liao WHERE isDeleted=FALSE AND status=#{status} ORDER BY id
+    </select>
+
+    <select id="getWuLiaoById" resultType="org.sang.bean.WuLiao">
+        SELECT * FROM work_wu_liao WHERE isDeleted=FALSE AND id=#{id}
+    </select>
+
+
+    <insert id="addWuLiao" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.WuLiao">
+        INSERT INTO work_wu_liao set orderId=#{orderId},orderName=#{orderName},wuLiaoName=#{wuLiaoName},wuLiaoNum=#{wuLiaoNum},
+        principalUserId=#{principalUserId},principalUserName=#{principalUserName},haveTime=#{haveTime},
+        liaoJiang=#{liaoJiang},songTime=#{songTime},yinTime=#{yinTime},
+        addUserId=#{addUserId},addUserName=#{addUserName},status=0,updateTime=now(),createTime=now(),isDeleted=FALSE
+    </insert>
+
+
+
+    <resultMap type="org.sang.bean.responseEntity.UsersOrderResp" id="userAndOrderResultMap">
+        <!-- 订单信息 -->
+        <id column="id" property="orderId"/>
+        <result column="orderName" property="orderName"/>
+        <result column="addUserId" property="addUserId"/>
+        <result column="addUserName" property="addUserName"/>
+        <result column="userId" property="userId"/>
+        <result column="userName" property="userName"/>
+
+    </resultMap>
+
+    <select id="getOrderList" resultMap="userAndOrderResultMap">
+        SELECT
+        t1.id,
+        t1.orderName,
+        t2.addUserId,
+        t2.addUserName,
+        t2.userId,
+        t2.userName
+        FROM
+        work_orders t1,
+        work_user_order t2
+        WHERE   t2.userId= #{userId} AND t1.id =  t2.orderId
+    </select>
+
+
+    <update id="updateStatus">
+    update work_wu_liao
+    <set>
+    <if test="status != null">
+    status = #{status},
+    </if>
+    <if test="principalUserName != null">
+    principalUserName = #{principalUserName},
+    </if>
+    <if test="principalUserId !=null">
+     principalUserId = #{principalUserId},
+    </if>
+    <if test="status==1">
+        updateTime = now(),
+    </if>
+    <if test="status==2">
+        haveTime = now()
+    </if>
+    </set>
+    where id = #{wuLiaoId}
+    </update>
+
+</mapper>

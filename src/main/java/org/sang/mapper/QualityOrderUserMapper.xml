@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.QualityOrderUserMapper">
+    <!--查询收模列表-->
+    <!--<resultMap type="org.sang.bean.Order" id="getOrdersMap">-->
+    <!--<id column="id" property="id"/>-->
+    <!--<result column="orderName" property="orderName"/>-->
+    <!--<result column="qrCode" property="qrCode"/>-->
+    <!--<result column="projectId" property="projectId"/>-->
+    <!--<result column="clientCompanyName" property="clientCompanyName"/>-->
+    <!--<result column="technologyId" property="technologyId"/>-->
+    <!--<result column="managerId" property="managerId"/>-->
+    <!--<result column="managerName" property="managerName"/>-->
+    <!--<result column="expected" property="expected"/>-->
+    <!--<result column="urgency" property="urgency"/>-->
+    <!--<result column="hasRemark" property="hasRemark"/>-->
+    <!--<result column="machiningType" property="machiningType"/>-->
+    <!--<result column="realityArea" property="realityArea"/>-->
+
+    <!--<result column="stayArea" property="stayArea"/>-->
+    <!--<result column="alreadyArea" property="alreadyArea"/>-->
+    <!--<result column="perfectArea" property="perfectArea"/>-->
+    <!--<result column="appliqueArea" property="appliqueArea"/>-->
+    <!--<result column="ygb" property="ygb"/>-->
+    <!--<result column="picUrls" property="picUrls"/>-->
+    <!--<result column="finishTime" property="finishTime"/>-->
+    <!--<result column="techId" property="techId"/>-->
+    <!--<result column="yaoJian" property="yaoJian"/>-->
+
+
+    <!--<result column="addUserId" property="addUserId"/>-->
+    <!--<result column="addUserName" property="addUserName"/>-->
+    <!--<result column="status" property="status"/>-->
+    <!--<result column="remark" property="remark"/>-->
+    <!--<result column="isDeleted" property="isDeleted"/>-->
+    <!--<result column="updateTime" property="updateTime"/>-->
+    <!--<result column="createTime" property="createTime"/>-->
+    <!--</resultMap>-->
+
+
+    <insert id="addQuqlityOrderUser" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.QualityOrderUser">
+        INSERT INTO work_quality_order set orderId=#{orderId},userId=#{userId},principalType=#{principalType},userName=#{userName},status=#{status},
+        addUserId=#{addUserId},addUserName=#{addUserName},remark=#{remark},status=0,updateTime=now(),createTime=now(),isDeleted=FALSE
+    </insert>
+
+
+    <insert id="addQualityOrderUsers">
+        insert into work_quality_order (orderId ,
+        userId, userName, principalType,
+        addUserId, addUserName,
+        status, remark, isDeleted,
+        updateTime, createTime
+        )
+        values
+        <foreach collection="qualityOrderUsers" item="emp" separator=",">
+            (#{emp.orderId},#{emp.userId}, #{emp.userName},
+            #{emp.principalType},
+            #{emp.addUserId}, #{emp.addUserName},
+            0, #{emp.remark}, FALSE,
+            now(), now()
+            )
+        </foreach>
+    </insert>
+
+
+    <resultMap type="org.sang.bean.responseEntity.QualityOrderResp" id="getQualityOrdersMap">
+        <id column="id" property="id"/>
+        <result column="orderId" property="orderId"/>
+        <result column="userId" property="userId"/>
+        <result column="userName" property="userName"/>
+        <result column="principalType" property="principalType"/>
+        <result column="status" property="status"/>
+        <result column="addUserId" property="addUserId"/>
+        <result column="addUserName" property="addUserName"/>
+        <result column="remark" property="remark"/>
+        <result column="isDeleted" property="isDeleted"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="createTime" property="createTime"/>
+
+        <association property="order" javaType="org.sang.bean.Order" column="orderId"
+                     select="org.sang.mapper.OrderMapper.getOrderInfoById">
+        </association>
+    </resultMap>
+
+    <select id="getQualityOrdersList" resultMap="getQualityOrdersMap">
+    SELECT * FROM work_quality_order
+    <where>
+        <if test=" userId!= 3 ">
+            AND userId = #{userId}
+        </if>
+        <if test=" status!= null">
+            AND status = #{status}
+        </if>
+    </where>
+    AND isDeleted=FALSE ORDER BY id
+</select>
+
+    <select id="getQualityOrders" resultType="org.sang.bean.QualityOrderUser">
+      SELECT * FROM work_quality_order WHERE isDeleted=FALSE AND  orderId=#{id} ORDER BY id
+    </select>
+
+
+    <!--<select id="getStepsList" resultType="org.sang.bean.Step">-->
+    <!--SELECT * FROM work_step WHERE isDeleted=FALSE ORDER BY id-->
+    <!--</select>-->
+
+    <update id="updateStatus">
+    update work_quality_order
+    <set>
+    status = #{status}
+    </set>
+    where orderId = #{orderId}
+    </update>
+
+
+</mapper>

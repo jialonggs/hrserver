@@ -156,6 +156,19 @@ public final class DateFormatUtil {
         return sdf.format(new Date());
     }
 
+    public static String getMonthFirst(String formatStr){
+        Calendar cal_1=Calendar.getInstance();//获取当前日期
+        cal_1.add(Calendar.MONTH, -1);
+        cal_1.set(Calendar.DAY_OF_MONTH,1);//设置为1号,当前日期既为本月第一天
+        cal_1.set(Calendar.HOUR, 0);
+        cal_1.set(Calendar.MINUTE, 0);
+        cal_1.set(Calendar.SECOND, 0);
+        Date date = cal_1.getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat(formatStr);
+        return sdf.format(date);
+
+    }
+
     /**
      * 获取当前时间long
      * @param time

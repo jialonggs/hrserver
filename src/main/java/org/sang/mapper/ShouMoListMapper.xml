@@ -27,6 +27,8 @@
             select="org.sang.mapper.MouldInfoMapper.getMouldInfoByShouMoId">
         </collection>
     </resultMap>
+
+
     <select id="getAllShouMoList" resultType="org.sang.bean.ShouMoList">
         SELECT * FROM work_shoumo_list WHERE isDeleted=FALSE ORDER BY id
     </select>

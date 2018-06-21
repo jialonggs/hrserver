@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.BusBaoJiaMapper">
+    <!--查询收模列表-->
+    <!--<resultMap type="org.sang.bean.responseEntity.ShouMoListResp" id="shouMoLisAndMouldInfo">-->
+    <!--<id column="id" property="id"/>-->
+    <!--<result column="clientCompanyName" property="clientCompanyName"/>-->
+    <!--<result column="batch" property="batch"/>-->
+    <!--<result column="freightType" property="freightType"/>-->
+    <!--<result column="woodenCaseNum" property="woodenCaseNum"/>-->
+    <!--<result column="palletNum" property="palletNum"/>-->
+    <!--<result column="diaoHuanNum" property="diaoHuanNum"/>-->
+    <!--<result column="jianBao" property="jianBao"/>-->
+    <!--<result column="carNum" property="carNum"/>-->
+    <!--<result column="driverPhone" property="driverPhone"/>-->
+    <!--<result column="addUserId" property="addUserId"/>-->
+    <!--<result column="addUserName" property="addUserName"/>-->
+    <!--<result column="carNum" property="carNum"/>-->
+    <!--<result column="driverPhone" property="driverPhone"/>-->
+    <!--<result column="status" property="status"/>-->
+    <!--<result column="updateTime" property="updateTime"/>-->
+    <!--<result column="createTime" property="createTime"/>-->
+    <!--&lt;!&ndash; 关联模具信息 &ndash;&gt;-->
+    <!--<collection property="mouldInfos" ofType="org.sang.bean.MouldInfo" column="id"-->
+    <!--select="org.sang.mapper.MouldInfoMapper.getMouldInfoByShouMoId">-->
+    <!--</collection>-->
+    <!--</resultMap>-->
+
+    <insert id="addBusBaoJia" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.BusBaoJia">
+        INSERT INTO work_bus_baojia set projectId=#{projectId},yuBaoJiaId=#{yuBaoJiaId},auditId=#{auditId},clientCompanyName=#{clientCompanyName},contactPerson=#{contactPerson},contactPhone=#{contactPhone},carType=#{carType},
+        tax=#{tax},total=#{total},taxTotal=#{taxTotal},expectTime=#{expectTime},wenLiPrice=#{wenLiPrice},hanJiePrice=#{hanJiePrice},additionPrice=#{additionPrice},payType=#{payType},addUserId=#{addUserId},addUserName=#{addUserName},
+        status=#{status},remark=#{remark},isDeleted=FALSE,immutable=FALSE,updateTime=now(),createTime=now()
+    </insert>
+
+    <select id="getBusBaoJiaList" resultType="org.sang.bean.BusBaoJia">
+        SELECT * FROM work_bus_baojia WHERE isDeleted=FALSE AND addUserId=#{addUserId} ORDER BY id
+    </select>
+
+    <select id="getAuditBusBaoJiaList" resultType="org.sang.bean.BusBaoJia">
+        SELECT * FROM work_bus_baojia WHERE isDeleted=FALSE AND audit=#{audit} ORDER BY id
+    </select>
+
+</mapper>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="/static/jl/css/mui.min.css" rel="stylesheet" />
+		<link href="/static/jl/css/style.css" rel="stylesheet" />
+		<style>
+			.area {
+				margin: 20px auto 0px auto;
+			}
+			
+			.mui-input-group {
+				margin-top: 10px;
+			}
+			
+			.mui-input-group:first-child {
+				margin-top: 20px;
+			}
+			
+			.mui-input-group label {
+				width: 22%;
+			}
+			
+			.mui-input-row label~input,
+			.mui-input-row label~select,
+			.mui-input-row label~textarea {
+				width: 78%;
+			}
+			
+			.mui-checkbox input[type=checkbox],
+			.mui-radio input[type=radio] {
+				top: 6px;
+			}
+			
+			.mui-content-padded {
+				margin-top: 25px;
+			}
+			
+			.mui-btn {
+				padding: 10px;
+			}
+			.area {
+				margin: 20px auto 0px auto;
+			}
+			.mui-input-group:first-child {
+				margin-top: 20px;
+			}
+			.mui-input-group label {
+				width: 22%;
+			}
+			.mui-input-row label~input,
+			.mui-input-row label~select,
+			.mui-input-row label~textarea {
+				width: 78%;
+			}
+			.mui-checkbox input[type=checkbox],
+			.mui-radio input[type=radio] {
+				top: 6px;
+			}
+			.mui-content-padded {
+				margin-top: 25px;
+			}
+			.mui-btn {
+				padding: 10px;
+			}
+				.mui-btn-text {
+				font-size: smaller;
+				padding-left: 10px;
+			}
+	
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">订单详情</h1>
+		</header>
+		<div class="mui-content">
+			<div>
+			<div class="mui-btn-text" style="padding-left: 10px;">添  加 人:<span id="tianjiaren">：</span></div>
+			<div class="mui-btn-text" style="padding-left: 10px;">所属项目:<span id="xiangmu">：</span></div>
+			<div class="mui-btn-text" style="padding-left: 10px;">所属公司:<span id="gongsi">：</span></div>
+
+			</div>
+			<div id="nomal_info" style="display: none;">
+			<p style="text-align: left;color: #2a86e8;text-indent: 0;padding-left: 1em;font-size：130%;padding-top: 15px;">基本信息</p>
+			<div class="mui-btn-text" >加工类型：<span id="jiagongleixing">：</span></div>
+			<div class="mui-btn-text" >紧急程度：<span  id="jinjichengdu">：</span></div>
+			<div class="mui-btn-text" >实际面积：<span id="shijimianji">：</span></div>
+			<div class="mui-btn-text" >倍数：<span id="beishu">：</span></div>
+			<div class="mui-btn-text" >是否有备忘：<span id="shifouyoubeiwang">：</span></div>
+			<div class="mui-btn-text" >下单日期：<span id="xiadanriqi">：</span></div>
+			<div class="mui-btn-text" >完工预期：<span id="wangongyuqi">：</span></div>
+			<div class="mui-btn-text" >备忘：<span id="beiwang">：</span></div>
+			</div>
+			<div id="nomal_jiagong" style="display: none;">
+			<p style="text-align: left;color: #2a86e8;text-indent: 0;padding-left: 1em;;font-size：130%;padding-top: 15px;">加工信息</p>
+			<div class="mui-btn-text">当前步骤：<span id="dangqianbuzou"：</span></div>
+			<div class="mui-btn-text">已完成面积：<span id="yiwanchengmianji">：</span></div>
+			<div class="mui-btn-text">未完成面积：<span id="weiwanchengmianji">：</span></div>
+			</div>
+			<div id="nomal_gongyika" style="display: none;">
+			<p style="text-align: left;color: #2a86e8;text-indent: 0;padding-left: 1em;;font-size：130%;padding-top: 15px;">工艺卡信息</p>
+			<div class="mui-btn-text">难度系数：<span id="nanduxishu">：</span></div>
+			<div class="mui-btn-text">贴花步数：<span id="tiehuabuzhou">：</span></div>
+			<div class="mui-btn-text">工艺参数：<span id="gongxicanshu">：</span></div>
+			<div class="mui-btn-text">备注：<span id="gongyibeizhu">：</span></div>
+			</div>
+			<div id="nomal_kongzhidan" style="display: none;">
+			<p style="text-align: left;color: #2a86e8;text-indent: 0;padding-left: 1em;;font-size：130%;padding-top: 15px;">控制单信息</p>
+					<div class="mui-btn-text">气孔：<span id="qikong">：</span></div>
+			<div class="mui-btn-text">缺口：<span id="quekou">：</span></div>
+			<div class="mui-btn-text">焊疤：<span  id="hanba">：</span></div>
+			<div class="mui-btn-text">裂缝：<span  id="liefeng">：</span></div>
+			<div class="mui-btn-text">电火花：<span  id="dianhuohua">：</span></div>
+			<div class="mui-btn-text">油丝石：<span id="youshishi">：</span></div>
+			<div class="mui-btn-text">区域：<span id="quyu">：</span></div>
+			<div class="mui-btn-text">同光泽处理区域：<span id="tonguangzechuliquyu">：</span></div>
+			<div class="mui-btn-text">最后试模件：<span id="zuihoushimujian">：</span></div>
+		    <div class="mui-btn-text">CKD件：<span id="ckd">：</span></div>
+			<div class="mui-btn-text">光件：<span id="guangjian">：</span></div>
+			<div class="mui-btn-text">分型线光边：<span id="fenhexinggunagbian">：</span></div>	
+			<div class="mui-btn-text">合模线光边：<span id="hemoxianguangbian">：</span></div>
+			<div class="mui-btn-text">深度：<span  id="shendu" >：</span></div>
+			<div class="mui-btn-text">碰穿边：<span  id="chuanpengbian" >：</span></div>
+			<div class="mui-btn-text">碰穿孔：<span  id="chuanpengkong">：</span></div>
+			<div class="mui-btn-text">备注：<span   id="kongzhidanbeizhu">：</span></div>
+			</div>
+			<form id='login-form' style="display: none;" class="mui-input-group">
+				<div class="mui-input-row">
+					<label>账号</label>
+					<input id='account' type="text" class="mui-input-clear mui-input" placeholder="请输入账号">
+				</div>
+				<div class="mui-input-row">
+					<label>密码</label>
+					<input id='password' type="password" class="mui-input-clear mui-input" placeholder="请输入密码">
+				</div>
+			</form>
+				<div class="mui-content-padded">
+				<button id='login' class="mui-btn mui-btn-block mui-btn-primary">登录</button>
+				</div>
+			</div>
+
+
+		</div>
+		<script src="/static/jl/js/mui.min.js"></script>
+		<script src="/static/jl/js/app.js"></script>
+		<script>
+			(function($, doc) {
+				$.init();
+				function GetRequest() { 
+					var url = location.search; //获取url中"?"符后的字串 
+					var theRequest = new Object(); 
+					if (url.indexOf("?") != -1) { 
+						var str = url.substr(1); 
+						strs = str.split("&"); 
+						for(var i = 0; i < strs.length; i ++) { 
+							theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]); 
+					} 
+				} 
+				return theRequest; 
+				} 
+				function setCookie(name,value)
+				{
+					var Days = 300;
+					var exp = new Date();
+					exp.setTime(exp.getTime() + Days*24*60*60*1000);
+					document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+				}
+				function getCookie(name)
+				{
+					var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+						if(arr=document.cookie.match(reg))
+						return unescape(arr[2]);
+						else
+						return null;
+				}
+				
+				var showPart=function(show){
+					if(show==1){
+						document.getElementById("nomal_info").style.display="inline";
+						document.getElementById("nomal_jiagong").style.display="inline";
+						document.getElementById("nomal_gongyika").style.display="inline";
+						document.getElementById("nomal_kongzhidan").style.display="inline";
+					}else{
+						document.getElementById("nomal_info").style.display="none";
+						document.getElementById("nomal_jiagong").style.display="none";
+						document.getElementById("nomal_gongyika").style.display="none";
+						document.getElementById("nomal_kongzhidan").style.display="none";
+					}
+				}
+				var showNum=getCookie("show");
+				if(showNum==null||showNum==0){
+					showNum=0;
+					 document.getElementById("login").innerHTML="登陆查看更多";
+				}else{
+						document.getElementById("login").innerHTML="更换用户登陆";
+				}
+				showPart(showNum);
+				
+				var data={};
+					var success = function(response) {
+						var res = JSON.stringify(response);
+						var order=response.data.orderinfo;
+						 document.getElementById("xiangmu").innerHTML=order.project.projectName;
+						 document.getElementById("gongsi").innerHTML=order.project.cilentCompanyName;
+						 document.getElementById("tianjiaren").innerHTML=order.project.addUserName;
+						 document.getElementById("jiagongleixing").innerHTML=order.machiningType;
+						 document.getElementById("jinjichengdu").innerHTML=order.addUserName==1?"紧急":"一般";
+						 document.getElementById("shijimianji").innerHTML=order.realityArea;
+						 document.getElementById("beishu").innerHTML=order.beiShu;
+						 document.getElementById("shifouyoubeiwang").innerHTML=order.hasRemark==true?"有":"无";
+						 document.getElementById("xiadanriqi").innerHTML=order.createTime;
+						 document.getElementById("wangongyuqi").innerHTML=order.expectedTime;
+						 document.getElementById("beiwang").innerHTML=order.remark;
+						 document.getElementById("dangqianbuzou").innerHTML=order.presentStepName;
+						 document.getElementById("yiwanchengmianji").innerHTML=order.alreadyArea;
+						 document.getElementById("weiwanchengmianji").innerHTML=order.stayArea;
+						document.getElementById("nanduxishu").innerHTML=order.techCard.nanDuXiShu;
+						 document.getElementById("tiehuabuzhou").innerHTML=order.techCard.tieHuaBuShu;
+						 document.getElementById("gongxicanshu").innerHTML=order.techCard.gongYiCanShu;
+						 document.getElementById("gongyibeizhu").innerHTML=order.techCard.remark;
+						 document.getElementById("qikong").innerHTML=order.controlOrderFrom.qiKong;
+						 document.getElementById("quekou").innerHTML=order.controlOrderFrom.queKou;
+						 document.getElementById("hanba").innerHTML=order.controlOrderFrom.hanBa;
+						 document.getElementById("liefeng").innerHTML=order.controlOrderFrom.lieFeng;
+						 document.getElementById("dianhuohua").innerHTML=order.controlOrderFrom.dianHuoHua;
+						 document.getElementById("youshishi").innerHTML=order.controlOrderFrom.youShiSi;
+						 document.getElementById("quyu").innerHTML=order.controlOrderFrom.quYu;
+						 document.getElementById("tonguangzechuliquyu").innerHTML=order.controlOrderFrom.tongGZ==true?"有":"无";
+						 document.getElementById("zuihoushimujian").innerHTML=order.controlOrderFrom.zuiHouShiMoJian;
+						 document.getElementById("ckd").innerHTML=order.controlOrderFrom.ckd;
+						 document.getElementById("guangjian").innerHTML=order.controlOrderFrom.guangJian;
+						 document.getElementById("fenhexinggunagbian").innerHTML=order.controlOrderFrom.fenXingBian;
+						 document.getElementById("hemoxianguangbian").innerHTML=order.controlOrderFrom.heMoBian;
+						 document.getElementById("shendu").innerHTML=order.controlOrderFrom.shenDu;
+					     document.getElementById("chuanpengkong").innerHTML=order.controlOrderFrom.pengChuanKong;
+						 document.getElementById("chuanpengbian").innerHTML=order.controlOrderFrom.pengChuanBian;
+						 document.getElementById("kongzhidanbeizhu").innerHTML=order.controlOrderFrom.remark;
+					};
+					
+				$.getJSON("http://localhost:8082/config/info?orderId="+GetRequest()["orderId"],data, success);
+					var loginSuccess = function(response) {
+						if(response.status=="success"){
+							var roles=response.msg.roles;
+							document.getElementById("login").innerHTML="更换用户登陆";
+							document.getElementById("login-form").style.display="none"
+							var  show=0;
+							for(var i=0;i<roles.length;i++){
+     							if(roles[i].id==1||roles[i].id==13||roles[i].id==3
+     								||roles[i].id==5||roles[i].id==4||roles[i].id==17
+     								||roles[i].id==18||roles[i].id==6){
+     									show=1;
+     							}
+							}
+							setCookie("show",show);
+							showPart(show);
+						}else{
+							mui.toast(response.msg);
+						}
+						
+					};
+					var login = function(username,password) {
+						if(document.getElementById("login-form").style.display=="none"){
+							document.getElementById("login-form").style.display="block"
+							document.getElementById("login").innerHTML="登陆";
+
+						}else{
+							if(username==""||password==""){
+								mui.toast("请输入用户名和密码");
+							}else{
+								var data={
+									"username":username,
+									"password":password
+								}
+								$.post("http://39.107.78.95:8082/login", data, loginSuccess);
+							}
+						
+						}
+							
+					};
+					
+		
+					
+					document.getElementById("login").addEventListener('tap', function() {
+						var username=document.getElementById("account").value;
+						var password=document.getElementById("password").value;
+						login(username,password);
+				});
+			}(mui, document));
+		</script>
+	</body>
+
+</html>

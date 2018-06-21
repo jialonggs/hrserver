@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.KaiPiaoMapper">
+
+
+    <insert id="addKaiPiao" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.KaiPiao">
+        INSERT INTO work_kai_piao set projectId=#{projectId}, projectName=#{projectName},heTongYe=#{heTongYe},unitName=#{unitName},
+        unitShuiHao=#{unitShuiHao},unitDiZhi=#{unitDiZhi},unitTel=#{unitTel},
+        unitYinHang=#{unitYinHang},unitZhangHao=#{unitZhangHao},laoWuMingCheng=#{laoWuMingCheng},
+        guiGeXingHao=#{guiGeXingHao},danWei=#{danWei},shuLiang=#{shuLiang},jinE=#{jinE},fuKuanType=#{fuKuanType},
+        fuQing=#{fuQing},faPiaoNum=#{faPiaoNum},kaiPiaoId=#{kaiPiaoId},
+        kaiPiaoName=#{kaiPiaoName},tongZhiId=#{tongZhiId},tongZhiName=#{tongZhiName},
+        auditJson=#{auditJson},
+        addUserId=#{addUserId},addUserName=#{addUserName},status=0,remark=#{remark},updateTime=now(),
+        createTime=now(),isDeleted=FALSE
+    </insert>
+
+
+    <select id="getKaiPiaoList" resultType="org.sang.bean.KaiPiao">
+        SELECT * FROM work_kai_piao WHERE isDeleted=FALSE AND status=#{status} ORDER BY id
+    </select>
+
+    <update id="updateKaiPiao">
+        update work_kai_piao
+        <set>
+            status = #{kaipiao.status},
+            <if test=" kaipiao.auditShangId!= null ">
+                auditShangId = #{kaipiao.auditShangId},
+            </if>
+            <if test=" kaipiao.auditShangName!= null ">
+                auditShangName = #{kaipiao.auditShangName},
+            </if>
+            <if test=" kaipiao.auditJingId!= null ">
+                auditJingId = #{kaipiao.auditJingId},
+            </if>
+            <if test=" kaipiao.auditJingName!= null ">
+                auditJingName = #{kaipiao.auditJingName},
+            </if>
+            <if test=" kaipiao.auditFinanceId!= null ">
+                auditFinanceId = #{kaipiao.auditFinanceId},
+            </if>
+            <if test=" kaipiao.auditFinanceName!= null ">
+                auditFinanceName = #{kaipiao.auditFinanceName},
+            </if>
+            <if test=" kaipiao.shangWuRemark!= null ">
+                shangWuRemark = #{kaipiao.shangWuRemark},
+            </if>
+            <if test=" kaipiao.jingLiRemark!= null ">
+                jingLiRemark = #{kaipiao.jingLiRemark},
+            </if>
+            <if test=" kaipiao.caiWuRemark!= null ">
+                caiWuRemark = #{kaipiao.caiWuRemark},
+            </if>
+            <if test=" kaipiao.heTongYe!= null ">
+                heTongYe = #{kaipiao.heTongYe},
+            </if>
+            <if test=" kaipiao.unitName!= null ">
+                unitName = #{kaipiao.unitName},
+            </if>
+            <if test=" kaipiao.unitShuiHao!= null ">
+                unitShuiHao = #{kaipiao.unitShuiHao},
+            </if>
+            <if test=" kaipiao.unitDiZhi!= null ">
+                unitDiZhi = #{kaipiao.unitDiZhi},
+            </if>
+            <if test=" kaipiao.unitTel!= null ">
+                unitTel = #{kaipiao.unitTel},
+            </if>
+            <if test=" kaipiao.unitYinHang!= null ">
+                unitYinHang = #{kaipiao.unitYinHang},
+            </if>
+            <if test=" kaipiao.unitZhangHao!= null ">
+                unitZhangHao = #{kaipiao.unitZhangHao},
+            </if>
+            <if test=" kaipiao.laoWuMingCheng!= null ">
+                laoWuMingCheng = #{kaipiao.laoWuMingCheng},
+            </if>
+            <if test=" kaipiao.guiGeXingHao!= null ">
+                guiGeXingHao = #{kaipiao.guiGeXingHao},
+            </if>
+            <if test=" kaipiao.danWei!= null ">
+                danWei = #{kaipiao.danWei},
+            </if>
+            <if test=" kaipiao.shuLiang!= null ">
+                shuLiang = #{kaipiao.shuLiang},
+            </if>
+            <if test=" kaipiao.jinE!= null ">
+                jinE = #{kaipiao.jinE},
+            </if>
+            <if test=" kaipiao.fuKuanType!= null ">
+                fuKuanType = #{kaipiao.fuKuanType},
+            </if>
+            <if test=" kaipiao.fuQing != null ">
+                fuQing = #{kaipiao.fuQing, jdbcType=BIT},
+            </if>
+            <if test=" kaipiao.faPiaoNum!= null ">
+                faPiaoNum = #{kaipiao.faPiaoNum},
+            </if>
+            <if test=" kaipiao.kaiPiaoId!= null ">
+                kaiPiaoId = #{kaipiao.kaiPiaoId},
+            </if>
+            <if test=" kaipiao.tongZhiId!= null ">
+                tongZhiId = #{kaipiao.tongZhiId},
+            </if>
+            <if test=" kaipiao.kaiPiaoName!= null ">
+                kaiPiaoName = #{kaipiao.kaiPiaoName},
+            </if>
+            <if test=" kaipiao.tongZhiName!= null ">
+                tongZhiName = #{kaipiao.tongZhiName},
+            </if>
+            <if test=" kaipiao.auditJson!= null ">
+                auditJson = #{kaipiao.auditJson},
+            </if>
+            updateTime = now()
+        </set>
+        where id = #{kaipiao.id}
+    </update>
+
+
+</mapper>

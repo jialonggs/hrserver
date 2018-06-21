@@ -39,6 +39,15 @@ public class ChatController {
         return new RespBean("error", "发送失败!");
     }
 
+
+    @RequestMapping(value = "/sendToOneOrSome", method = RequestMethod.POST)
+    public RespBean sendToOneOrSome(MsgContent msg) {
+        if (sysMsgService.sendMsg(msg)) {
+            return new RespBean("success", "发送成功!");
+        }
+        return new RespBean("error", "发送失败!");
+    }
+
     @RequestMapping("/sysmsgs")
     public List<SysMsg> getSysMsg(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size) {
         return sysMsgService.getSysMsgByPage(page, size);

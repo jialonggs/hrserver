@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.YaoJianMapper">
+    <!--查询收模列表-->
+    <resultMap type="org.sang.bean.YaoJian" id="getYaoJianMap">
+        <id column="id" property="id"/>
+        <result column="orderId" property="orderId"/>
+        <result column="fileUrl" property="fileUrl"/>
+
+
+        <result column="addUserId" property="addUserId"/>
+        <result column="addUserName" property="addUserName"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="isDeleted" property="isDeleted"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="createTime" property="createTime"/>
+    </resultMap>
+
+
+    <insert id="addYaoJian" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.YaoJian">
+        INSERT INTO work_yao_jian set orderId=#{orderId},fileUrl=#{fileUrl},addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},updateTime=now(),createTime=now(),isDeleted=FALSE
+    </insert>
+
+
+    <resultMap type="org.sang.bean.responseEntity.YaoJianOrderResp" id="getYaoJianAndOrderMap">
+        <id column="id" property="id"/>
+        <result column="orderName" property="orderName"/>
+        <result column="addUserName" property="addUserName"/>
+
+        <result column="createTime" property="createTime"/>
+        <result column="urgency" property="urgency"/>
+        <result column="fileUrl" property="fileUrl"/>
+    </resultMap>
+
+    <select id="getAddedList" resultMap="getYaoJianAndOrderMap">
+        SELECT o.id,o.orderName,o.addUserName, o.createTime, o.urgency, y.fileUrl FROM work_yao_jian as y LEFT JOIN work_orders as o on y.orderId = o.id WHERE y.isDeleted=FALSE  ORDER BY o.urgency DESC
+    </select>
+
+
+    <!--<update id="updateTechCard">-->
+        <!--update work_tech-->
+        <!--<set>-->
+            <!--<if test="piWenDaiMa != null">-->
+                <!--piWenDaiMa = #{piWenDaiMa},-->
+            <!--</if>-->
+            <!--<if test="nanDuXiShu != null">-->
+                <!--nanDuXiShu = #{nanDuXiShu},-->
+            <!--</if>-->
+            <!--<if test="tieHuaBuShu != null">-->
+                <!--tieHuaBuShu = #{tieHuaBuShu},-->
+            <!--</if>-->
+            <!--<if test="gongYiCanShu != null">-->
+                <!--gongYiCanShu = #{gongYiCanShu},-->
+            <!--</if>-->
+            <!--<if test="guangZhe != null">-->
+                <!--guangZhe = #{guangZhe},-->
+            <!--</if>-->
+            <!--<if test="chaiLiao != null">-->
+                <!--chaiLiao = #{chaiLiao},-->
+            <!--</if>-->
+            <!--<if test="tiaoZheng != null">-->
+                <!--tiaoZheng = #{tiaoZheng},-->
+            <!--</if>-->
+            <!--updateTime = now()-->
+        <!--</set>-->
+        <!--where id = #{id}-->
+    <!--</update>-->
+
+
+
+</mapper>

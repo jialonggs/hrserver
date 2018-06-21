@@ -1,9 +1,10 @@
 package org.sang.service;
 
-import org.sang.bean.Employee;
-import org.sang.bean.Nation;
-import org.sang.bean.PoliticsStatus;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.sang.bean.*;
 import org.sang.mapper.EmpMapper;
+import org.sang.utils.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +19,6 @@ import java.util.List;
  * Created by sang on 2018/1/12.
  */
 @Service
-@Transactional
 public class EmpService {
     @Autowired
     EmpMapper empMapper;
@@ -35,11 +35,12 @@ public class EmpService {
         return empMapper.getAllPolitics();
     }
 
+    @Transactional
     public int addEmp(Employee employee) {
-        Date beginContract = employee.getBeginContract();
-        Date endContract = employee.getEndContract();
-        Double contractTerm = (Double.parseDouble(yearFormat.format(endContract)) - Double.parseDouble(yearFormat.format(beginContract))) * 12 + Double.parseDouble(monthFormat.format(endContract)) - Double.parseDouble(monthFormat.format(beginContract));
-        employee.setContractTerm(Double.parseDouble(decimalFormat.format(contractTerm / 12)));
+//        Date beginContract = employee.getBeginContract();
+//        Date endContract = employee.getEndContract();
+       // Double contractTerm = (Double.parseDouble(yearFormat.format(endContract)) - Double.parseDouble(yearFormat.format(beginContract))) * 12 + Double.parseDouble(monthFormat.format(endContract)) - Double.parseDouble(monthFormat.format(beginContract));
+       // employee.setContractTerm(Double.parseDouble(decimalFormat.format(contractTerm / 12)));
         return empMapper.addEmp(employee);
     }
 
@@ -94,6 +95,11 @@ public class EmpService {
         return empMapper.getEmployeeByPage(null, null, "", null, null, null, null, null, null, null, null);
     }
 
+
+    public List<Employee> getAllEmployees2() {
+        return empMapper.getEmpsList();
+    }
+
     public int addEmps(List<Employee> emps) {
         return empMapper.addEmps(emps);
     }
@@ -105,5 +111,15 @@ public class EmpService {
 
     public Employee getEmployeeByPhone(String phone){
         return empMapper.getEmployeeByPhone(phone).get(0);
+    }
+
+    public PageBean<Employee> getEmpsList(PageInfoEntity pageInfoEntity) {
+        PageHelper.startPage(pageInfoEntity.getCurrentPage(),pageInfoEntity.getPagesize());
+        List<Employee> list = empMapper.getEmpsList();
+        PageInfo page = new PageInfo(list);
+        PageBean<Employee> pageData = new PageBean<>();
+        pageData.setItems(list);
+        pageData.setPageInfo(page);
+        return  pageData;
     }
 }

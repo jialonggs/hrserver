@@ -66,21 +66,27 @@ public class MouldInfoService {
 
     public List<MouldPartTreeResp> getByTime( Integer days){
         List<MouldPartTreeResp> reslist = new ArrayList<>();
-        for(int i= 1;i<=days; i++) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        for(int i= 0;i<days; i++) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Calendar nowTime =  Calendar.getInstance();
             Calendar endTime = Calendar.getInstance();
-            int t = i-1;
             // 结束时间
-            endTime.add(Calendar.DATE ,-t);
+            nowTime.add(Calendar.DATE ,-i);
+            nowTime.set(Calendar.HOUR,0);
+            nowTime.set(Calendar.MINUTE,0);
+            nowTime.set(Calendar.SECOND,0);
+            nowTime.set(Calendar.MILLISECOND,0);
+            String begainTime = sdf.format(nowTime.getTime());
+
+            endTime.add(Calendar.DATE ,-i);
+            endTime.set(Calendar.HOUR,23);
+            endTime.set(Calendar.MINUTE,59);
+            endTime.set(Calendar.SECOND,59);
+            endTime.set(Calendar.MILLISECOND,59);
             String endTime1 = sdf.format(endTime.getTime());
 
-            //开始时间
-            nowTime.add(Calendar.DATE,-i);
-            String begainTime1 = sdf.format(nowTime.getTime());
-
             // 获取当天的收模列表 --按批次排序
-            List<ShouMoListResp> list = shouMoListMapper.getShouMoByTime2(begainTime1, endTime1);
+            List<ShouMoListResp> list = shouMoListMapper.getShouMoByTime2(begainTime, endTime1);
             if(null !=list && list.size()>0){
                 List<MouldPartChildrenResp> resps = new ArrayList<>();
                 for (ShouMoListResp shouMoList : list) {
@@ -88,7 +94,7 @@ public class MouldInfoService {
                     Long id = shouMoList.getId();
 
                     // 获取该批次中所有模具列表 按时间排序
-                    List<MouldInfo> partList = mouldInfoMapper.getMouldInfoByShouMoId(id);
+                    List<MouldInfo> partList = shouMoList.getMouldInfos();
                     if(partList != null && partList.size()>0){
                         List<TreeMouldInfoResp> treeMouldInfoResps = new ArrayList<>();
                         for (MouldInfo part: partList){

@@ -7,15 +7,22 @@ public class Order {
     private Long id;
     private String orderName;
     private String qrCode;
+    private String beiShu;
     private Integer projectId;
     private Integer technologyId;
-    private Integer managerId;
+    private Long managerId;
     private String managerName;
     private String expected;
+    private Date expectedTime;
+    private Integer presentStepId;
+    private String presentStepName;
+    private Double presentSchedule;
+    private String clientCompanyName;
     private Integer urgency;
     private Boolean hasRemark;
     private String machiningType;
     private Double realityArea;
+    private Double workArea;
     private Double stayArea;
     private Double alreadyArea;
     private Double perfectArea;
@@ -23,14 +30,37 @@ public class Order {
     private Boolean ygb;
     private String picUrls;
     private Date finishTime;
+    private Boolean techId;
+    private Boolean yaoJian;
+    private Integer plantStatus;
+    private Integer liuChengStatus;
+    private String kuFangRemark;
+    private Integer liuZhuanStatus;
+    private Double liuZhuanArea;
+    private Double liuZhuanBiLi;
+    private String nanDuDengJi;
+
+    private String piWenDaiMa;
+
+    private Integer jingFengStatus;
+    private Integer storageStatus;
+    private Integer financeStatus;
+    private String financeBiLi;
+    private String financeJinE;
+    private Date financeTime;
+    private String financeRemark;
+
+    private Integer faMoStatus;
 
     private String addUserId;
     private String addUserName;
     private String status;
     private String remark;
     private Boolean isDeleted;
+    private Date storageTime;
     private Date updateTime;
     private Date createTime;
+
 
     public Long getId() {
         return id;
@@ -72,13 +102,6 @@ public class Order {
         this.technologyId = technologyId;
     }
 
-    public Integer getManagerId() {
-        return managerId;
-    }
-
-    public void setManagerId(Integer managerId) {
-        this.managerId = managerId;
-    }
 
     public String getManagerName() {
         return managerName;
@@ -240,4 +263,220 @@ public class Order {
         this.addUserId = addUserId;
     }
 
+    public Boolean getTechId() {
+        return techId;
+    }
+
+    public void setTechId(Boolean techId) {
+        this.techId = techId;
+    }
+
+    public Boolean getYaoJian() {
+        return yaoJian;
+    }
+
+    public void setYaoJian(Boolean yaoJian) {
+        this.yaoJian = yaoJian;
+    }
+
+    public Integer getPresentStepId() {
+        return presentStepId;
+    }
+
+    public void setPresentStepId(Integer presentStepId) {
+        this.presentStepId = presentStepId;
+    }
+
+    public String getPresentStepName() {
+        return presentStepName;
+    }
+
+    public void setPresentStepName(String presentStepName) {
+        this.presentStepName = presentStepName;
+    }
+
+    public Double getPresentSchedule() {
+        return presentSchedule;
+    }
+
+    public void setPresentSchedule(Double presentSchedule) {
+        this.presentSchedule = presentSchedule;
+    }
+
+    public String getClientCompanyName() {
+        return clientCompanyName;
+    }
+
+    public void setClientCompanyName(String clientCompanyName) {
+        this.clientCompanyName = clientCompanyName;
+    }
+
+    public Integer getPlantStatus() {
+        return plantStatus;
+    }
+
+    public void setPlantStatus(Integer plantStatus) {
+        this.plantStatus = plantStatus;
+    }
+
+    public Long getManagerId() {
+        return managerId;
+    }
+
+    public void setManagerId(Long managerId) {
+        this.managerId = managerId;
+    }
+
+    public Double getWorkArea() {
+        return workArea;
+    }
+
+    public void setWorkArea(Double workArea) {
+        this.workArea = workArea;
+    }
+
+    public String getBeiShu() {
+        return beiShu;
+    }
+
+    public void setBeiShu(String beiShu) {
+        this.beiShu = beiShu;
+    }
+
+    public Date getExpectedTime() {
+        return expectedTime;
+    }
+
+    public void setExpectedTime(Date expectedTime) {
+        this.expectedTime = expectedTime;
+    }
+
+    public Integer getLiuChengStatus() {
+        return liuChengStatus;
+    }
+
+    public void setLiuChengStatus(Integer liuChengStatus) {
+        this.liuChengStatus = liuChengStatus;
+    }
+
+    public String getKuFangRemark() {
+        return kuFangRemark;
+    }
+
+    public void setKuFangRemark(String kuFangRemark) {
+        this.kuFangRemark = kuFangRemark;
+    }
+
+    public Integer getLiuZhuanStatus() {
+        return liuZhuanStatus;
+    }
+
+    public void setLiuZhuanStatus(Integer liuZhuanStatus) {
+        this.liuZhuanStatus = liuZhuanStatus;
+    }
+
+    public Double getLiuZhuanArea() {
+        return liuZhuanArea;
+    }
+
+    public void setLiuZhuanArea(Double liuZhuanArea) {
+        this.liuZhuanArea = liuZhuanArea;
+    }
+
+    public Double getLiuZhuanBiLi() {
+        return liuZhuanBiLi;
+    }
+
+    public void setLiuZhuanBiLi(Double liuZhuanBiLi) {
+        this.liuZhuanBiLi = liuZhuanBiLi;
+    }
+
+    public String getNanDuDengJi() {
+        return nanDuDengJi;
+    }
+
+    public void setNanDuDengJi(String nanDuDengJi) {
+        this.nanDuDengJi = nanDuDengJi;
+    }
+
+    public Integer getJingFengStatus() {
+        return jingFengStatus;
+    }
+
+    public void setJingFengStatus(Integer jingFengStatus) {
+        this.jingFengStatus = jingFengStatus;
+    }
+
+    public Integer getStorageStatus() {
+        return storageStatus;
+    }
+
+    public void setStorageStatus(Integer storageStatus) {
+        this.storageStatus = storageStatus;
+    }
+
+    public Integer getFinanceStatus() {
+        return financeStatus;
+    }
+
+    public void setFinanceStatus(Integer financeStatus) {
+        this.financeStatus = financeStatus;
+    }
+
+
+    public String getFinanceBiLi() {
+        return financeBiLi;
+    }
+
+    public void setFinanceBiLi(String financeBiLi) {
+        this.financeBiLi = financeBiLi;
+    }
+
+    public String getFinanceJinE() {
+        return financeJinE;
+    }
+
+    public void setFinanceJinE(String financeJinE) {
+        this.financeJinE = financeJinE;
+    }
+
+    public Date getFinanceTime() {
+        return financeTime;
+    }
+
+    public void setFinanceTime(Date financeTime) {
+        this.financeTime = financeTime;
+    }
+
+    public String getFinanceRemark() {
+        return financeRemark;
+    }
+
+    public void setFinanceRemark(String financeRemark) {
+        this.financeRemark = financeRemark;
+    }
+
+    public Integer getFaMoStatus() {
+        return faMoStatus;
+    }
+
+    public void setFaMoStatus(Integer faMoStatus) {
+        this.faMoStatus = faMoStatus;
+    }
+
+    public String getPiWenDaiMa() {
+        return piWenDaiMa;
+    }
+
+    public void setPiWenDaiMa(String piWenDaiMa) {
+        this.piWenDaiMa = piWenDaiMa;
+    }
+
+    public Date getStorageTime() {
+        return storageTime;
+    }
+
+    public void setStorageTime(Date storageTime) {
+        this.storageTime = storageTime;
+    }
 }

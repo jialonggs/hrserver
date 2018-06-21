@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.TechCardMapper">
+    <!--查询收模列表-->
+    <resultMap type="org.sang.bean.TechCard" id="getTechMap">
+        <id column="id" property="id"/>
+        <result column="orderId" property="orderId"/>
+        <result column="piWenDaiMa" property="piWenDaiMa"/>
+        <result column="nanDuXiShu" property="nanDuXiShu"/>
+        <result column="tieHuaBuShu" property="tieHuaBuShu"/>
+        <result column="gongYiCanShu" property="gongYiCanShu"/>
+        <result column="guangZhe" property="guangZhe"/>
+        <result column="chaiLiao" property="chaiLiao"/>
+        <result column="tiaoZheng" property="tiaoZheng"/>
+
+        <result column="addUserId" property="addUserId"/>
+        <result column="addUserName" property="addUserName"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="isDeleted" property="isDeleted"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="createTime" property="createTime"/>
+    </resultMap>
+
+
+    <insert id="addTech" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.TechCard">
+        INSERT INTO work_tech set orderId=#{orderId},piWenDaiMa=#{piWenDaiMa},nanDuXiShu=#{nanDuXiShu},tieHuaBuShu=#{tieHuaBuShu},gongYiCanShu=#{gongYiCanShu},
+        guangZhe=#{guangZhe},chaiLiao=#{chaiLiao},tiaoZheng=#{tiaoZheng},addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},updateTime=now(),createTime=now(),isDeleted=FALSE
+    </insert>
+
+    <select id="getByOrderId" resultType="org.sang.bean.TechCard">
+        SELECT * FROM work_tech WHERE isDeleted=FALSE AND orderId=#{orderId} ORDER BY id
+    </select>
+
+
+    <update id="updateTechCard">
+        update work_tech
+        <set>
+            <if test="piWenDaiMa != null">
+                piWenDaiMa = #{piWenDaiMa},
+            </if>
+            <if test="nanDuXiShu != null">
+                nanDuXiShu = #{nanDuXiShu},
+            </if>
+            <if test="tieHuaBuShu != null">
+                tieHuaBuShu = #{tieHuaBuShu},
+            </if>
+            <if test="gongYiCanShu != null">
+                gongYiCanShu = #{gongYiCanShu},
+            </if>
+            <if test="guangZhe != null">
+                guangZhe = #{guangZhe},
+            </if>
+            <if test="chaiLiao != null">
+                chaiLiao = #{chaiLiao},
+            </if>
+            <if test="tiaoZheng != null">
+                tiaoZheng = #{tiaoZheng},
+            </if>
+            updateTime = now()
+        </set>
+        where id = #{id}
+    </update>
+
+
+
+</mapper>

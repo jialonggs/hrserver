@@ -24,21 +24,123 @@
         <result column="orderSchedule" property="orderSchedule"/>
     </resultMap>
 
+
+
+    <resultMap type="org.sang.bean.responseEntity.ProjectListResp" id="getProjectListMap1">
+        <id column="id" property="id"/>
+        <result column="projectName" property="projectName"/>
+        <result column="cilentCompanyName" property="cilentCompanyName"/>
+        <result column="addUserId" property="addUserId"/>
+        <result column="addUserName" property="addUserName"/>
+        <result column="finishTime" property="finishTime"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="isDeleted" property="isDeleted"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="createTime" property="createTime"/>
+
+        <association property="yuBaoJia" javaType="org.sang.bean.YuBaoJia" column="id"
+                     select="org.sang.mapper.YuBaoJiaMapper.getByProjectId">
+        </association>
+        <association property="businessBaoJia" javaType="org.sang.bean.responseEntity.BusInfoResp" column="id"
+                     select="org.sang.mapper.BusinessBaoJiaMapper.getBusinessBaoJiaByProjectId">
+        </association>
+        <collection property="orders" ofType="org.sang.bean.Order" column="id"
+                    select="org.sang.mapper.OrderMapper.getOrdersByProjectId">
+        </collection>
+
+    </resultMap>
+
+
+    <!--查询项目列表-->
+    <resultMap type="org.sang.bean.Project" id="getProjectMap">
+        <id column="id" property="id"/>
+        <result column="projectName" property="projectName"/>
+        <result column="cilentCompanyName" property="cilentCompanyName"/>
+        <result column="addUserId" property="addUserId"/>
+        <result column="addUserName" property="addUserName"/>
+    </resultMap>
+
     <!--获取项目列表-->
-    <select id="getProjectList" resultMap="getProjectListMap">
-        SELECT * FROM work_project WHERE isDeleted=FALSE ORDER BY id
+    <select id="getProjectList" resultMap="getProjectListMap1">
+        SELECT * FROM work_project WHERE isDeleted=FALSE ORDER BY id DESC
     </select>
+
+    <select id="getProjectById" resultType="org.sang.bean.Project">
+        SELECT * FROM work_project WHERE isDeleted=FALSE AND id=#{projectId}
+    </select>
+
+    <select id="getProjectListByUserId" resultMap="getProjectListMap1">
+        SELECT * FROM work_project WHERE isDeleted=FALSE AND addUserId=#{addUserId} ORDER BY id DESC
+    </select>
+
+    <!--<select id="getProjectList" resultMap="getProjectListMap">-->
+        <!--SELECT t1.*, t2.id as 'yuBaoJiaId',t2.audit as yuBaoJiaStatus,t3.id as shangWuId, t3.audit as shangWuStatus FROM-->
+        <!--work_project t1, work_yubaojia t2, work_bus_bj t3 WHERE isDeleted=FALSE ORDER BY id-->
+    <!--</select>-->
 
     <!--根据uid获取项目列表-->
     <select id="getByUid" resultType="org.sang.bean.Project">
-        SELECT * FROM work_project WHERE isDeleted=FALSE AND addUserId=#{uid} ORDER BY id
+        SELECT * FROM work_project WHERE isDeleted=FALSE  ORDER BY id DESC
+    </select>
+
+    <!--<select id="getFinanceProject" resultType="org.sang.bean.Project">-->
+      <!--SELECT * FROM work_project WHERE id in (SELECT projectId FROM work_orders WHERE storageStatus=2 AND isDeleted=FALSE  GROUP BY projectId) AND-->
+      <!--financeStatus=0 AND isDeleted=FALSE ORDER BY id-->
+    <!--</select>-->
+
+    <select id="getFinanceProject" resultType="org.sang.bean.Project">
+        SELECT * FROM work_project WHERE  financeStatus&lt;3 AND isDeleted=FALSE ORDER BY id DESC
+    </select>
+
+    <select id="getOverceFinanceProject" resultType="org.sang.bean.Project">
+        SELECT * FROM work_project WHERE  financeStatus=3 AND isDeleted=FALSE ORDER BY id DESC
+    </select>
+
+    <select id="getAdded" resultMap="getProjectMap" parameterType="map">
+        SELECT t1.* FROM work_project t1
+        <where>
+            <if test="beginTime != null and beginTime != ''">
+                AND createTime &gt;= #{beginTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND createTime &lt;= #{endTime}
+            </if>
+        </where>
+        AND isDeleted=FALSE  ORDER BY id
     </select>
 
 
     <insert id="addProject" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.Project">
-        INSERT INTO work_project set projectName=#{projectName},cilentCompanyName=#{cilentCompanyName},addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},remark=#{remark},
+        INSERT INTO work_project set projectName=#{projectName},cilentCompanyName=#{cilentCompanyName},
+        financeStatus=0,financeBiLi='0',financeJinE='0',financeRemark='',
+        kaiPiaoStatus=0,
+        addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},remark=#{remark},
         updateTime=now(),createTime=now(),isDeleted=FALSE
     </insert>
+
+
+    <update id="updateKiPiaoStatus">
+        update work_project
+        <set>
+            kaiPiaoStatus = #{kaiPiaoStatus},
+            kaiPiaoId = #{kaiPiaoId},
+            updateTime = now()
+        </set>
+        where id = #{projectId}
+    </update>
+
+
+    <update id="addFuKuan">
+        update work_project
+        <set>
+            financeBiLi = #{fuKuan.financeBiLi},
+            financeJinE = #{fuKuan.financeJinE},
+            financeStatus = #{fuKuan.financeStatus},
+            financeTime = #{fuKuan.financeTime}
+        </set>
+        where id = #{fuKuan.projectId}
+    </update>
 
 
 </mapper>

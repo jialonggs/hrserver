@@ -23,6 +23,10 @@
 
     </resultMap>
 
+    <select id="getByOrderId" resultType="org.sang.bean.MouldInfo">
+        SELECT * FROM work_mould_info WHERE isDeleted=FALSE AND orderId=#{orderId}
+    </select>
+
     <!-- 根据收模Id进行查询-->
     <select id="getMouldInfoByShouMoId" resultMap="MouldInfoMap" parameterType="java.lang.Long">
         SELECT e.* FROM work_mould_info e WHERE isDeleted=FALSE AND shouMoId=#{id}

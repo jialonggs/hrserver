@@ -5,13 +5,22 @@ import org.sang.bean.YuProduct;
 import java.util.List;
 
 public class YuProductRquest {
-    private List<YuProduct> yuProducts;
+    private Integer yuBaoJiaId;
+    private String yuProducts;
 
-    public List<YuProduct> getYuProducts() {
+    public String getYuProducts() {
         return yuProducts;
     }
 
-    public void setYuProducts(List<YuProduct> yuProducts) {
+    public void setYuProducts(String yuProducts) {
         this.yuProducts = yuProducts;
+    }
+
+    public Integer getYuBaoJiaId() {
+        return yuBaoJiaId;
+    }
+
+    public void setYuBaoJiaId(Integer yuBaoJiaId) {
+        this.yuBaoJiaId = yuBaoJiaId;
     }
 }

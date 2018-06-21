@@ -1,6 +1,7 @@
 package org.sang.service;
 
 import org.sang.bean.Hr;
+import org.sang.bean.responseEntity.UserInfoResp;
 import org.sang.common.HrUtils;
 import org.sang.mapper.HrMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,8 @@ public class HrService implements UserDetailsService {
         }
         return hr;
     }
+
+
 
 //    public int hrReg(String username, String password,String name,String phone,String userface,String empId,String remark) {
 //        //如果用户名存在，返回错误
@@ -72,6 +75,10 @@ public Long hrReg(Hr hr) {
         return hrMapper.getHrById(hrId);
     }
 
+    public UserInfoResp getHrByUserInfo(Long userId){
+        return hrMapper.getUserInfo(userId);
+    }
+
     public int deleteHr(Long hrId) {
         return hrMapper.deleteHr(hrId);
     }
@@ -89,6 +96,11 @@ public Long hrReg(Hr hr) {
         return hrMapper.getHrsByKeywords(start, size, keywords);
     }
 
+
+    public List<Hr> getAllHrs() {
+        return hrMapper.getAllHrs();
+    }
+
     public Long getCountByKeywords(String keywords) {
         return hrMapper.getCountByKeywords(keywords);
     }
@@ -96,4 +108,23 @@ public Long hrReg(Hr hr) {
     public List<Hr> getByRole(String roleName) {
         return hrMapper.getByRole(roleName);
     }
+
+    public Boolean updatePassword( String newPassword, Long userId){
+        int i = hrMapper.updatePassword(newPassword, userId);
+        if(i>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public Boolean addPrivate(String privateStr, Long userId){
+        int i = hrMapper.updatePrivateStr(privateStr, userId);
+        if(i>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 }

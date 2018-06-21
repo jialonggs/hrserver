@@ -9,6 +9,7 @@ import org.sang.controller.BaseController;
 import org.sang.service.ProjectService;
 import org.sang.utils.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,6 +27,9 @@ public class ProjectController extends BaseController{
     @Autowired
     ProjectService projectService;
 
+    @Value("${project.added.month}")
+    private String projectAddedMonth;
+
     /**
      * 查询项目列表
      * @return
@@ -39,10 +43,32 @@ public class ProjectController extends BaseController{
         List<ProjectListResp> projectlist = new ArrayList<>();
         PageBean<ProjectListResp> list = projectService.getShouMoListByPage(pageInfoEntity);
         if(null != list && list.getItems()!=null && list.getItems().size() !=0){
+
             projectlist = list.getItems();
+            for (ProjectListResp projectListResp : projectlist){
+                if(null != projectListResp.getOrders() && !projectListResp.getOrders().isEmpty() && !projectListResp.getOrders().equals("")){
+                    projectListResp.setOrderNums(projectListResp.getOrders().size());
+                }else {
+                    projectListResp.setOrderNums(0);
+                }
+            }
             map.put("count",list.getPageInfo().getTotal());
         }
         map.put("projectlist", projectlist);
+        return succResult(map);
+    }
+
+
+    /**
+     * 查询项目列表（默认两个月内的项目）
+     * @return
+     */
+    @RequestMapping(value = "/added", method = RequestMethod.GET)
+    public BaseResponseEntity getShouMoList(@RequestParam("userId") Long userId) {
+        Map<String, Object> map = new HashMap<>();
+        List<Project> projectlist = new ArrayList<>();
+        projectlist = projectService.getAdded(userId,Integer.parseInt(projectAddedMonth));
+        map.put("addedProject", projectlist);
         return succResult(map);
     }
 
@@ -67,7 +93,7 @@ public class ProjectController extends BaseController{
 
 
     /**
-     * 根据uid 查询醒目
+     * 根据uid 查询项目
      * @return
      */
     @RequestMapping(value = "/byuid", method = RequestMethod.GET)

@@ -12,10 +12,18 @@
         <result column="enabled" property="enabled"/>
         <result column="username" property="username"/>
         <result column="password" property="password"/>
+        <result column="privateStr" property="privateStr"/>
         <result column="userface" property="userface"/>
         <result column="remark" property="remark"/>
     </resultMap>
     <resultMap id="lazyLoadRoles" type="org.sang.bean.Hr" extends="BaseResultMap">
+        <collection property="roles" ofType="org.sang.bean.Role" select="org.sang.mapper.HrMapper.getRolesByHrId"
+                    column="id"></collection>
+    </resultMap>
+    <resultMap id="userInfo" type="org.sang.bean.responseEntity.UserInfoResp" extends="BaseResultMap">
+        <association property="employee" javaType="org.sang.bean.Employee" column="username"
+                     select="org.sang.mapper.EmpMapper.getEmployeeByUserName">
+        </association>
         <collection property="roles" ofType="org.sang.bean.Role" select="org.sang.mapper.HrMapper.getRolesByHrId"
                     column="id"></collection>
     </resultMap>
@@ -29,11 +37,14 @@
     <select id="loadUserByUsername" resultMap="lazyLoadRoles">
         select * from hr WHERE username=#{username};
     </select>
+    <select id="getUserInfo" resultMap="userInfo">
+        select * from hr WHERE id=#{userId};
+    </select>
     <select id="getRolesByHrId" resultType="org.sang.bean.Role">
         SELECT r.* FROM hr_role h,role r where h.rid=r.id AND h.hrid=#{id}
     </select>
     <insert id="hrReg" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.mapper.HrMapper">
-        INSERT INTO hr set username=#{username},password=#{password},name=#{name},phone=#{phone},userface=#{userface},eid=#{empId},remark=#{remark}
+        INSERT INTO hr set username=#{username},password=#{password},name=#{name},phone=#{phone},userface=#{userface},privateStr='123456',eid=#{empId},remark=#{remark}
     </insert>
     <select id="getHrsByKeywords" resultMap="eagerLoadRoles">
         select h.*,`r`.`id` AS `rid`,`r`.`name` AS `rname`,`r`.`nameZh` AS `rnameZh` from ((`hr` `h` left join `hr_role`
@@ -47,6 +58,11 @@
         <!--</if>-->
     </select>
 
+    <select id="getAllHrs" resultMap="eagerLoadRoles">
+        select h.*,`r`.`id` AS `rid`,`r`.`name` AS `rname`,`r`.`nameZh` AS `rnameZh` from ((`hr` `h` left join `hr_role`
+        `h_r` on ((`h`.`id` = `h_r`.`hrid`))) left join `role` `r` on ((`h_r`.`rid` = `r`.`id`)))
+    </select>
+
     <select id="getCountByKeywords" resultType="Long">
         SELECT count(*) FROM hr h
         <if test="keywords!='all' and keywords!=''">
@@ -54,7 +70,7 @@
         </if>
     </select>
     <select id="getHrById" resultMap="eagerLoadRoles">
-        select h.*,`r`.`id` AS `rid`,`r`.`name` AS `rname`,`r`.`nameZh` AS `rnameZh` from ((`hr` `h` left join `hr_role`
+        select h.*,`r`.`id` AS `rid`,`r`.`name` AS `rname`,`r`.`nameZh` AS `rnameZh`  from ((`hr` `h` left join `hr_role`
         `h_r` on ((`h`.`id` = `h_r`.`hrid`))) left join `role` `r` on ((`h_r`.`rid` = `r`.`id`))) where h.`id`=#{hrId}
     </select>
 
@@ -112,4 +128,28 @@
             WHERE id !=#{currentId}
         </if>
     </select>
+
+
+
+    <update id="updatePassword" parameterType="org.sang.bean.Hr">
+        update hr
+        <set>
+            <if test="password != null">
+                password = #{password}
+            </if>
+
+        </set>
+        where id = #{userId}
+    </update>
+
+    <update id="updatePrivateStr" parameterType="org.sang.bean.Hr">
+        update hr
+        <set>
+            <if test="privateStr != null">
+                privateStr = #{privateStr}
+            </if>
+
+        </set>
+        where id = #{userId}
+    </update>
 </mapper>

@@ -28,6 +28,7 @@ public class Hr implements UserDetails {
     private List<Role> roles;
     private String userface;
     private String empId;
+    private String privateStr;
 
     public String getUserface() {
         return userface;
@@ -43,6 +44,14 @@ public class Hr implements UserDetails {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getPrivateStr() {
+        return privateStr;
+    }
+
+    public void setPrivateStr(String privateStr) {
+        this.privateStr = privateStr;
     }
 
     public Long getId() {
@@ -155,5 +164,24 @@ public class Hr implements UserDetails {
 
     public void setEmpId(String empId) {
         this.empId = empId;
+    }
+
+    @Override
+    public String toString() {
+        return "Hr{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", address='" + address + '\'' +
+                ", enabled=" + enabled +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", remark='" + remark + '\'' +
+                ", roles=" + roles +
+                ", userface='" + userface + '\'' +
+                ", empId='" + empId + '\'' +
+                ", privateStr='" + privateStr + '\'' +
+                '}';
     }
 }

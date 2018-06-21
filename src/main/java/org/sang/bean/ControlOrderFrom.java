@@ -21,6 +21,8 @@ public class ControlOrderFrom {
     private Integer heMoBian;
     private String pengChuanBian;
     private String pengChuanKong;
+    private String buPing;
+    private String pianXi;
 
 
     private String addUserId;
@@ -230,5 +232,21 @@ public class ControlOrderFrom {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getBuPing() {
+        return buPing;
+    }
+
+    public void setBuPing(String buPing) {
+        this.buPing = buPing;
+    }
+
+    public String getPianXi() {
+        return pianXi;
+    }
+
+    public void setPianXi(String pianXi) {
+        this.pianXi = pianXi;
     }
 }

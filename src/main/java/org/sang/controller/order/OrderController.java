@@ -1,17 +1,17 @@
 package org.sang.controller.order;
 
 
-import org.omg.PortableInterceptor.INACTIVE;
+import org.apache.ibatis.annotations.Param;
 import org.sang.bean.*;
 import org.sang.bean.responseEntity.BaseResponseEntity;
+import org.sang.bean.responseEntity.FaMoOrder;
 import org.sang.bean.responseEntity.MouldPartTreeResp;
+import org.sang.bean.responseEntity.OrderInfoResp;
 import org.sang.config.ErrCodeMsg;
 import org.sang.controller.BaseController;
-import org.sang.service.ControlOrderFromService;
-import org.sang.service.HrService;
-import org.sang.service.MouldInfoService;
-import org.sang.service.OrderService;
+import org.sang.service.*;
 import org.sang.utils.PageBean;
+import org.sang.utils.QrCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,10 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/order/list")
@@ -40,9 +37,23 @@ public class OrderController extends BaseController{
     @Autowired
     ControlOrderFromService controlOrderFromService;
 
+    @Autowired
+    SendMessageService sendMessageService;
+
+    @Autowired
+    ProjectService projectService;
+
 
     @Value("${tree.days}")
     public  String days;
+
+    @Value("${img.location}")
+    private String location;
+
+    @Value("${imgurl.url}")
+    public  String imgurl;
+
+
 
     /**
      * 查询项目列表
@@ -58,8 +69,8 @@ public class OrderController extends BaseController{
         PageInfoEntity pageInfoEntity = new PageInfoEntity();
         pageInfoEntity.setCurrentPage(page);
         pageInfoEntity.setPagesize(size);
-        List<Order> orderslist = new ArrayList<>();
-        PageBean<Order> list = orderService.getOrdersList(pageInfoEntity, addUserId);
+        List<FaMoOrder> orderslist = new ArrayList<>();
+        PageBean<FaMoOrder> list = orderService.getOrdersList(pageInfoEntity, addUserId);
         if(null != list && list.getItems()!=null && list.getItems().size() !=0){
             orderslist = list.getItems();
             map.put("count",list.getPageInfo().getTotal());
@@ -82,7 +93,7 @@ public class OrderController extends BaseController{
     }
 
     /**
-     * 添加项目信息
+     * 添加订单
      * @param order
      * @return
      */
@@ -91,10 +102,31 @@ public class OrderController extends BaseController{
         if(null == order  ) {
             return badResult(ErrCodeMsg.ARGS_MISSING);
         }
+        if(order.getExpectedTime() == null){
+            order.setExpectedTime(new Date());
+        }
+        // 生成二维码并存入相应的地址
+        Date date = new Date();
+        String qrName = date.getTime()+"";
+        String  path = location+"qrcode"+"/" + qrName +".png";
+        Long orderId =  orderService.getMaxOrderID() + 1;
         Map<String, Object> map = new HashMap<>();
+        order.setPresentStepName("待加工");
+        order.setPresentSchedule(0.0);
+        QrCodeUtil.zxingCodeCreate("http://39.107.78.95:8082/order.html?orderId="+orderId,500,500,path,"png");
+        String url = imgurl +"qrcode"+ "/" + qrName + ".png";
+        order.setQrCode(url);
         Long i = orderService.addOrder(order);
         if (i >= 1) {
-            map.put("id",1);
+
+            // 发送信息给车间主管
+            String msg = "新订单【" + order.getOrderName()+"】,由  _ "+  order.getAddUserName() +" _ 创建成功,请查看";
+            String title = "新订单";
+            List<Long> ids = new ArrayList<>();
+            ids.add(order.getManagerId());
+            sendMessageService.toSendByIds(msg, title, ids);
+
+            map.put("id",i);
             return  succResult(map);
         } else {
             map.put("id",-1);
@@ -143,6 +175,7 @@ public class OrderController extends BaseController{
                 selectedMouldIds[i] = Long.parseLong(selectMoulds[i]);
             }
             orderService.orderSelectMould(selectedMouldIds, uid, orderId);
+
             return succResult();
         } catch (Exception e) {
             e.printStackTrace();
@@ -151,7 +184,7 @@ public class OrderController extends BaseController{
     }
 
     /**
-     * 添加项目信息
+     * 添加订单控制单
      * @param controlOrderFrom
      * @return
      */
@@ -170,4 +203,57 @@ public class OrderController extends BaseController{
             return succResult(map);
         }
     }
+
+
+    /**
+     * 更新订单控制单
+     * @param controlOrderFrom
+     * @return
+     */
+    @RequestMapping(value = "/update/control", method = RequestMethod.POST)
+    public BaseResponseEntity updateControlOrderFrom(ControlOrderFrom controlOrderFrom) {
+        if(null == controlOrderFrom  || controlOrderFrom.getOrderId() == null) {
+            return badResult(ErrCodeMsg.ARGS_MISSING);
+        }
+        Boolean result = controlOrderFromService.updateControlOrderFrom(controlOrderFrom);
+        if (result) {
+            return  succResult();
+        } else {
+            return badResult(ErrCodeMsg.COMMON_FAIL);
+        }
+    }
+
+
+    @RequestMapping(value = "/update/order", method = RequestMethod.POST)
+    public BaseResponseEntity updateOrder(Order order) {
+        if(null == order  || order.getId() == null) {
+            return badResult(ErrCodeMsg.ARGS_MISSING);
+        }
+        Boolean result = orderService.updateBaseInfo(order);
+        if (result) {
+            return  succResult();
+        } else {
+            return badResult(ErrCodeMsg.COMMON_FAIL);
+        }
+    }
+
+
+    /**
+     * 查看订单详情
+     * @param orderId
+     * @return
+     */
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    public BaseResponseEntity getOrderInfo(@Param("orderId") Long orderId){
+        if(null == orderId ) {
+            return badResult(ErrCodeMsg.ARGS_MISSING);
+        }
+        Map<String, Object> map = new HashMap<>();
+        OrderInfoResp orderInfoResp = orderService.getOrderInfoResp(orderId);
+        map.put("orderinfo", orderInfoResp);
+        return succResult(map);
+
+    }
+
+
 }

@@ -76,7 +76,6 @@ public class ImageUtil {
         String fileName = rannum+"_"+date.getTime()+imgType;
         String path1 = path + fileName;
         File saveFile = new File(path1);
-        System.out.print(path1);
         BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(saveFile));
         out.write(multipartFile.getBytes());
         out.flush();

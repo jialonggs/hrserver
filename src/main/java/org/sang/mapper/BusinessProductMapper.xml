@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.BusinessProductMapper">
+
+    <insert id="addBusinessProduct">
+        insert into work_bus_product (yuBaoJiaId, productName,
+        wenlidaima, productNum, area, dongMo,
+        coefficient, price, picUrls,noTaxPrice, tax, total,
+        immutable, addUserId, addUserName,
+        status, remark, isDeleted,
+        updateTime, createTime
+        )
+        values
+        <foreach collection="product" item="emp" separator=",">
+            (#{emp.yuBaoJiaId}, #{emp.productName},
+            #{emp.wenlidaima}, #{emp.productNum}, #{emp.area},
+            #{emp.dongMo},
+            #{emp.coefficient}, #{emp.price}, #{emp.picUrls},
+            #{emp.noTaxPrice},#{emp.tax},#{emp.total},
+            #{emp.immutable}, #{emp.addUserId}, #{emp.addUserName},
+            #{emp.status}, #{emp.remark}, FALSE,
+            now(), now()
+            )
+        </foreach>
+    </insert>
+
+
+    <select id="getByBusId" resultType="org.sang.bean.BusinessProduct">
+        SELECT * FROM work_bus_product WHERE isDeleted=FALSE AND yuBaoJiaId=#{yuBaoJiaId}
+    </select>
+
+    <select id="getByYuBaoJiaId" resultType="org.sang.bean.BusinessProduct">
+        SELECT * FROM work_bus_product WHERE isDeleted=FALSE AND yuBaoJiaId=#{yuBaoJiaId}
+    </select>
+
+    <update id="updateYuProduct">
+        update work_bus_product
+        <set>
+            <if test="yuProduct.productName != null">
+                productName = #{yuProduct.productName},
+            </if>
+            <if test="yuProduct.wenlidaima != null">
+                wenlidaima = #{yuProduct.wenlidaima},
+            </if>
+            <if test="yuProduct.productNum != null">
+                productNum = #{yuProduct.productNum},
+            </if>
+            <if test="yuProduct.area != null">
+                area = #{yuProduct.area},
+            </if>
+            <if test="yuProduct.dongMo != null">
+                dongMo = #{yuProduct.dongMo},
+            </if>
+            <if test="yuProduct.coefficient != null">
+                coefficient = #{yuProduct.coefficient},
+            </if>
+            <if test="yuProduct.price != null">
+                price = #{yuProduct.price},
+            </if>
+            <if test="yuProduct.picUrls != null">
+                picUrls = #{yuProduct.picUrls},
+            </if>
+            <if test="yuProduct.noTaxPrice != null">
+                noTaxPrice = #{yuProduct.noTaxPrice},
+            </if>
+            <if test="yuProduct.total != null">
+                total = #{yuProduct.total},
+            </if>
+            <if test="yuProduct.remark != null">
+                remark = #{yuProduct.remark},
+            </if>
+            <if test="yuProduct.tax != null">
+                tax = #{yuProduct.tax},
+            </if>
+            updateTime = now()
+        </set>
+        where id = #{yuProduct.id}
+    </update>
+
+    <update id="delProduct">
+        update work_bus_product
+        <set>
+            isDeleted = true,
+            updateTime = now()
+        </set>
+        where id = #{id}
+    </update>
+
+
+
+
+</mapper>

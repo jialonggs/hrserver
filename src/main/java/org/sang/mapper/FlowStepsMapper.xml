@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.FlowStepsMapper">
+    <!--查询收模列表-->
+    <!--<resultMap type="org.sang.bean.Order" id="getOrdersMap">-->
+    <!--<id column="id" property="id"/>-->
+    <!--<result column="orderName" property="orderName"/>-->
+    <!--<result column="qrCode" property="qrCode"/>-->
+    <!--<result column="projectId" property="projectId"/>-->
+    <!--<result column="clientCompanyName" property="clientCompanyName"/>-->
+    <!--<result column="technologyId" property="technologyId"/>-->
+    <!--<result column="managerId" property="managerId"/>-->
+    <!--<result column="managerName" property="managerName"/>-->
+    <!--<result column="expected" property="expected"/>-->
+    <!--<result column="urgency" property="urgency"/>-->
+    <!--<result column="hasRemark" property="hasRemark"/>-->
+    <!--<result column="machiningType" property="machiningType"/>-->
+    <!--<result column="realityArea" property="realityArea"/>-->
+
+    <!--<result column="stayArea" property="stayArea"/>-->
+    <!--<result column="alreadyArea" property="alreadyArea"/>-->
+    <!--<result column="perfectArea" property="perfectArea"/>-->
+    <!--<result column="appliqueArea" property="appliqueArea"/>-->
+    <!--<result column="ygb" property="ygb"/>-->
+    <!--<result column="picUrls" property="picUrls"/>-->
+    <!--<result column="finishTime" property="finishTime"/>-->
+    <!--<result column="techId" property="techId"/>-->
+    <!--<result column="yaoJian" property="yaoJian"/>-->
+
+
+    <!--<result column="addUserId" property="addUserId"/>-->
+    <!--<result column="addUserName" property="addUserName"/>-->
+    <!--<result column="status" property="status"/>-->
+    <!--<result column="remark" property="remark"/>-->
+    <!--<result column="isDeleted" property="isDeleted"/>-->
+    <!--<result column="updateTime" property="updateTime"/>-->
+    <!--<result column="createTime" property="createTime"/>-->
+    <!--</resultMap>-->
+
+
+    <insert id="addFlow" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.Flow">
+        INSERT INTO work_flow set flowName=#{flowName},moren=#{moren},stepNum=#{stepNum},
+        addUserId=#{addUserId},addUserName=#{addUserName},remark=#{remark},status=0,updateTime=now(),createTime=now(),isDeleted=FALSE
+    </insert>
+
+
+    <select id="getStepsList" resultType="org.sang.bean.Step">
+        SELECT * FROM work_step WHERE isDeleted=FALSE ORDER BY id
+    </select>
+
+    <select id="getById" resultType="org.sang.bean.FlowSteps">
+        SELECT * FROM work_flow_step WHERE isDeleted=FALSE AND id=#{id}
+    </select>
+
+    <select id="flowStepsMapper" resultType="org.sang.bean.FlowSteps">
+        SELECT * FROM work_flow_step WHERE isDeleted=FALSE AND orderId=#{orderId} AND stepNum=#{index}
+    </select>
+
+    <update id="delStep">
+        update work_step
+        <set>
+            isDeleted = TRUE
+        </set>
+        where id = #{id}
+    </update>
+
+
+
+    <insert id="addFlowSteps">
+        insert into work_flow_step (stepId, stepName,flowId,
+        stepIndex, status, addUserId, addUserName,
+        remark, isDeleted,immutable,
+        updateTime, createTime
+        )
+        values
+        <foreach collection="list" item="emp" separator=",">
+            (#{emp.stepId},#{emp.stepName}, #{emp.flowId},
+            #{emp.stepIndex}, #{emp.status},
+            #{emp.addUserId}, #{emp.addUserName},
+            #{emp.remark}, FALSE, #{emp.immutable},
+            now(), now()
+            )
+        </foreach>
+    </insert>
+
+
+
+
+
+
+
+
+</mapper>

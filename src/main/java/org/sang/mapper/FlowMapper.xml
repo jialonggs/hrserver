@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.FlowMapper">
+    <resultMap id="user1" type="org.sang.bean.responseEntity.FlowStepsResp">
+        <id property="id" column="flowId"/>
+        <result property="flowName" column="flowName"/>
+        <collection property="stepslist" column="flowId" ofType="org.sang.bean.FlowSteps">
+            <id property="id" column="id"/>
+            <result property="stepName" column="stepName"/>
+            <result property="stepIndex" column="stepIndex"/>
+            <result property="stepId" column="stepId"/>
+            <result property="flowId" column="flowId"/>
+            <result property="status" column="status"/>
+            <result property="addUserId" column="addUserId"/>
+            <result property="addUserName" column="addUserName"/>
+            <result property="remark" column="remark"/>
+            <result property="isDeleted" column="isDeleted"/>
+            <result property="immutable" column="immutable"/>
+            <result property="updateTime" column="updateTime"/>
+            <result property="createTime" column="createTime"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectAll"  resultMap="user1">
+        SELECT t1.`id` `flowId`,t1.`flowName`,t2.*
+        FROM `work_flow` t1,`work_flow_step` t2
+        WHERE t1.`id`=t2.`flowId` AND t1.`moren`=1 ORDER BY t2.stepIndex
+    </select>
+
+
+    <insert id="addFlow" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.Flow">
+        INSERT INTO work_flow set flowName=#{flowName},moren=#{moren},stepNum=#{stepNum},
+        addUserId=#{addUserId},addUserName=#{addUserName},remark=#{remark},status=0,updateTime=now(),createTime=now(),isDeleted=FALSE
+    </insert>
+
+
+    <select id="getStepsList" resultType="org.sang.bean.Step">
+        SELECT * FROM work_step WHERE isDeleted=FALSE ORDER BY id
+    </select>
+
+    <update id="delStep">
+        update work_step
+        <set>
+            isDeleted = TRUE
+        </set>
+        where id = #{id}
+    </update>
+
+
+
+
+
+
+
+
+</mapper>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.OrderArgeLogMapper">
+
+    <insert id="insertLogs">
+        insert into work_order_arge_log (orderId, orderName,
+        userId, userName, stepType, stepName,
+        stepIndex, arge,
+        addUserId, addUserName,
+        remark, isDeleted,immutable,
+        updateTime, createTime
+        )
+        values
+        <foreach collection="orderArgeLogs" item="emp" separator=",">
+            (#{emp.orderId}, #{emp.orderName},
+            #{emp.userId}, #{emp.userName}, #{emp.stepType},
+             #{emp.stepName}, #{emp.stepIndex}, #{emp.arge},
+            #{emp.addUserId}, #{emp.addUserName},
+             #{emp.remark}, FALSE,#{emp.immutable},
+            now(), now()
+            )
+        </foreach>
+    </insert>
+
+    <!--<select id="getUserOrderByOrderId" resultType="org.sang.bean.UserOrder">-->
+        <!--SELECT * FROM work_user_order WHERE isDeleted=FALSE AND orderId=#{orderId}-->
+    <!--</select>-->
+
+    <select id="getLogs" resultType="org.sang.bean.OrderArgeLog" >
+        select * from `work_order_arge_log`
+        <where>
+            <if test="startTime != null ">
+                createTime &gt;= #{startTime}
+            </if>
+        </where>
+        AND isDeleted=FALSE ORDER BY id
+    </select>
+
+
+    <!--<update id="updateUserAage">-->
+        <!--update work_user_order-->
+        <!--<set>-->
+            <!--<if test="userOrder.shengYuArea != null">-->
+                <!--shengYuArea = #{userOrder.shengYuArea},-->
+            <!--</if>-->
+            <!--<if test="userOrder.wanChengArea != null">-->
+                <!--wanChengArea = #{userOrder.wanChengArea},-->
+            <!--</if>-->
+        <!--</set>-->
+        <!--where id = #{userOrder.id}-->
+    <!--</update>-->
+
+
+</mapper>

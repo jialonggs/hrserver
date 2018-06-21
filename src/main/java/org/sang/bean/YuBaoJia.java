@@ -7,6 +7,7 @@ public class YuBaoJia {
     private Long id;
     private Long projectId;
     private Long auditId;
+    private String auditName;
     private String clientCompanyName;
     private String contactPerson;
     private String contactPhone;
@@ -14,9 +15,11 @@ public class YuBaoJia {
     private Integer tax;
     private Integer audit;
     private Double total;
-    private Double taxTotal;
-
+    private Double noTaxTotal;
     private String expectTime;
+    private Integer submitType;
+    private String fuJianUrl;
+    private String rejectRemark;
 
     private Boolean immutable;
     private String addUserId;
@@ -26,6 +29,23 @@ public class YuBaoJia {
     private Boolean isDeleted;
     private Date updateTime;
     private Date createTime;
+
+    public Integer getSubmitType() {
+        return submitType;
+    }
+
+    public void setSubmitType(Integer submitType) {
+        this.submitType = submitType;
+    }
+
+    public String getFuJianUrl() {
+        return fuJianUrl;
+    }
+
+    public void setFuJianUrl(String fuJianUrl) {
+        this.fuJianUrl = fuJianUrl;
+    }
+
 
     public Long getId() {
         return id;
@@ -107,12 +127,12 @@ public class YuBaoJia {
         this.total = total;
     }
 
-    public Double getTaxTotal() {
-        return taxTotal;
+    public Double getNoTaxTotal() {
+        return noTaxTotal;
     }
 
-    public void setTaxTotal(Double taxTotal) {
-        this.taxTotal = taxTotal;
+    public void setNoTaxTotal(Double noTaxTotal) {
+        this.noTaxTotal = noTaxTotal;
     }
 
     public String getExpectTime() {
@@ -185,5 +205,21 @@ public class YuBaoJia {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getAuditName() {
+        return auditName;
+    }
+
+    public void setAuditName(String auditName) {
+        this.auditName = auditName;
+    }
+
+    public String getRejectRemark() {
+        return rejectRemark;
+    }
+
+    public void setRejectRemark(String rejectRemark) {
+        this.rejectRemark = rejectRemark;
     }
 }

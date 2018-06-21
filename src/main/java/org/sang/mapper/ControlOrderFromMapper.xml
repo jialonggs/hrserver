@@ -27,12 +27,82 @@
     <!--</select>-->
 
     <insert id="addControlOrderFrom" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.ControlOrderFrom">
-        INSERT INTO work_control_from set orderId=#{orderId},qiKong=#{qiKong},lieFeng=#{lieFeng},hanBa=#{hanBa},
+        INSERT INTO work_control_from set orderId=#{orderId},qiKong=#{qiKong},queKou=#{queKou},lieFeng=#{lieFeng},hanBa=#{hanBa},
         dianHuoHua=#{dianHuoHua},youShiSi=#{youShiSi},quYu=#{quYu},shenDu=#{shenDu},tongGZ=#{tongGZ},
         zuiHouShiMoJian=#{zuiHouShiMoJian},ckd=#{ckd},guangJian=#{guangJian},fenXingBian=#{fenXingBian},heMoBian=#{heMoBian},
-        pengChuanBian=#{pengChuanBian},pengChuanKong=#{pengChuanKong},addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},
+        pengChuanBian=#{pengChuanBian},pengChuanKong=#{pengChuanKong},pianXi=#{pianXi},buPing=#{buPing},addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},
         remark=#{remark},isDeleted=0,createTime=now(),updateTime=now()
     </insert>
+
+    <select id="getByOrderId" resultType="org.sang.bean.ControlOrderFrom">
+        SELECT * FROM work_control_from WHERE isDeleted=FALSE AND orderId=#{orderId}
+    </select>
+
+
+    <update id="updateControlOrderFrom">
+        update work_control_from
+        <set>
+            <if test="order.qiKong != null">
+                qiKong = #{order.qiKong},
+            </if>
+            <if test="order.queKou != null">
+                queKou = #{order.queKou},
+            </if>
+            <if test="order.lieFeng != null">
+                lieFeng = #{order.lieFeng},
+            </if>
+            <if test="order.hanBa != null">
+                hanBa = #{order.hanBa},
+            </if>
+            <if test="order.dianHuoHua != null">
+                dianHuoHua = #{order.dianHuoHua},
+            </if>
+            <if test="order.youShiSi != null">
+                youShiSi = #{order.youShiSi},
+            </if>
+            <if test="order.quYu != null">
+                quYu = #{order.quYu},
+            </if>
+            <if test="order.shenDu != null">
+                shenDu = #{order.shenDu},
+            </if>
+            <if test="order.tongGZ != null">
+                tongGZ = #{order.tongGZ},
+            </if>
+            <if test="order.zuiHouShiMoJian != null">
+                zuiHouShiMoJian = #{order.zuiHouShiMoJian},
+            </if>
+            <if test="order.ckd != null">
+                ckd = #{order.ckd},
+            </if>
+            <if test="order.guangJian != null">
+                guangJian = #{order.guangJian},
+            </if>
+            <if test="order.fenXingBian != null">
+                fenXingBian = #{order.fenXingBian},
+            </if>
+            <if test="order.heMoBian != null">
+                heMoBian = #{order.heMoBian},
+            </if>
+            <if test="order.pengChuanBian != null">
+                pengChuanBian = #{order.pengChuanBian},
+            </if>
+            <if test="order.pengChuanKong != null">
+                pengChuanKong = #{order.pengChuanKong},
+            </if>
+            <if test="order.buPing != null">
+                buPing = #{order.buPing},
+            </if>
+            <if test="order.pianXi != null">
+                pianXi = #{order.pianXi},
+            </if>
+            <if test="order.remark != null">
+                remark = #{order.remark},
+            </if>
+            updateTime = now()
+        </set>
+        where id = #{order.id}
+    </update>
 
 
 </mapper>

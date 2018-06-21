@@ -20,4 +20,18 @@ public class ControlOrderFromService {
         controlOrderFromMapper.addControlOrderFrom(controlOrderFrom);
         return controlOrderFrom.getId();
     }
+
+    /**
+     * 更新控制单
+     * @param controlOrderFrom
+     * @return
+     */
+    public Boolean updateControlOrderFrom(ControlOrderFrom controlOrderFrom){
+        int i = controlOrderFromMapper.updateControlOrderFrom(controlOrderFrom);
+        if(i>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

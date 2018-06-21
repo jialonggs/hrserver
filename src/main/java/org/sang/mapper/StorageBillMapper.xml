@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.StorageBillMapper">
+
+    <!--<insert id="addUserOrder">-->
+        <!--insert into work_user_order (orderId, orderName,-->
+        <!--userId, userName, zongJiArea, shengYuArea,-->
+        <!--wanChengArea, jingFengArea, tieHuaArea, biLi,-->
+        <!--addUserId, addUserName,-->
+        <!--status, remark, isDeleted,-->
+        <!--updateTime, createTime-->
+        <!--)-->
+        <!--values-->
+        <!--<foreach collection="userOrders" item="emp" separator=",">-->
+            <!--(#{emp.orderId}, #{emp.orderName},-->
+            <!--#{emp.userId}, #{emp.userName}, #{emp.zongJiArea},-->
+            <!--#{emp.shengYuArea},0, #{emp.jingFengArea}, #{emp.tieHuaArea}, #{emp.biLi},-->
+            <!--#{emp.addUserId}, #{emp.addUserName},-->
+            <!--0, #{emp.remark}, FALSE,-->
+            <!--now(), now()-->
+            <!--)-->
+        <!--</foreach>-->
+    <!--</insert>-->
+
+    <insert id="addBill" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.StorageBill">
+        INSERT INTO work_storage_bill set orderId=#{orderId},orderName=#{orderName},wenLiStatus=#{wenLiStatus},penXiuQian=#{penXiuQian},quYu=#{quYu},
+        guangZe=#{guangZe},qiKong=#{qiKong},pengChuanBian=#{pengChuanBian},chaiZhi=#{chaiZhi},
+        teShuWenLi=#{teShuWenLi},queKou=#{queKou},guangBian=#{guangBian},
+        lieFeng=#{lieFeng},hanBaHen=#{hanBaHen},wenLiShuJu=#{wenLiShuJu},
+        waiGuan=#{waiGuan},
+        addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},remark=#{remark},updateTime=now(),createTime=now(),isDeleted=FALSE
+    </insert>
+
+</mapper>

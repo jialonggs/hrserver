@@ -1,12 +1,17 @@
 package org.sang.controller;
 
+import org.apache.ibatis.annotations.Param;
 import org.sang.bean.Hr;
 import org.sang.bean.Menu;
 import org.sang.bean.RespBean;
+import org.sang.bean.ResponseDataEntity;
 import org.sang.bean.responseEntity.BaseResponseEntity;
+import org.sang.bean.responseEntity.OrderInfoResp;
 import org.sang.common.HrUtils;
 import org.sang.config.ErrCodeMsg;
+import org.sang.service.HrService;
 import org.sang.service.MenuService;
+import org.sang.service.OrderService;
 import org.sang.utils.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,6 +38,12 @@ public class ConfigController extends BaseController{
 
     @Value("${imgurl.url}")
     public  String imgurl;
+
+    @Autowired
+    OrderService orderService;
+
+    @Autowired
+    HrService hrService;
 
     @Autowired
     MenuService menuService;
@@ -95,4 +106,34 @@ public class ConfigController extends BaseController{
             return badResult(ErrCodeMsg.COMMON_FAIL);
         }
     }
+
+    /**
+     * 查看订单详情
+     * @param orderId
+     * @return
+     */
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    public BaseResponseEntity getOrderInfo(@Param("orderId") Long orderId){
+        if(null == orderId ) {
+            return badResult(ErrCodeMsg.ARGS_MISSING);
+        }
+        Map<String, Object> map = new HashMap<>();
+        OrderInfoResp orderInfoResp = orderService.getOrderInfoResp(orderId);
+        map.put("orderinfo", orderInfoResp);
+        return succResult(map);
+    }
+
+    /**
+     * 获取角色为车间主管的用户
+     * @return
+     */
+    @RequestMapping(value = "/mangers", method = RequestMethod.GET)
+    public BaseResponseEntity getHrRoleOfManger(@RequestParam(value = "role") String role) {
+        List<Hr> list = hrService.getByRole(role);
+        if(null == list || list.size() == 0){
+            return badResult(ErrCodeMsg.COMMON_FAIL);
+        }
+        return succResult(list);
+    }
+
 }

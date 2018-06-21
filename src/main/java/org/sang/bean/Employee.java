@@ -1,7 +1,5 @@
 package org.sang.bean;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.Date;
 
 public class Employee {
@@ -26,7 +24,8 @@ public class Employee {
     private Long posId;
     private String posName;
     private String engageForm;
-    private String tiptopDegree;
+    private String tiptopDegreeId;
+    private String tiptopDegreeName;
     private String specialty;
     private String school;
     private Date beginDate;
@@ -38,68 +37,6 @@ public class Employee {
     private Date beginContract;
     private Date endContract;
     private Integer workAge;
-    private Department department;
-    private Nation nation;
-    private JobLevel jobLevel;
-    private Position position;
-    private PoliticsStatus politicsStatus;
-    private Salary salary;
-
-    public Salary getSalary() {
-        return salary;
-    }
-
-    public void setSalary(Salary salary) {
-        this.salary = salary;
-    }
-
-    public String getPosName() {
-        return posName;
-    }
-
-    public void setPosName(String posName) {
-        this.posName = posName;
-    }
-
-    public Department getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
-    }
-
-    public Nation getNation() {
-        return nation;
-    }
-
-    public void setNation(Nation nation) {
-        this.nation = nation;
-    }
-
-    public JobLevel getJobLevel() {
-        return jobLevel;
-    }
-
-    public void setJobLevel(JobLevel jobLevel) {
-        this.jobLevel = jobLevel;
-    }
-
-    public Position getPosition() {
-        return position;
-    }
-
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
-    public PoliticsStatus getPoliticsStatus() {
-        return politicsStatus;
-    }
-
-    public void setPoliticsStatus(PoliticsStatus politicsStatus) {
-        this.politicsStatus = politicsStatus;
-    }
 
     public Long getId() {
         return id;
@@ -149,22 +86,12 @@ public class Employee {
         this.wedlock = wedlock;
     }
 
-    @JsonIgnore
     public Long getNationId() {
         return nationId;
     }
 
     public void setNationId(Long nationId) {
         this.nationId = nationId;
-    }
-
-    @JsonIgnore
-    public String getNationName() {
-        return nationName;
-    }
-
-    public void setNationName(String nationName) {
-        this.nationName = nationName;
     }
 
     public String getNativePlace() {
@@ -175,16 +102,6 @@ public class Employee {
         this.nativePlace = nativePlace;
     }
 
-    @JsonIgnore
-    public String getPoliticName() {
-        return politicName;
-    }
-
-    public void setPoliticName(String politicName) {
-        this.politicName = politicName;
-    }
-
-    @JsonIgnore
     public Long getPoliticId() {
         return politicId;
     }
@@ -217,7 +134,6 @@ public class Employee {
         this.address = address;
     }
 
-    @JsonIgnore
     public Long getDepartmentId() {
         return departmentId;
     }
@@ -226,16 +142,6 @@ public class Employee {
         this.departmentId = departmentId;
     }
 
-    @JsonIgnore
-    public String getDepartmentName() {
-        return departmentName;
-    }
-
-    public void setDepartmentName(String departmentName) {
-        this.departmentName = departmentName;
-    }
-
-    @JsonIgnore
     public Long getJobLevelId() {
         return jobLevelId;
     }
@@ -244,16 +150,6 @@ public class Employee {
         this.jobLevelId = jobLevelId;
     }
 
-    @JsonIgnore
-    public String getJobLevelName() {
-        return jobLevelName;
-    }
-
-    public void setJobLevelName(String jobLevelName) {
-        this.jobLevelName = jobLevelName;
-    }
-
-    @JsonIgnore
     public Long getPosId() {
         return posId;
     }
@@ -270,12 +166,12 @@ public class Employee {
         this.engageForm = engageForm;
     }
 
-    public String getTiptopDegree() {
-        return tiptopDegree;
+    public String getTiptopDegreeId() {
+        return tiptopDegreeId;
     }
 
-    public void setTiptopDegree(String tiptopDegree) {
-        this.tiptopDegree = tiptopDegree;
+    public void setTiptopDegreeId(String tiptopDegreeId) {
+        this.tiptopDegreeId = tiptopDegreeId;
     }
 
     public String getSpecialty() {
@@ -364,5 +260,53 @@ public class Employee {
 
     public void setWorkAge(Integer workAge) {
         this.workAge = workAge;
+    }
+
+    public String getNationName() {
+        return nationName;
+    }
+
+    public void setNationName(String nationName) {
+        this.nationName = nationName;
+    }
+
+    public String getPoliticName() {
+        return politicName;
+    }
+
+    public void setPoliticName(String politicName) {
+        this.politicName = politicName;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+    public String getJobLevelName() {
+        return jobLevelName;
+    }
+
+    public void setJobLevelName(String jobLevelName) {
+        this.jobLevelName = jobLevelName;
+    }
+
+    public String getPosName() {
+        return posName;
+    }
+
+    public void setPosName(String posName) {
+        this.posName = posName;
+    }
+
+    public String getTiptopDegreeName() {
+        return tiptopDegreeName;
+    }
+
+    public void setTiptopDegreeName(String tiptopDegreeName) {
+        this.tiptopDegreeName = tiptopDegreeName;
     }
 }

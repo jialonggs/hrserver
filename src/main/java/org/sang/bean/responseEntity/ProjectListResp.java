@@ -1,48 +1,51 @@
 package org.sang.bean.responseEntity;
 
+import org.sang.bean.BusinessBaoJia;
+import org.sang.bean.Order;
 import org.sang.bean.Project;
+import org.sang.bean.YuBaoJia;
+
+import java.util.List;
 
 public class ProjectListResp extends Project{
 
-    private Long yuBaoJiaId;
-    private Integer yuBaoJiaStatus;
+//    private Long yuBaoJiaId;
+//    private Integer yuBaoJiaStatus;
+//
+//    private Long shangWuId;
+//    private Integer shangWuStatus;
+//
+      private Integer orderNums;
+//    private Double orderSchedule;
 
-    private Long shangWuId;
-    private Integer shangWuStatus;
 
-    private Integer orderNums;
-    private Double orderSchedule;
+      private YuBaoJiaInfoResp yuBaoJia;
+      private BusInfoResp businessBaoJia;
+      private List<Order> orders;
 
-    public Long getYuBaoJiaId() {
-        return yuBaoJiaId;
+
+    public YuBaoJiaInfoResp getYuBaoJia() {
+        return yuBaoJia;
     }
 
-    public void setYuBaoJiaId(Long yuBaoJiaId) {
-        this.yuBaoJiaId = yuBaoJiaId;
+    public void setYuBaoJia(YuBaoJiaInfoResp yuBaoJia) {
+        this.yuBaoJia = yuBaoJia;
     }
 
-    public Integer getYuBaoJiaStatus() {
-        return yuBaoJiaStatus;
+    public BusInfoResp getBusinessBaoJia() {
+        return businessBaoJia;
     }
 
-    public void setYuBaoJiaStatus(Integer yuBaoJiaStatus) {
-        this.yuBaoJiaStatus = yuBaoJiaStatus;
+    public void setBusinessBaoJia(BusInfoResp businessBaoJia) {
+        this.businessBaoJia = businessBaoJia;
     }
 
-    public Long getShangWuId() {
-        return shangWuId;
+    public List<Order> getOrders() {
+        return orders;
     }
 
-    public void setShangWuId(Long shangWuId) {
-        this.shangWuId = shangWuId;
-    }
-
-    public Integer getShangWuStatus() {
-        return shangWuStatus;
-    }
-
-    public void setShangWuStatus(Integer shangWuStatus) {
-        this.shangWuStatus = shangWuStatus;
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     public Integer getOrderNums() {
@@ -51,13 +54,5 @@ public class ProjectListResp extends Project{
 
     public void setOrderNums(Integer orderNums) {
         this.orderNums = orderNums;
-    }
-
-    public Double getOrderSchedule() {
-        return orderSchedule;
-    }
-
-    public void setOrderSchedule(Double orderSchedule) {
-        this.orderSchedule = orderSchedule;
     }
 }

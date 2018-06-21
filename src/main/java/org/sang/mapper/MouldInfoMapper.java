@@ -10,11 +10,13 @@ import java.util.Map;
 
 public interface MouldInfoMapper {
 
-    List<MouldInfo> getMouldInfoByShouMoId(Long id);
+    List<MouldInfo> getMouldInfoByShouMoId(@Param("id") Long id);
 
     int addMouldInfo( MouldInfo mouldInfo);
 
     int updateMouldInfo(MouldInfo mouldInfo);
+
+    List<MouldInfo> getByOrderId(@Param("orderId") Long orderId);
 
     MouldInfo getMouldById(@Param("id") Long id);
 

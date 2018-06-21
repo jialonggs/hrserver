@@ -6,6 +6,16 @@ public class Project {
     private Long id;
     private String projectName;
     private String cilentCompanyName;
+
+    private Integer financeStatus;
+    private String financeBiLi;
+    private String financeJinE;
+    private Date financeTime;
+    private String financeRemark;
+    private Long financeId;
+    private Integer kaiPiaoStatus;
+    private Long kaiPiaoId;
+
     private Long addUserId;
     private String addUserName;
     private Date finishTime;
@@ -102,5 +112,69 @@ public class Project {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Integer getFinanceStatus() {
+        return financeStatus;
+    }
+
+    public void setFinanceStatus(Integer financeStatus) {
+        this.financeStatus = financeStatus;
+    }
+
+    public String getFinanceBiLi() {
+        return financeBiLi;
+    }
+
+    public void setFinanceBiLi(String financeBiLi) {
+        this.financeBiLi = financeBiLi;
+    }
+
+    public String getFinanceJinE() {
+        return financeJinE;
+    }
+
+    public void setFinanceJinE(String financeJinE) {
+        this.financeJinE = financeJinE;
+    }
+
+    public Date getFinanceTime() {
+        return financeTime;
+    }
+
+    public void setFinanceTime(Date financeTime) {
+        this.financeTime = financeTime;
+    }
+
+    public String getFinanceRemark() {
+        return financeRemark;
+    }
+
+    public void setFinanceRemark(String financeRemark) {
+        this.financeRemark = financeRemark;
+    }
+
+    public Long getFinanceId() {
+        return financeId;
+    }
+
+    public void setFinanceId(Long financeId) {
+        this.financeId = financeId;
+    }
+
+    public Integer getKaiPiaoStatus() {
+        return kaiPiaoStatus;
+    }
+
+    public void setKaiPiaoStatus(Integer kaiPiaoStatus) {
+        this.kaiPiaoStatus = kaiPiaoStatus;
+    }
+
+    public Long getKaiPiaoId() {
+        return kaiPiaoId;
+    }
+
+    public void setKaiPiaoId(Long kaiPiaoId) {
+        this.kaiPiaoId = kaiPiaoId;
     }
 }

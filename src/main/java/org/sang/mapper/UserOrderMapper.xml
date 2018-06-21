@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.UserOrderMapper">
+
+
+    <resultMap type="org.sang.bean.responseEntity.UserOrderCountResp" id="getCountUserOrder">
+        <id column="id" property="id"/>
+        <result column="orderId" property="orderId"/>
+        <result column="orderName" property="orderName"/>
+        <result column="userId" property="userId"/>
+        <result column="userName" property="userName"/>
+        <result column="zongJiArea" property="zongJiArea"/>
+
+        <result column="shengYuArea" property="shengYuArea"/>
+        <result column="wanChengArea" property="wanChengArea"/>
+        <result column="jingFengArea" property="jingFengArea"/>
+        <result column="jingFengBiLi" property="jingFengBiLi"/>
+        <result column="tieHuaArea" property="tieHuaArea"/>
+        <result column="biLi" property="biLi"/>
+
+
+        <result column="addUserId" property="addUserId"/>
+        <result column="addUserName" property="addUserName"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="isDeleted" property="isDeleted"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="createTime" property="createTime"/>
+
+        <collection property="orderInfo" ofType="org.sang.bean.responseEntity.FaMoOrder" column="orderId"
+                    select="org.sang.mapper.OrderMapper.getCountUserOrder">
+        </collection>
+    </resultMap>
+
+    <insert id="addUserOrder">
+        insert into work_user_order (orderId, orderName,
+        userId, userName, zongJiArea, shengYuArea,
+        wanChengArea, jingFengArea, tieHuaArea, biLi,
+        addUserId, addUserName,
+        status, remark, isDeleted,
+        updateTime, createTime
+        )
+        values
+        <foreach collection="userOrders" item="emp" separator=",">
+            (#{emp.orderId}, #{emp.orderName},
+            #{emp.userId}, #{emp.userName}, #{emp.zongJiArea},
+           #{emp.shengYuArea},0, #{emp.jingFengArea}, #{emp.tieHuaArea}, #{emp.biLi},
+            #{emp.addUserId}, #{emp.addUserName},
+            0, #{emp.remark}, FALSE,
+            now(), now()
+            )
+        </foreach>
+    </insert>
+
+    <select id="getUserOrderByOrderId" resultType="org.sang.bean.UserOrder">
+        SELECT * FROM work_user_order WHERE isDeleted=FALSE AND orderId=#{orderId} AND status=#{status}
+    </select>
+
+
+    <select id="getCountUserOrder" resultMap="getCountUserOrder">
+        SELECT * FROM work_user_order WHERE isDeleted=FALSE AND userId=#{userId}
+    </select>
+
+    <select id="getByTime" resultType="org.sang.bean.UserOrder" >
+        select * from `work_user_order`
+        <where>
+            <if test="startTime != null ">
+                createTime &gt;= #{startTime}
+            </if>
+        </where>
+        AND isDeleted=FALSE ORDER BY id
+    </select>
+
+    <select id="getLastTime" resultType="org.sang.bean.UserOrder" >
+        select * from `work_user_order`
+        <where>
+            <if test="startTime != null ">
+                createTime &lt;= #{startTime}
+            </if>
+        </where>
+        AND isDeleted=FALSE AND status=#{status} ORDER BY id
+    </select>
+
+
+
+
+    <update id="updateUserAage">
+        update work_user_order
+        <set>
+            <if test="userOrder.shengYuArea != null">
+                shengYuArea = #{userOrder.shengYuArea},
+            </if>
+            <if test="userOrder.wanChengArea != null">
+                wanChengArea = #{userOrder.wanChengArea},
+            </if>
+        </set>
+        where id = #{userOrder.id}
+    </update>
+
+
+    <update id="jieSuan">
+        update work_user_order
+        <set>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            updateTime = now()
+            <!--<if test="shenYuBiLi != null">-->
+                <!--biLi = #{biLi},-->
+            <!--</if>-->
+            <!--<if test="shenYuBiLi != null">-->
+                <!--shenYuBiLi = #{shenYuBiLi},-->
+            <!--</if>-->
+        </set>
+        where id=#{id}
+    </update>
+
+
+    <update id="updateUserOrder">
+        update work_user_order
+        <set>
+            <if test="userOrder.jingFengBiLi != null">
+                jingFengBiLi = #{userOrder.jingFengBiLi},
+            </if>
+            <if test="userOrder.jingFengArea != null">
+                jingFengArea = #{userOrder.jingFengArea},
+            </if>
+            <if test="userOrder.shengYuArea != null">
+                shengYuArea = #{userOrder.shengYuArea},
+            </if>
+            <if test="userOrder.wanChengArea != null">
+                wanChengArea = #{userOrder.wanChengArea},
+            </if>
+            updateTime = now()
+        </set>
+        where id=#{userOrder.id}
+    </update>
+
+
+</mapper>

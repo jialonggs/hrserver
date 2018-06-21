@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.FaMoMapper">
+    <!--查询收模列表-->
+
+
+    <resultMap type="org.sang.bean.responseEntity.FaMoResponse" id="faMoResponse">
+        <id column="id" property="id"/>
+        <result column="orderId" property="orderId"/>
+        <result column="orderName" property="orderName"/>
+        <result column="faMoRemark" property="faMoRemark"/>
+        <result column="faMoType" property="faMoType"/>
+        <result column="auditId" property="auditId"/>
+        <result column="auditName" property="auditName"/>
+        <result column="faMoNum" property="faMoNum"/>
+        <result column="liuChangNum" property="liuChangNum"/>
+
+        <result column="addUserId" property="addUserId"/>
+        <result column="addUserName" property="addUserName"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="isDeleted" property="isDeleted"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="createTime" property="createTime"/>
+
+        <association property="order" javaType="org.sang.bean.Order" column="orderId"
+                     select="org.sang.mapper.OrderMapper.getOrderInfoById">
+        </association>
+
+    </resultMap>
+
+
+    <insert id="addFaMo" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.FaMo">
+        INSERT INTO work_famo set orderId=#{orderId}, orderName=#{orderName},faMoRemark=#{faMoRemark},faMoType=#{faMoType},
+        faMoNum=#{faMoNum},liuChang=#{liuChang},liuChangNum=#{liuChangNum},
+       addUserId=#{addUserId},addUserName=#{addUserName},status=0,remark=#{remark},updateTime=now(),
+        createTime=now(),isDeleted=FALSE
+    </insert>
+
+
+    <select id="getAllFaMo" resultType="org.sang.bean.FaMo">
+        SELECT * FROM work_famo WHERE isDeleted=FALSE AND status=#{status} ORDER BY id DESC
+    </select>
+
+    <select id="getWaitFaMo" resultType="org.sang.bean.FaMo">
+        SELECT * FROM work_famo WHERE isDeleted=FALSE AND addUserId=#{addUserId} ORDER BY id DESC
+    </select>
+
+    <select id="getById" resultType="org.sang.bean.FaMo">
+        SELECT * FROM work_famo WHERE isDeleted=FALSE AND id=#{id}
+    </select>
+
+    <select id="getFaMo" resultMap="faMoResponse">
+        SELECT * FROM work_famo WHERE isDeleted=FALSE AND id=#{id}
+    </select>
+
+
+    <update id="aduitFaMo">
+        update work_famo
+        <set>
+            <if test=" status!= null">
+               status = #{status},
+            </if>
+            <if test=" auditId!= null">
+                auditId = #{auditId},
+            </if>
+            <if test=" auditName!= null">
+                auditName = #{auditName},
+            </if>
+            <if test=" auditJingId!= null">
+               auditJingId = #{auditJingId},
+            </if>
+            <if test=" auditJingName!= null">
+                auditJingName = #{auditJingName},
+            </if>
+               updateTime = now()
+        </set>
+        where id = #{id}
+    </update>
+
+
+
+    <update id="updateFaMo">
+        update work_famo
+        <set>
+            <if test="faMo.status!= null">
+                status = #{faMo.status},
+            </if>
+            <if test="faMo.liuChangNum!= null">
+                 liuChangNum = #{faMo.liuChangNum},
+            </if>
+            <if test="faMo.liuChang!= null">
+                 liuChang = #{faMo.liuChang},
+            </if>
+            <if test="faMo.faMoNum!= null">
+                 faMoNum = #{faMo.faMoNum},
+            </if>
+             updateTime = now()
+        </set>
+        where id = #{faMo.id}
+    </update>
+
+
+    <update id="updateFaMoStatus">
+        update work_famo
+        <set>
+            status = #{status},
+            infoId = #{infoId},
+            updateTime = now()
+        </set>
+        where id = #{id}
+    </update>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

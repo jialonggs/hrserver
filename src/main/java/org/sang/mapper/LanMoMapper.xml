@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.LanMoMapper">
+    <!--查询收模列表-->
+    <resultMap type="org.sang.bean.LanMo" id="getLanMoMap">
+        <id column="id" property="id"/>
+        <result column="techId" property="techId"/>
+        <result column="beginTime" property="beginTime"/>
+        <result column="lanMoTime" property="lanMoTime"/>
+        <result column="yaoShui" property="yaoShui"/>
+        <result column="shenDu" property="shenDu"/>
+
+        <result column="addUserId" property="addUserId"/>
+        <result column="addUserName" property="addUserName"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="isDeleted" property="isDeleted"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="createTime" property="createTime"/>
+    </resultMap>
+
+    <select id="getByTechId" resultType="org.sang.bean.LanMo">
+        SELECT * FROM work_lan_mo WHERE isDeleted=FALSE AND techId=#{techId} ORDER BY id
+    </select>
+
+    <insert id="addLanMo" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.LanMo">
+        INSERT INTO work_lan_mo set techId=#{techId},beginTime=#{beginTime},lanMoTime=#{lanMoTime},yaoShui=#{yaoShui},
+        shenDu=#{shenDu},addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},remark=#{remark},updateTime=now(),createTime=now(),isDeleted=FALSE
+    </insert>
+
+
+    <update id="updateLanMo">
+        update work_lan_mo
+        <set>
+
+            <if test="beginTime != null">
+                beginTime = #{beginTime},
+            </if>
+            <if test="lanMoTime != null">
+                lanMoTime = #{lanMoTime},
+            </if>
+            <if test="yaoShui != null">
+                yaoShui = #{yaoShui},
+            </if>
+            <if test="shenDu != null">
+                shenDu = #{shenDu},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            updateTime = now()
+        </set>
+        where id = #{id}
+    </update>
+
+
+    <update id="delLanMo">
+        update work_lan_mo
+        <set>
+            isDeleted = TRUE,
+            updateTime = now()
+        </set>
+        where id = #{id}
+    </update>
+
+
+
+
+</mapper>

@@ -13,6 +13,9 @@ public class YuProduct {
     private Integer coefficient;
     private Integer price;
     private String picUrls;
+    private Double noTaxPrice;
+    private Integer tax;
+    private Double total;
 
     private Boolean immutable;
     private String addUserId;
@@ -165,5 +168,29 @@ public class YuProduct {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Double getNoTaxPrice() {
+        return noTaxPrice;
+    }
+
+    public void setNoTaxPrice(Double noTaxPrice) {
+        this.noTaxPrice = noTaxPrice;
+    }
+
+    public Integer getTax() {
+        return tax;
+    }
+
+    public void setTax(Integer tax) {
+        this.tax = tax;
+    }
+
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
     }
 }

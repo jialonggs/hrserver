@@ -3,6 +3,7 @@ package org.sang.mapper;
 import org.apache.ibatis.annotations.Param;
 import org.sang.bean.Hr;
 import org.sang.bean.Role;
+import org.sang.bean.responseEntity.UserInfoResp;
 
 import java.util.List;
 
@@ -21,6 +22,8 @@ public interface HrMapper {
 
     List<Hr> getHrsByKeywords(@Param("keywords") String keywords);
 
+    List<Hr> getAllHrs();
+
     int updateHr(Hr hr);
 
     int deleteRoleByHrId(Long hrId);
@@ -38,6 +41,12 @@ public interface HrMapper {
     Long getCountByKeywords(@Param("keywords") String keywords);
 
     List<Hr> getByRole(@Param("roleName") String roleName);
+
+    UserInfoResp getUserInfo(@Param("userId") Long userId);
+
+    int updatePassword(@Param("password") String password, @Param("userId") Long userId);
+
+    int updatePrivateStr(@Param("privateStr") String privateStr, @Param("userId") Long userId);
 
 
 }

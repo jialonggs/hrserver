@@ -1,22 +1,21 @@
 package org.sang.controller.emp;
 
-import org.sang.bean.Employee;
-import org.sang.bean.Position;
-import org.sang.bean.RespBean;
+import org.sang.bean.*;
+import org.sang.bean.responseEntity.BaseResponseEntity;
 import org.sang.common.EmailRunnable;
 import org.sang.common.poi.PoiUtils;
+import org.sang.config.ErrCodeMsg;
 import org.sang.service.DepartmentService;
 import org.sang.service.EmpService;
 import org.sang.service.JobLevelService;
 import org.sang.service.PositionService;
+import org.sang.utils.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -55,13 +54,49 @@ public class EmpBasicController {
 
     @RequestMapping(value = "/emp", method = RequestMethod.POST)
     public RespBean addEmp(Employee employee) {
-        if (empService.addEmp(employee) == 1) {
-            List<Position> allPos = positionService.getAllPos();
-            for (Position allPo : allPos) {
-                if (allPo.getId() == employee.getPosId()) {
-                    employee.setPosName(allPo.getName());
-                }
-            }
+        if(employee.getBirthday() == null){
+            employee.setBirthday(new Date());
+        }
+        if(employee.getConversionTime() == null){
+            employee.setConversionTime(new Date());
+        }
+        if(employee.getNotWorkDate() == null){
+            employee.setNotWorkDate(new Date());
+        }
+        if(employee.getBeginDate() == null){
+            employee.setBeginDate(new Date());
+        }
+        if(employee.getBeginContract() == null){
+            employee.setBeginContract(new Date());
+        }
+        if(employee.getEndContract() == null){
+            employee.setEndContract(new Date());
+        }
+        if(employee.getPoliticId() == null){
+            employee.setPoliticId(13L);
+        }
+        if(employee.getNationId() == null){
+            employee.setNationId(1L);
+        }
+        if(employee.getDepartmentId() == null){
+            employee.setDepartmentId(1L);
+        }
+        if(employee.getJobLevelId() == null){
+            employee.setJobLevelId(18L);
+        }
+        if(employee.getPosId() == null){
+            employee.setPosId(1L);
+        }
+        if(employee.getContractTerm() == null) {
+            employee.setContractTerm(1.0);
+        }
+            if (empService.addEmp(employee) == 1) {
+//            List<Position> allPos = positionService.getAllPos();
+//            for (Position allPo : allPos) {
+//                if (allPo.getId() == employee.getPosId()) {
+//                    employee.setPosName(allPo.getName());
+//                }
+//            }
 //            executorService.execute(new EmailRunnable(employee));
             return new RespBean("success", "添加成功!");
         }
@@ -94,6 +129,27 @@ public class EmpBasicController {
         return map;
     }
 
+    /**
+     * 查询项目列表
+     * @return
+     */
+    @RequestMapping(value = "/listbypage", method = RequestMethod.GET)
+    public Map<String, Object> getOrdersList(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size) {
+
+        Map<String, Object> map = new HashMap<>();
+        PageInfoEntity pageInfoEntity = new PageInfoEntity();
+        pageInfoEntity.setCurrentPage(page);
+        pageInfoEntity.setPagesize(size);
+        List<Employee> orderslist = new ArrayList<>();
+        PageBean<Employee> list = empService.getEmpsList(pageInfoEntity);
+        if(null != list && list.getItems()!=null && list.getItems().size() !=0){
+            orderslist = list.getItems();
+            map.put("count",list.getPageInfo().getTotal());
+        }
+        map.put("emplist", orderslist);
+        return map;
+    }
+
     @RequestMapping(value = "/empbyphone", method = RequestMethod.GET)
     public Map<String, Object> getEmployeeByPhone(@RequestParam String phone) {
         Map<String, Object> map = new HashMap<>();
@@ -104,7 +160,31 @@ public class EmpBasicController {
 
     @RequestMapping(value = "/exportEmp", method = RequestMethod.GET)
     public ResponseEntity<byte[]> exportEmp() {
-        return PoiUtils.exportEmp2Excel(empService.getAllEmployees());
+        List<Employee> employees = empService.getAllEmployees2();
+        if(null == employees || employees.isEmpty() ){
+            new RespBean("error", "导出失败");
+        }
+        for(Employee employee: employees ){
+            if(employee.getPoliticId() == null){
+                employee.setPoliticId(13L);
+            }
+            if(employee.getNationId() == null){
+                employee.setNationId(1L);
+            }
+            if(employee.getDepartmentId() == null){
+                employee.setDepartmentId(1L);
+            }
+            if(employee.getJobLevelId() == null){
+                employee.setJobLevelId(18L);
+            }
+            if(employee.getPosId() == null){
+                employee.setPosId(1L);
+            }
+            if(employee.getContractTerm() == null){
+                employee.setContractTerm(1.0);
+            }
+        }
+        return PoiUtils.exportEmp2Excel(employees);
     }
 
     @RequestMapping(value = "/importEmp", method = RequestMethod.POST)

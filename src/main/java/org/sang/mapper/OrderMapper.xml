@@ -8,12 +8,17 @@
         <id column="id" property="id"/>
         <result column="orderName" property="orderName"/>
         <result column="qrCode" property="qrCode"/>
+        <result column="beiShu" property="beiShu"/>
         <result column="projectId" property="projectId"/>
-        <result column="clientCompanyName" property="clientCompanyName"/>
         <result column="technologyId" property="technologyId"/>
         <result column="managerId" property="managerId"/>
         <result column="managerName" property="managerName"/>
         <result column="expected" property="expected"/>
+        <result column="expectedTime" property="expectedTime"/>
+        <result column="presentStepId" property="presentStepId"/>
+        <result column="presentStepName" property="presentStepName"/>
+        <result column="presentSchedule" property="presentSchedule"/>
+        <result column="clientCompanyName" property="clientCompanyName"/>
         <result column="urgency" property="urgency"/>
         <result column="hasRemark" property="hasRemark"/>
         <result column="machiningType" property="machiningType"/>
@@ -24,9 +29,25 @@
         <result column="perfectArea" property="perfectArea"/>
         <result column="appliqueArea" property="appliqueArea"/>
         <result column="ygb" property="ygb"/>
+        <result column="liuZhuanStatus" property="liuZhuanStatus"/>
+        <result column="liuZhuanArea" property="liuZhuanArea"/>
+        <result column="liuZhuanBiLi" property="liuZhuanBiLi"/>
+        <result column="nanDuDengJi" property="nanDuDengJi"/>
         <result column="picUrls" property="picUrls"/>
         <result column="finishTime" property="finishTime"/>
+        <result column="techId" property="techId"/>
+        <result column="yaoJian" property="yaoJian"/>
+        <result column="plantStatus" property="plantStatus"/>
+        <result column="liuChengStatus" property="liuChengStatus"/>
+        <result column="jingFengStatus" property="jingFengStatus"/>
+        <result column="piWenDaiMa" property="piWenDaiMa"/>
 
+        <result column="financeStatus" property="financeStatus"/>
+        <result column="financeBiLi" property="financeBiLi"/>
+        <result column="financeJinE" property="financeJinE"/>
+        <result column="financeTime" property="financeTime"/>
+
+        <result column="faMoStatus" property="faMoStatus"/>
 
         <result column="addUserId" property="addUserId"/>
         <result column="addUserName" property="addUserName"/>
@@ -35,18 +56,492 @@
         <result column="isDeleted" property="isDeleted"/>
         <result column="updateTime" property="updateTime"/>
         <result column="createTime" property="createTime"/>
+        <result column="storageTime" property="storageTime"/>
     </resultMap>
+
+
+    <resultMap type="org.sang.bean.responseEntity.OrderInfoResp" id="getOrdersResp">
+        <id column="id" property="id"/>
+        <result column="orderName" property="orderName"/>
+        <result column="qrCode" property="qrCode"/>
+        <result column="beiShu" property="beiShu"/>
+        <result column="projectId" property="projectId"/>
+        <result column="technologyId" property="technologyId"/>
+        <result column="managerId" property="managerId"/>
+        <result column="managerName" property="managerName"/>
+        <result column="expected" property="expected"/>
+        <result column="expectedTime" property="expected"/>
+        <result column="presentStepId" property="presentStepId"/>
+        <result column="presentStepName" property="presentStepName"/>
+        <result column="presentSchedule" property="presentSchedule"/>
+        <result column="clientCompanyName" property="clientCompanyName"/>
+        <result column="urgency" property="urgency"/>
+        <result column="hasRemark" property="hasRemark"/>
+        <result column="machiningType" property="machiningType"/>
+        <result column="realityArea" property="realityArea"/>
+        <result column="stayArea" property="stayArea"/>
+        <result column="alreadyArea" property="alreadyArea"/>
+        <result column="perfectArea" property="perfectArea"/>
+        <result column="appliqueArea" property="appliqueArea"/>
+        <result column="ygb" property="ygb"/>
+        <result column="liuZhuanStatus" property="liuZhuanStatus"/>
+        <result column="liuZhuanArea" property="liuZhuanArea"/>
+        <result column="liuZhuanBiLi" property="liuZhuanBiLi"/>
+        <result column="nanDuDengJi" property="nanDuDengJi"/>
+        <result column="picUrls" property="picUrls"/>
+        <result column="finishTime" property="finishTime"/>
+        <result column="techId" property="techId"/>
+        <result column="yaoJian" property="yaoJian"/>
+        <result column="plantStatus" property="plantStatus"/>
+        <result column="liuChengStatus" property="liuChengStatus"/>
+        <result column="jingFengStatus" property="jingFengStatus"/>
+
+        <result column="piWenDaiMa" property="piWenDaiMa"/>
+
+        <result column="financeStatus" property="financeStatus"/>
+        <result column="financeBiLi" property="financeBiLi"/>
+        <result column="financeJinE" property="financeJinE"/>
+        <result column="financeTime" property="financeTime"/>
+
+        <result column="faMoStatus" property="faMoStatus"/>
+
+        <result column="addUserId" property="addUserId"/>
+        <result column="addUserName" property="addUserName"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="isDeleted" property="isDeleted"/>
+        <result column="beiShu" property="beiShu"/>
+        <result column="expectedTime" property="expectedTime"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="createTime" property="createTime"/>
+        <result column="storageTime" property="storageTime"/>
+
+        <association property="controlOrderFrom" javaType="org.sang.bean.ControlOrderFrom" column="id"
+                     select="org.sang.mapper.ControlOrderFromMapper.getByOrderId">
+        </association>
+
+        <association property="project" javaType="org.sang.bean.Project" column="projectId"
+                     select="org.sang.mapper.ProjectMapper.getProjectById">
+        </association>
+
+        <association property="techCard" javaType="org.sang.bean.TechCard" column="id"
+                     select="org.sang.mapper.TechCardMapper.getByOrderId">
+        </association>
+
+        <collection property="mouldInfoList" ofType="org.sang.bean.MouldInfo" column="id"
+                    select="org.sang.mapper.MouldInfoMapper.getByOrderId">
+        </collection>
+
+
+
+
+
+    </resultMap>
+
+
+
+    <resultMap type="org.sang.bean.responseEntity.FaMoOrder" id="getFaMoOrder">
+        <id column="id" property="id"/>
+        <result column="orderName" property="orderName"/>
+        <result column="qrCode" property="qrCode"/>
+        <result column="beiShu" property="beiShu"/>
+        <result column="projectId" property="projectId"/>
+        <result column="technologyId" property="technologyId"/>
+        <result column="managerId" property="managerId"/>
+        <result column="managerName" property="managerName"/>
+        <result column="expected" property="expected"/>
+        <result column="expectedTime" property="expectedTime"/>
+        <result column="presentStepId" property="presentStepId"/>
+        <result column="presentStepName" property="presentStepName"/>
+        <result column="presentSchedule" property="presentSchedule"/>
+        <result column="clientCompanyName" property="clientCompanyName"/>
+        <result column="urgency" property="urgency"/>
+        <result column="hasRemark" property="hasRemark"/>
+        <result column="machiningType" property="machiningType"/>
+        <result column="realityArea" property="realityArea"/>
+
+        <result column="stayArea" property="stayArea"/>
+        <result column="alreadyArea" property="alreadyArea"/>
+        <result column="perfectArea" property="perfectArea"/>
+        <result column="appliqueArea" property="appliqueArea"/>
+        <result column="ygb" property="ygb"/>
+        <result column="liuZhuanStatus" property="liuZhuanStatus"/>
+        <result column="liuZhuanArea" property="liuZhuanArea"/>
+        <result column="liuZhuanBiLi" property="liuZhuanBiLi"/>
+        <result column="nanDuDengJi" property="nanDuDengJi"/>
+        <result column="picUrls" property="picUrls"/>
+        <result column="finishTime" property="finishTime"/>
+        <result column="techId" property="techId"/>
+        <result column="yaoJian" property="yaoJian"/>
+        <result column="plantStatus" property="plantStatus"/>
+        <result column="liuChengStatus" property="liuChengStatus"/>
+        <result column="jingFengStatus" property="jingFengStatus"/>
+        <result column="piWenDaiMa" property="piWenDaiMa"/>
+
+        <result column="financeStatus" property="financeStatus"/>
+        <result column="financeBiLi" property="financeBiLi"/>
+        <result column="financeJinE" property="financeJinE"/>
+        <result column="financeTime" property="financeTime"/>
+
+        <result column="faMoStatus" property="faMoStatus"/>
+
+        <result column="addUserId" property="addUserId"/>
+        <result column="addUserName" property="addUserName"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="isDeleted" property="isDeleted"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="createTime" property="createTime"/>
+        <result column="storageTime" property="storageTime"/>
+
+
+        <association property="project" javaType="org.sang.bean.Project" column="projectId"
+                     select="org.sang.mapper.ProjectMapper.getProjectById">
+        </association>
+    </resultMap>
+
+
+    <resultMap type="org.sang.bean.responseEntity.CountOrderResp" id="getCountOrder">
+        <id column="id" property="id"/>
+        <result column="orderName" property="orderName"/>
+        <result column="qrCode" property="qrCode"/>
+        <result column="beiShu" property="beiShu"/>
+        <result column="projectId" property="projectId"/>
+        <result column="piWenDaiMa" property="piWenDaiMa"/>
+
+        <result column="addUserId" property="addUserId"/>
+        <result column="addUserName" property="addUserName"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="isDeleted" property="isDeleted"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="createTime" property="createTime"/>
+        <result column="storageTime" property="storageTime"/>
+
+        <association property="project" javaType="org.sang.bean.Project" column="projectId"
+                     select="org.sang.mapper.ProjectMapper.getProjectById">
+        </association>
+        <association property="techCard" javaType="org.sang.bean.TechCard" column="id"
+                     select="org.sang.mapper.TechCardMapper.getByOrderId">
+        </association>
+    </resultMap>
+
+
+    <resultMap type="org.sang.bean.responseEntity.OverOrderResponse" id="getOverOrder">
+        <id column="id" property="id"/>
+        <result column="orderName" property="orderName"/>
+        <result column="qrCode" property="qrCode"/>
+        <result column="beiShu" property="beiShu"/>
+        <result column="projectId" property="projectId"/>
+        <result column="finishTime" property="finishTime"/>
+
+        <result column="addUserId" property="addUserId"/>
+        <result column="addUserName" property="addUserName"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="isDeleted" property="isDeleted"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="createTime" property="createTime"/>
+        <result column="storageTime" property="storageTime"/>
+
+        <collection property="qualityOrderUsers" ofType="org.sang.bean.QualityOrderUser" column="id"
+                    select="org.sang.mapper.QualityOrderUserMapper.getQualityOrders">
+        </collection>
+    </resultMap>
+
+    <select id="getCheckOrder" resultType="org.sang.bean.Order">
+        SELECT * FROM work_orders
+        <where>
+            <if test="beginDate != null ">
+                storageTime &lt;= #{beginDate}
+            </if>
+        </where>
+       AND isDeleted=FALSE AND storageStatus=2 ORDER BY id
+    </select>
+
+    <select id="getOrderInfoResp" resultMap="getOrdersResp">
+        SELECT * FROM work_orders WHERE isDeleted=FALSE AND id=#{orderId}
+    </select>
+
 
     <select id="getOrdersList" resultType="org.sang.bean.Order">
         SELECT * FROM work_orders WHERE isDeleted=FALSE AND addUserId=#{addUserId} ORDER BY id
     </select>
 
+    <select id="getNeedFaMo" resultMap="getFaMoOrder">
+        SELECT * FROM work_orders WHERE storageStatus=#{storageStatus} AND faMoStatus=#{faMoStatus} AND isDeleted=FALSE AND addUserId=#{addUserId} ORDER BY id
+    </select>
+
+    <select id="getOrderAndProject" resultMap="getFaMoOrder">
+        SELECT * FROM work_orders WHERE isDeleted=FALSE AND addUserId=#{addUserId} ORDER BY id DESC
+    </select>
+
+    <select id="getCountUserOrder" resultMap="getCountOrder">
+        SELECT * FROM work_orders WHERE isDeleted=FALSE AND id=#{orderId}
+    </select>
+
+
+    <select id="getOrderInfoById" resultType="org.sang.bean.Order">
+        SELECT * FROM work_orders WHERE isDeleted=FALSE AND id=#{orderId}
+    </select>
+
+    <select id="getPlantOrdersList" resultType="org.sang.bean.Order">
+        SELECT * FROM work_orders
+        <where>
+            <if test=" userId!= 3 ">
+               AND managerId = #{userId}
+            </if>
+            <if test=" plantStatus!= null">
+               AND plantStatus = #{plantStatus}
+            </if>
+        </where>
+         AND isDeleted=FALSE ORDER BY urgency DESC ,id DESC
+    </select>
+
+
+    <select id="getStroageOrdersList" resultType="org.sang.bean.Order">
+        SELECT * FROM work_orders
+        <where>
+            <if test="liuChengStatus!= null">
+                AND liuChengStatus = #{liuChengStatus}
+            </if>
+            <if test="jingFengStatus!= null">
+                AND jingFengStatus = #{jingFengStatus}
+            </if>
+            <if test="storageStatus != null">
+                AND storageStatus = #{storageStatus}
+            </if>
+        </where>
+        AND isDeleted=FALSE
+    </select>
+
+    <select id="getStroageOrdersList1" resultType="org.sang.bean.Order">
+        SELECT * FROM work_orders
+        <where>
+            <if test="storageStatus!= null">
+                AND storageStatus = #{storageStatus}
+            </if>
+
+        </where>
+        AND isDeleted=FALSE
+    </select>
+
+    <select id="getOrdersByProjectId" resultType="org.sang.bean.Order">
+        SELECT * FROM work_orders WHERE isDeleted=FALSE AND projectId=#{projectId} ORDER BY id
+    </select>
+
+    <select id="getOverOrdersList" resultMap="getOverOrder">
+        SELECT * FROM work_orders WHERE isDeleted=FALSE AND jingFengStatus=#{jingFengStatus} AND liuChengStatus=#{liuChengStatus} ORDER BY id
+    </select>
+
+    <select id="getOrdersUnAddTech" resultType="org.sang.bean.Order">
+        SELECT * FROM work_orders WHERE isDeleted=FALSE AND techId=#{techId} ORDER BY urgency DESC, id DESC
+    </select>
+
+    <select id="getUnYaoJianList" resultType="org.sang.bean.Order">
+        SELECT * FROM work_orders WHERE isDeleted=FALSE AND yaoJian=#{yaoJian} ORDER BY urgency DESC, id DESC
+    </select>
+
     <insert id="addOrder" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.Order">
-        INSERT INTO work_orders set orderName=#{orderName},qrCode=#{qrCode},projectId=#{projectId},managerId=#{managerId},
-        managerName=#{managerName},expected=#{expected},urgency=#{urgency},hasRemark=#{hasRemark},machiningType=#{machiningType},
-        realityArea=#{realityArea},picUrls=#{picUrls},addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},updateTime=now(),createTime=now(),isDeleted=FALSE
+        INSERT INTO work_orders set orderName=#{orderName},qrCode=#{qrCode},beiShu=#{beiShu},projectId=#{projectId},managerId=#{managerId},
+        managerName=#{managerName},expected=#{expected},expectedTime=#{expectedTime},presentStepId=#{presentStepId},
+        presentStepName=#{presentStepName},presentSchedule=#{presentSchedule},clientCompanyName=#{clientCompanyName},
+        urgency=#{urgency},hasRemark=#{hasRemark},machiningType=#{machiningType},
+        realityArea=#{realityArea},stayArea=0,liuChengStatus=0,jingFengStatus=0,piWenDaiMa=#{piWenDaiMa},storageStatus=0,picUrls=#{picUrls},liuZhuanStatus=0,liuZhuanArea=0,liuZhuanBiLi=0,
+        financeStatus=0,financeBiLi=0,financeJinE=0,faMoStatus=0,addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},updateTime=now(),createTime=now(),storageTime=now(),isDeleted=FALSE
     </insert>
 
+
+    <update id="updateOrderTech">
+        update work_orders
+        <set>
+            techId = TRUE ,
+            workArea = #{workArea} ,
+            updateTime = now()
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateFaMoStatus">
+        update work_orders
+        <set>
+            faMoStatus = #{faMoStatus}
+        </set>
+        where id = #{orderId}
+    </update>
+
+    <update id="addFuKuan">
+        update work_orders
+        <set>
+            financeBiLi = #{fuKuan.financeBiLi},
+            financeJinE = #{fuKuan.financeJinE},
+            financeStatus = #{fuKuan.financeStatus},
+            financeTime = #{fuKuan.financeTime}
+        </set>
+        where id = #{fuKuan.orderId}
+    </update>
+
+
+    <update id="updateOrderYaoJian">
+        update work_orders
+        <set>
+            yaoJian = TRUE ,
+            updateTime = now()
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateOrderNanDu">
+        update work_orders
+        <set>
+            nanDuDengJi = #{nanDuDengJi},
+            updateTime = now()
+        </set>
+        where id = #{id}
+    </update>
+
+
+
+    <select id="getMaxOrderID" resultType="Long">
+        SELECT id from work_orders where id=(select max(id) from work_orders)
+    </select>
+
+
+
+    <update id="updateOrder">
+        update work_orders
+        <set>
+            <if test="order.plantStatus != null">
+                plantStatus = #{order.plantStatus},
+            </if>
+            <if test="order.presentStepName != null">
+                presentStepName = #{order.presentStepName},
+            </if>
+            <if test="order.presentStepId != null">
+                presentStepId = #{order.presentStepId},
+            </if>
+            <if test="order.presentSchedule != null">
+                presentSchedule = #{order.presentSchedule},
+            </if>
+            <if test="order.workArea != null">
+                workArea = #{order.workArea},
+            </if>
+            <if test="order.stayArea != null">
+                stayArea = #{order.stayArea},
+            </if>
+            <if test="order.perfectArea != null">
+                perfectArea = #{order.perfectArea},
+            </if>
+            <if test="order.finishTime != null">
+                finishTime = #{order.finishTime},
+            </if>
+            <if test="order.appliqueArea != null">
+                appliqueArea = #{order.appliqueArea},
+            </if>
+            <if test="order.alreadyArea != null">
+                alreadyArea = #{order.alreadyArea},
+            </if>
+            <if test="order.liuChengStatus != null">
+                liuChengStatus = #{order.liuChengStatus},
+            </if>
+           updateTime = now()
+        </set>
+        where id = #{order.id}
+    </update>
+
+
+
+    <update id="updateOrderBaseInfo">
+        update work_orders
+        <set>
+            <if test="order.orderName != null">
+                orderName = #{order.orderName},
+            </if>
+            <if test="order.projectId != null">
+                projectId = #{order.projectId},
+            </if>
+            <if test="order.managerId != null">
+                managerId = #{order.managerId},
+            </if>
+            <if test="order.managerName != null">
+                managerName = #{order.managerName},
+            </if>
+            <if test="order.urgency != null">
+                urgency = #{order.urgency},
+            </if>
+            <if test="order.machiningType != null">
+                machiningType = #{order.machiningType},
+            </if>
+            <if test="order.realityArea != null">
+                realityArea = #{order.realityArea},
+            </if>
+            <if test="order.hasRemark != null">
+                hasRemark = #{order.hasRemark},
+            </if>
+            <if test="order.beiShu != null">
+                beiShu = #{order.beiShu},
+            </if>
+            <if test="order.picUrls != null">
+                picUrls = #{order.picUrls},
+            </if>
+            <if test="order.expectedTime != null">
+                expectedTime = #{order.expectedTime},
+            </if>
+            <if test="order.remark != null">
+                remark = #{order.remark},
+            </if>
+            updateTime = now()
+        </set>
+        where id = #{order.id}
+    </update>
+
+
+
+
+    <update id="checkKuFang">
+        update work_orders
+        <set>
+            <if test="liuChengStatus != null">
+                liuChengStatus = #{liuChengStatus},
+            </if>
+            <if test="jingFengStatus != null">
+                jingFengStatus = #{jingFengStatus},
+            </if>
+            <if test="kuFangRemark != null">
+                kuFangRemark = #{kuFangRemark},
+            </if>
+            updateTime = now()
+        </set>
+        where id = #{orderId}
+    </update>
+
+
+    <update id="liuZhuan">
+        update work_orders
+        <set>
+            <if test="liuZhuanStatus != null">
+                liuZhuanStatus = #{liuZhuanStatus},
+            </if>
+            <if test="liuZhuanArea != null">
+                liuZhuanArea = #{liuZhuanArea},
+            </if>
+            <if test="liuZhuanBiLi != null">
+                liuZhuanBiLi = #{liuZhuanBiLi},
+            </if>
+            updateTime = now()
+        </set>
+        where id = #{id}
+    </update>
+
+
+    <update id="updateStorageStatus">
+        update work_orders
+        <set>
+            storageStatus = #{storageStatus},
+            updateTime = now()
+        </set>
+        where id = #{orderId}
+    </update>
 
 
 </mapper>

@@ -16,6 +16,8 @@ public interface EmpMapper {
 
     List<PoliticsStatus> getAllPolitics();
 
+    List<Employee> getEmpsList();
+
     int addEmp(Employee employee);
 
     Long getMaxWorkID();
@@ -33,4 +35,6 @@ public interface EmpMapper {
     List<Employee> getEmployeeByPageShort(@Param("start") int start, @Param("size") Integer size);
 
     List<Employee> getEmployeeByPhone(@Param("phone") String phone);
+
+    Employee getEmployeeByUserName(@Param("username") String userName);
 }

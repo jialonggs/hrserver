@@ -2,6 +2,7 @@ package org.sang.service;
 
 import org.sang.bean.Hr;
 import org.sang.bean.MsgContent;
+import org.sang.bean.Role;
 import org.sang.bean.SysMsg;
 import org.sang.common.HrUtils;
 import org.sang.mapper.SysMsgMapper;
@@ -10,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +31,56 @@ public class SysMsgService {
         List<Hr> allHr = hrService.getAllHr();
         int result2 = sysMsgMapper.addMsg2AllHr(allHr, msg.getId());
         return result2==allHr.size();
+    }
+
+    public boolean sendToOneOrSome(MsgContent msg, List<Role> roles) {
+        int result = sysMsgMapper.sendMsg(msg);
+        List<Hr> allHr = hrService.getAllHrs();
+        List<Hr> needSendMessage = new ArrayList<>();
+        if(null != allHr){
+            for(Hr item : allHr){
+                List<Role> hasRoles = item.getRoles();
+                for (Role role : roles){
+                    if(hasRoles.contains(role)){
+                        needSendMessage.add(item);
+                        continue;
+                    }
+                }
+            }
+        }else {
+            return false;
+        }
+        if(null != needSendMessage && !needSendMessage.isEmpty()){
+            int result2 = sysMsgMapper.addMsg2AllHr(needSendMessage, msg.getId());
+            return  true;
+        }else{
+            return false;
+        }
+    }
+
+
+    public boolean sendByIds(MsgContent msg, List<Long> ids) {
+        int result = sysMsgMapper.sendMsg(msg);
+        List<Hr> allHr = hrService.getAllHrs();
+        List<Hr> needSendMessage = new ArrayList<>();
+        if(null != allHr){
+            for(Hr item : allHr){
+                for(Long id : ids){
+                    if(item.getId().equals(id)){
+                        needSendMessage.add(item);
+                        continue;
+                    }
+                }
+            }
+        }else {
+            return false;
+        }
+        if(null != needSendMessage && !needSendMessage.isEmpty()){
+            int result2 = sysMsgMapper.addMsg2AllHr(needSendMessage, msg.getId());
+            return  true;
+        }else{
+            return false;
+        }
     }
 
     public List<SysMsg> getSysMsgByPage(Integer page, Integer size) {
