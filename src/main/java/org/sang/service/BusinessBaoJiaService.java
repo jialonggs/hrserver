@@ -10,6 +10,7 @@ import org.sang.mapper.BusinessBaoJiaMapper;
 import org.sang.mapper.BusinessProductMapper;
 import org.sang.mapper.ProjectMapper;
 import org.sang.mapper.YuBaoJiaMapper;
+import org.sang.utils.DoubleUtil;
 import org.sang.utils.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -109,6 +110,12 @@ public class BusinessBaoJiaService {
     @Transactional
     public Boolean addBusinessBaoJia2(AddBusBaoJiaRequest addBusBaoJiaRequest){
         BusinessBaoJia businessBaoJia = addBusBaoJiaRequest.getBusinessBaoJia();
+        businessBaoJia.setTotal(DoubleUtil.m2(businessBaoJia.getTotal()));
+        businessBaoJia.setNoTaxTotal(DoubleUtil.m2(businessBaoJia.getNoTaxTotal()));
+        if(businessBaoJia.getFinalBaoJia() == null){
+            businessBaoJia.setFinalBaoJia(businessBaoJia.getTotal());
+            businessBaoJia.setNoTaxfinalBaoJia(businessBaoJia.getNoTaxTotal());
+        }
         long id = businessBaoJiaMapper.addBusinessBaoJia(businessBaoJia);
         if(id <= 0){
             return false;
@@ -128,5 +135,16 @@ public class BusinessBaoJiaService {
     public BusinessBaoJia getProjectBuInfo(Long projectId){
         BusinessBaoJia businessBaoJia = businessBaoJiaMapper.getBusinessBaoJiaByProjectId(projectId);
         return businessBaoJia;
+    }
+
+    public Boolean updateFinalBaoJia(Long id, Double tax, Double finalBaoJia ){
+        Double tax1= tax / 100 + 1;
+        Double noTaxfinalBaoJia = DoubleUtil.m2(finalBaoJia / tax1);
+        int i = businessBaoJiaMapper.updateFinalBaoJia(id, finalBaoJia, noTaxfinalBaoJia);
+        if(i>0){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

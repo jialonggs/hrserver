@@ -16,11 +16,14 @@ public class BusinessBaoJia {
     private Integer audit;
     private Double total;
     private Double noTaxTotal;
+    private Double finalBaoJia;
+    private Double noTaxfinalBaoJia;
 
     private String expectTime;
     private Integer submitType;
     private String fuJianUrl;
     private String rejectRemark;
+
 
     private Boolean immutable;
     private String addUserId;
@@ -221,5 +224,21 @@ public class BusinessBaoJia {
 
     public void setRejectRemark(String rejectRemark) {
         this.rejectRemark = rejectRemark;
+    }
+
+    public Double getFinalBaoJia() {
+        return finalBaoJia;
+    }
+
+    public void setFinalBaoJia(Double finalBaoJia) {
+        this.finalBaoJia = finalBaoJia;
+    }
+
+    public Double getNoTaxfinalBaoJia() {
+        return noTaxfinalBaoJia;
+    }
+
+    public void setNoTaxfinalBaoJia(Double noTaxfinalBaoJia) {
+        this.noTaxfinalBaoJia = noTaxfinalBaoJia;
     }
 }

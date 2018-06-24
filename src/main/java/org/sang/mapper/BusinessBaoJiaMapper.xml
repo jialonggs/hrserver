@@ -30,12 +30,12 @@
 
     <insert id="addBusinessBaoJia" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.BusinessBaoJia">
         INSERT INTO work_bus_bj set projectId=#{projectId},auditId=0,auditName=#{auditName},clientCompanyName=#{clientCompanyName},contactPerson=#{contactPerson},contactPhone=#{contactPhone},carType=#{carType},tax=#{tax},
-        total=#{total},noTaxTotal=#{noTaxTotal},submitType=#{submitType},fuJianUrl=#{fuJianUrl},expectTime=#{expectTime},addUserId=#{addUserId},addUserName=#{addUserName},
+        total=#{total},noTaxTotal=#{noTaxTotal},finalBaoJia=#{finalBaoJia},noTaxfinalBaoJia=#{noTaxfinalBaoJia},submitType=#{submitType},fuJianUrl=#{fuJianUrl},expectTime=#{expectTime},addUserId=#{addUserId},addUserName=#{addUserName},
         status=#{status},remark=#{remark},isDeleted=FALSE,immutable=FALSE,updateTime=now(),createTime=now()
     </insert>
 
     <select id="getBusinessBaoJiaList" resultType="org.sang.bean.BusinessBaoJia">
-        SELECT * FROM work_bus_bj WHERE isDeleted=FALSE AND addUserId=#{addUserId} ORDER BY id
+        SELECT * FROM work_bus_bj WHERE isDeleted=FALSE AND addUserId=#{addUserId} ORDER BY id DESC
     </select>
 
     <select id="getBusinessBaoJiaByProjectId" resultMap="busInfoResp">
@@ -43,7 +43,7 @@
     </select>
 
     <select id="getAuditBusinessBaoJiaList" resultType="org.sang.bean.BusinessBaoJia">
-        SELECT * FROM work_bus_bj WHERE isDeleted=FALSE AND audit=#{audit} ORDER BY id
+        SELECT * FROM work_bus_bj WHERE isDeleted=FALSE AND audit=#{audit} ORDER BY id DESC
     </select>
 
 
@@ -61,6 +61,8 @@
     <result column="audit" property="audit"/>
     <result column="total" property="total"/>
     <result column="noTaxTotal" property="noTaxTotal"/>
+    <result column="finalBaoJia" property="finalBaoJia"/>
+    <result column="noTaxfinalBaoJia" property="noTaxfinalBaoJia"/>
     <result column="expectTime" property="expectTime"/>
     <result column="submitType" property="submitType"/>
     <result column="fuJianUrl" property="fuJianUrl"/>
@@ -148,6 +150,21 @@
             </if>
             <if test="noTaxTotal != null">
                 noTaxTotal=#{noTaxTotal},
+            </if>
+            updateTime = now()
+        </set>
+        where id = #{yuBaoJiaId}
+    </update>
+
+
+    <update id="updateFinalBaoJia">
+        update work_bus_bj
+        <set>
+            <if test="finalBaoJia != null">
+                finalBaoJia=#{finalBaoJia},
+            </if>
+            <if test="noTaxfinalBaoJia != null">
+                noTaxfinalBaoJia=#{noTaxfinalBaoJia},
             </if>
             updateTime = now()
         </set>

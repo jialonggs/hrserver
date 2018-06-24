@@ -77,24 +77,46 @@ public class QualityOrderService {
 
     @Transactional
     public Boolean shenHe(Order order, OrderFlow orderFlow, List<UserOrder> userOrderList, List<OrderArgeLog> orderArgeLogs, Integer status){
-       int i =  orderMapper.updateOrder(order);
-       int k = orderFlowMapper.updateOrderFlow(orderFlow);
-       if(null != userOrderList && !userOrderList.isEmpty()){
-           for (UserOrder userOrder : userOrderList){
-               userOrderMapper.updateUserAage(userOrder);
-           }
-       }
-       if(status.equals(1)){
-           int j = qualityOrderUserMapper.updateStatus(status, order.getId());
-           Order order1 = new Order();
-           order1.setId(order.getId());
-           order.setFinishTime(new Date());
-           int o = orderMapper.updateOrder(order1);
-       }
-       if(null != orderArgeLogs && !orderArgeLogs.isEmpty()){
-           int y = orderArgeLogMapper.insertLogs(orderArgeLogs);
-       }
+        int i =  orderMapper.updateOrder(order);
+        int k = orderFlowMapper.updateOrderFlow(orderFlow);
+        if(null != userOrderList && !userOrderList.isEmpty()){
+            for (UserOrder userOrder : userOrderList){
+                userOrderMapper.updateUserAage(userOrder);
+            }
+        }
+        if(status.equals(1)){
+            int j = qualityOrderUserMapper.updateStatus(status, order.getId());
+            Order order1 = new Order();
+            order1.setId(order.getId());
+            order.setFinishTime(new Date());
+            int o = orderMapper.updateOrder(order1);
+        }
+        if(null != orderArgeLogs && !orderArgeLogs.isEmpty()){
+            int y = orderArgeLogMapper.insertLogs(orderArgeLogs);
+        }
         if(i> 0 && k > 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
+    @Transactional
+    public Boolean toDefaultJingFeng(Order order, List<UserOrder> userOrderList, List<OrderArgeLog> orderArgeLogs, Integer status){
+        order.setJingFengStatus(1);
+        int i =  orderMapper.updateOrder(order);
+        if(null != userOrderList && !userOrderList.isEmpty()){
+            for (UserOrder userOrder : userOrderList){
+                userOrderMapper.updateUserAage(userOrder);
+            }
+        }
+        int y = 0;
+
+        if(null != orderArgeLogs && !orderArgeLogs.isEmpty()){
+           y = orderArgeLogMapper.insertLogs(orderArgeLogs);
+        }
+        if(i> 0 && y>0){
             return true;
         }else{
             return false;

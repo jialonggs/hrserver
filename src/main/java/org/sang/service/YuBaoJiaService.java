@@ -9,6 +9,7 @@ import org.sang.bean.responseEntity.YuBaoJiaInfoResp;
 import org.sang.mapper.ProjectMapper;
 import org.sang.mapper.YuBaoJiaMapper;
 import org.sang.mapper.YuProductMapper;
+import org.sang.utils.DoubleUtil;
 import org.sang.utils.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,6 +71,12 @@ public class YuBaoJiaService {
     @Transactional
     public Boolean addYuBaoJia2(AddYuBaoJiaRequest yuBaoJiaRequest){
         YuBaoJia yuBaoJia = yuBaoJiaRequest.getYuBaoJia();
+        yuBaoJia.setTotal(DoubleUtil.m2(yuBaoJia.getTotal()));
+        yuBaoJia.setNoTaxTotal(DoubleUtil.m2(yuBaoJia.getNoTaxTotal()));
+        if(yuBaoJia.getFinalBaoJia() == null){
+            yuBaoJia.setFinalBaoJia(yuBaoJia.getTotal());
+            yuBaoJia.setNoTaxfinalBaoJia(yuBaoJia.getNoTaxTotal());
+        }
         long id = yuBaoJiaMapper.addYuBaoJia(yuBaoJia);
         if(id <= 0){
             return false;
@@ -124,5 +131,16 @@ public class YuBaoJiaService {
         }
         return yuBaoJiaMapper.aginAudit(yuBaoJia);
 
+    }
+
+    public Boolean updateFinalBaoJia(Long id, Double tax, Double finalBaoJia ){
+        Double tax1= tax / 100 + 1;
+        Double noTaxfinalBaoJia = DoubleUtil.m2(finalBaoJia / tax1);
+        int i = yuBaoJiaMapper.updateFinalBaoJia(id, finalBaoJia, noTaxfinalBaoJia);
+        if(i>0){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

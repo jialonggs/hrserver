@@ -30,12 +30,12 @@
 
     <insert id="addYuBaoJia" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.YuBaoJia">
         INSERT INTO work_yubaojia set projectId=#{projectId},auditId=0,auditName=#{auditName},clientCompanyName=#{clientCompanyName},contactPerson=#{contactPerson},contactPhone=#{contactPhone},carType=#{carType},tax=#{tax},
-        total=#{total},noTaxTotal=#{noTaxTotal},expectTime=#{expectTime},submitType=#{submitType},fuJianUrl=#{fuJianUrl},addUserId=#{addUserId},addUserName=#{addUserName},
+        total=#{total},noTaxTotal=#{noTaxTotal},finalBaoJia=#{finalBaoJia},noTaxfinalBaoJia=#{noTaxfinalBaoJia},expectTime=#{expectTime},submitType=#{submitType},fuJianUrl=#{fuJianUrl},addUserId=#{addUserId},addUserName=#{addUserName},
         status=#{status},remark=#{remark},isDeleted=FALSE,immutable=FALSE,updateTime=now(),createTime=now()
     </insert>
 
     <select id="getYuBaoJiaList" resultType="org.sang.bean.YuBaoJia">
-        SELECT * FROM work_yubaojia WHERE isDeleted=FALSE AND addUserId=#{addUserId} ORDER BY id
+        SELECT * FROM work_yubaojia WHERE isDeleted=FALSE AND addUserId=#{addUserId} ORDER BY id DESC
     </select>
 
     <select id="getByProjectId" resultMap="yuInfoResp">
@@ -43,7 +43,7 @@
     </select>
 
     <select id="getAuditYuBaoJiaList" resultType="org.sang.bean.YuBaoJia">
-        SELECT * FROM work_yubaojia WHERE isDeleted=FALSE AND audit=#{audit} ORDER BY id
+        SELECT * FROM work_yubaojia WHERE isDeleted=FALSE AND audit=#{audit} ORDER BY id DESC
     </select>
 
 
@@ -64,6 +64,8 @@
         <result column="expectTime" property="expectTime"/>
         <result column="submitType" property="submitType"/>
         <result column="fuJianUrl" property="fuJianUrl"/>
+        <result column="finalBaoJia" property="finalBaoJia"/>
+        <result column="noTaxfinalBaoJia" property="noTaxfinalBaoJia"/>
 
         <result column="immutable" property="immutable"/>
         <result column="addUserId" property="addUserId"/>
@@ -83,7 +85,6 @@
     <select id="getById" resultMap="yuInfoResp">
         SELECT * FROM work_yubaojia WHERE isDeleted=FALSE AND id=#{id}
     </select>
-
 
     <update id="aginAudit">
     update work_yubaojia
@@ -149,6 +150,21 @@
             </if>
             <if test="noTaxTotal != null">
                 noTaxTotal=#{noTaxTotal},
+            </if>
+            updateTime = now()
+        </set>
+        where id = #{yuBaoJiaId}
+    </update>
+
+
+    <update id="updateFinalBaoJia">
+        update work_yubaojia
+        <set>
+            <if test="finalBaoJia != null">
+                finalBaoJia=#{finalBaoJia},
+            </if>
+            <if test="noTaxfinalBaoJia != null">
+                noTaxfinalBaoJia=#{noTaxfinalBaoJia},
             </if>
             updateTime = now()
         </set>

@@ -10,6 +10,8 @@ import java.util.List;
 @Mapper
 public interface YuBaoJiaMapper {
 
+    int updateFinalBaoJia(@Param("yuBaoJiaId") Long id, @Param("finalBaoJia") Double finalBaoJia, @Param("noTaxfinalBaoJia") Double noTaxfinalBaoJia);
+
     int aginAudit(@Param("yuBaoJia") YuBaoJia yuBaoJia);
 
     List<YuBaoJia> getYuBaoJiaList(@Param("addUserId") Integer addUserId);

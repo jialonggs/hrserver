@@ -217,4 +217,27 @@ public class YuBaoJiaController extends BaseController{
     }
 
 
+    /**
+     * 修改最终优惠报价
+     * @param id
+     * @param tax
+     * @param finalBaoJia
+     * @return
+     */
+    @RequestMapping(value = "/update/final/baojia", method = RequestMethod.POST)
+    public BaseResponseEntity updateFinal(@RequestParam("id") Long id, @RequestParam("tax") Double tax,
+                                          @RequestParam("finalBaoJia") Double finalBaoJia){
+        if(id == null || tax == null || finalBaoJia == null){
+            badResult(ErrCodeMsg.ARGS_MISSING);
+        }
+
+        Boolean result = yuBaoJiaService.updateFinalBaoJia(id, tax, finalBaoJia);
+        if(result){
+            return succResult();
+        }else{
+            return badResult(ErrCodeMsg.COMMON_FAIL);
+        }
+    }
+
+
 }

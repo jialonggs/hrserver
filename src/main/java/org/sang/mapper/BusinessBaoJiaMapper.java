@@ -21,6 +21,7 @@ public interface BusinessBaoJiaMapper {
 
     int updateBusinessBaoJia(@Param("yuBaoJiaId") Long yuBaoJiaId, @Param("total") Double total, @Param("noTaxTotal") Double noTaxTotal);
 
+    int updateFinalBaoJia(@Param("yuBaoJiaId") Long id, @Param("finalBaoJia") Double finalBaoJia, @Param("noTaxfinalBaoJia") Double noTaxfinalBaoJia);
 
     BusinessBaoJia getBusinessBaoJiaByProjectId(@Param("projectId") Long projectId);
 

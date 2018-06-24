@@ -20,6 +20,8 @@ public class YuBaoJia {
     private Integer submitType;
     private String fuJianUrl;
     private String rejectRemark;
+    private Double finalBaoJia;
+    private Double noTaxfinalBaoJia;
 
     private Boolean immutable;
     private String addUserId;
@@ -221,5 +223,21 @@ public class YuBaoJia {
 
     public void setRejectRemark(String rejectRemark) {
         this.rejectRemark = rejectRemark;
+    }
+
+    public Double getFinalBaoJia() {
+        return finalBaoJia;
+    }
+
+    public void setFinalBaoJia(Double finalBaoJia) {
+        this.finalBaoJia = finalBaoJia;
+    }
+
+    public Double getNoTaxfinalBaoJia() {
+        return noTaxfinalBaoJia;
+    }
+
+    public void setNoTaxfinalBaoJia(Double noTaxfinalBaoJia) {
+        this.noTaxfinalBaoJia = noTaxfinalBaoJia;
     }
 }

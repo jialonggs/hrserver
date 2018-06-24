@@ -8,6 +8,7 @@ public class Flow {
     private String flowName;
     private Boolean moren;
     private Integer stepNum;
+    private Integer tieHuaNum;
     private Integer status;
 
 
@@ -104,5 +105,13 @@ public class Flow {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Integer getTieHuaNum() {
+        return tieHuaNum;
+    }
+
+    public void setTieHuaNum(Integer tieHuaNum) {
+        this.tieHuaNum = tieHuaNum;
     }
 }

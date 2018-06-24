@@ -210,7 +210,69 @@ public class QualityController extends BaseController {
 
 
     /**
-     * 精封结算
+     *
+     * @param addUserId
+     * @param addUserName
+     * @return
+     */
+    @RequestMapping(value = "/moren/jingfeng", method = RequestMethod.POST)
+    public BaseResponseEntity jieSuanJingFengMoRen(@RequestParam("addUserId") Long addUserId,
+                                                   @RequestParam("addUserName") String addUserName,
+                                                   @RequestParam("orderId") Long orderId,
+                                                   @RequestParam("orderName") String orderName){
+        if(null == addUserId || addUserName == null || null == orderId){
+            return badResult(ErrCodeMsg.ARGS_MISSING);
+        }
+        Order order = orderService.getOrderInfoById(orderId);
+        if (null == order){
+            return badResult(ErrCodeMsg.COMMON_FAIL);
+        }
+        List<UserOrder> userOrders = userOrderService.getUserOrderByOrderId(orderId, 0);
+        if(null == userOrders || userOrders.isEmpty()){
+            return badResult(ErrCodeMsg.COMMON_FAIL);
+        }
+
+        // 调整面积 订单只有完成面积以及未完成面积以及比例
+        // 员工只有需完成面积 待完成面积 已完成面积 以及比例 以及每步的单独面积需完成的精封面积 需完成每步贴花的面积
+        Double wancheng = 0.0;
+        List<OrderArgeLog> orderArgeLogs = new ArrayList<>();
+        for (UserOrder userOrder : userOrders) {
+            Double itemWan = userOrder.getWanChengArea() + userOrder.getJingFengArea();
+            userOrder.setWanChengArea(DoubleUtil.m2(itemWan));
+            wancheng = wancheng + userOrder.getJingFengArea();
+            Double itemWan2 = userOrder.getZongJiArea() - userOrder.getWanChengArea();
+            userOrder.setShengYuArea(DoubleUtil.m2(itemWan2));
+            OrderArgeLog orderArgeLog = new OrderArgeLog();
+            orderArgeLog.setOrderId(orderId);
+            orderArgeLog.setAddUserId(addUserId + "");
+            orderArgeLog.setAddUserName(addUserName);
+            orderArgeLog.setOrderName(orderName);
+            orderArgeLog.setUserId(userOrder.getUserId());
+            orderArgeLog.setUserName(userOrder.getUserName());
+            orderArgeLog.setArge(userOrder.getJingFengArea());
+            orderArgeLog.setStepName("精封");
+            orderArgeLog.setStepType(1);
+            orderArgeLogs.add(orderArgeLog);
+
+        }
+        Double item = order.getAlreadyArea();
+
+        order.setAlreadyArea(DoubleUtil.m2(item + wancheng));
+        order.setStayArea(DoubleUtil.m2(order.getWorkArea() - order.getAlreadyArea()));
+        Double all = item + wancheng;
+        Double jidDu = 100 * (all / order.getWorkArea());
+        order.setPresentSchedule(jidDu);
+        Boolean reslut = qualityOrderService.toDefaultJingFeng(order, userOrders, orderArgeLogs, 0);
+        if(reslut){
+            return succResult();
+        }else{
+            return badResult(ErrCodeMsg.COMMON_FAIL);
+        }
+    }
+
+
+    /**
+     * 自定义精封分配
      *
      * @return
      */

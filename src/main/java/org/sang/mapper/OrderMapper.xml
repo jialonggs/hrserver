@@ -444,6 +444,9 @@
             <if test="order.liuChengStatus != null">
                 liuChengStatus = #{order.liuChengStatus},
             </if>
+            <if test="order.jingFengStatus != null">
+                jingFengStatus = #{order.jingFengStatus},
+            </if>
            updateTime = now()
         </set>
         where id = #{order.id}

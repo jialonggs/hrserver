@@ -6,6 +6,7 @@
     <resultMap id="user1" type="org.sang.bean.responseEntity.FlowStepsResp">
         <id property="id" column="flowId"/>
         <result property="flowName" column="flowName"/>
+        <result property="tieHuaNum" column="tieHuaNum"/>
         <collection property="stepslist" column="flowId" ofType="org.sang.bean.FlowSteps">
             <id property="id" column="id"/>
             <result property="stepName" column="stepName"/>
@@ -24,14 +25,14 @@
     </resultMap>
 
     <select id="selectAll"  resultMap="user1">
-        SELECT t1.`id` `flowId`,t1.`flowName`,t2.*
+        SELECT t1.`id` `flowId`,t1.`flowName`,t1.`tieHuaNum`,t2.*
         FROM `work_flow` t1,`work_flow_step` t2
         WHERE t1.`id`=t2.`flowId` AND t1.`moren`=1 ORDER BY t2.stepIndex
     </select>
 
 
     <insert id="addFlow" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.Flow">
-        INSERT INTO work_flow set flowName=#{flowName},moren=#{moren},stepNum=#{stepNum},
+        INSERT INTO work_flow set flowName=#{flowName},moren=#{moren},stepNum=#{stepNum},tieHuaNum=#{tieHuaNum},
         addUserId=#{addUserId},addUserName=#{addUserName},remark=#{remark},status=0,updateTime=now(),createTime=now(),isDeleted=FALSE
     </insert>
 
