@@ -190,6 +190,14 @@ public class EmpBasicController {
     @RequestMapping(value = "/importEmp", method = RequestMethod.POST)
     public RespBean importEmp(MultipartFile file) {
         List<Employee> emps = PoiUtils.importEmp2List(file,empService.getAllNations(),empService.getAllPolitics(),departmentService.getAllDeps(),positionService.getAllPos(),jobLevelService.getAllJobLevels());
+        Long maxId = empService.getMaxWorkID();
+        if(!emps.isEmpty()){
+            for (Employee e : emps){
+              String  maxId1 =  String.format("%08d", maxId + 1);
+               e.setWorkID(maxId1);
+               maxId++;
+            }
+        }
         if (empService.addEmps(emps) == emps.size()) {
             return new RespBean("success", "导入成功!");
         }

@@ -28,9 +28,9 @@ public class UserOrderService {
      * @param pageInfoEntity
      * @return
      */
-    public PageBean<UserOrderCountResp> getOrdersList(PageInfoEntity pageInfoEntity, Integer userId) {
+    public PageBean<UserOrderCountResp> getOrdersList(PageInfoEntity pageInfoEntity, Integer userId,String startTime1,String endTime1) {
         PageHelper.startPage(pageInfoEntity.getCurrentPage(),pageInfoEntity.getPagesize());
-        List<UserOrderCountResp> list = userOrderMapper.getCountUserOrder(userId);
+        List<UserOrderCountResp> list = userOrderMapper.getCountUserOrder(userId, startTime1, endTime1);
         PageInfo page = new PageInfo(list);
         PageBean<UserOrderCountResp> pageData = new PageBean<>();
         pageData.setItems(list);

@@ -60,7 +60,16 @@
 
 
     <select id="getCountUserOrder" resultMap="getCountUserOrder">
-        SELECT * FROM work_user_order WHERE isDeleted=FALSE AND userId=#{userId}
+        SELECT * FROM work_user_order
+        <where>
+            <if test="startTime != null ">
+                createTime  &gt;= #{startTime}
+            </if>
+            <if test="endTime != null ">
+               AND createTime  &lt;= #{endTime}
+            </if>
+        </where>
+        AND isDeleted=FALSE AND userId=#{userId}
     </select>
 
     <select id="getByTime" resultType="org.sang.bean.UserOrder" >
