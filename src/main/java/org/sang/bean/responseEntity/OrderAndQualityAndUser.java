@@ -6,17 +6,17 @@ import org.sang.bean.UserOrder;
 
 import java.util.List;
 
-public class QualityOrderResp extends QualityOrderUser{
-    private Order order;
+public class OrderAndQualityAndUser extends Order{
 
+    private List<QualityOrderUser> qualityOrderUsers;
     private List<UserOrder> orderUsers;
 
-    public Order getOrder() {
-        return order;
+    public List<QualityOrderUser> getQualityOrderUsers() {
+        return qualityOrderUsers;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setQualityOrderUsers(List<QualityOrderUser> qualityOrderUsers) {
+        this.qualityOrderUsers = qualityOrderUsers;
     }
 
     public List<UserOrder> getOrderUsers() {

@@ -9,6 +9,7 @@ import org.sang.bean.requestEntity.OrderFenPeiRequest;
 import org.sang.bean.requestEntity.OrderLiuZhuanRequest;
 import org.sang.bean.requestEntity.YgaRquest;
 import org.sang.bean.responseEntity.BaseResponseEntity;
+import org.sang.bean.responseEntity.OrderAndProject;
 import org.sang.bean.responseEntity.OverOrderResponse;
 import org.sang.config.ErrCodeMsg;
 import org.sang.controller.BaseController;
@@ -55,8 +56,8 @@ public class PlantOrderController extends BaseController{
         PageInfoEntity pageInfoEntity = new PageInfoEntity();
         pageInfoEntity.setCurrentPage(page);
         pageInfoEntity.setPagesize(size);
-        List<Order> orderslist = new ArrayList<>();
-        PageBean<Order> list = orderService.getPlantOrdersList(pageInfoEntity, userId, plantStatus);
+        List<OrderAndProject> orderslist = new ArrayList<>();
+        PageBean<OrderAndProject> list = orderService.getPlantOrdersList(pageInfoEntity, userId, plantStatus);
         if(null != list && list.getItems()!=null && list.getItems().size() !=0){
             orderslist = list.getItems();
             map.put("count",list.getPageInfo().getTotal());

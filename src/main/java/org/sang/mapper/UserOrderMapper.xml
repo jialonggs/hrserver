@@ -59,6 +59,11 @@
     </select>
 
 
+    <select id="getByOrderId" resultType="org.sang.bean.UserOrder">
+        SELECT * FROM work_user_order WHERE isDeleted=FALSE AND orderId=#{id}
+    </select>
+
+
     <select id="getCountUserOrder" resultMap="getCountUserOrder">
         SELECT * FROM work_user_order
         <where>

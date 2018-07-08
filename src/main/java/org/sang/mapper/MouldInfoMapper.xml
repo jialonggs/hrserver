@@ -100,6 +100,16 @@
         where id = #{id}
     </update>
 
+
+    <update id="updateMould" >
+        update work_mould_info  SET
+        orderId =  0,
+        selectId = 0,
+        isSelected = false,
+        updateTime = now()
+        where id = #{id}
+    </update>
+
     <!--<update id="updateMouldInfoBySelected" >-->
         <!--&lt;!&ndash; 接收list参数，循环着组装sql语句，注意for循环的写法-->
              <!--separator=";" 代表着每次循环完，在sql后面放一个分号-->

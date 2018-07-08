@@ -99,7 +99,7 @@ public class FinanceController extends BaseController{
      * @param
      * @return
      */
-    @RequestMapping(value = "/get/order/business", method = RequestMethod.GET)
+    @RequestMapping(value = "/auth/get/order/business", method = RequestMethod.GET)
     public BaseResponseEntity addProjectProduct(@RequestParam("projectId") Long projectId){
         if(null == projectId) {
             return badResult(ErrCodeMsg.ARGS_MISSING);

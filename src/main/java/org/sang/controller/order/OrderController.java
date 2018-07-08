@@ -3,6 +3,7 @@ package org.sang.controller.order;
 
 import org.apache.ibatis.annotations.Param;
 import org.sang.bean.*;
+import org.sang.bean.requestEntity.OrderRequestInfo;
 import org.sang.bean.responseEntity.BaseResponseEntity;
 import org.sang.bean.responseEntity.FaMoOrder;
 import org.sang.bean.responseEntity.MouldPartTreeResp;
@@ -14,10 +15,7 @@ import org.sang.utils.PageBean;
 import org.sang.utils.QrCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -54,6 +52,59 @@ public class OrderController extends BaseController{
     public  String imgurl;
 
 
+    /**
+     * 新的添加接口
+     * @param orderRequestInfo
+     * @return
+     */
+    @RequestMapping(value = "/new/add", method = RequestMethod.POST)
+    public BaseResponseEntity addNewOrderInfo( @RequestBody OrderRequestInfo orderRequestInfo){
+        if(null == orderRequestInfo.getControlOrderFrom() || null == orderRequestInfo.getMouldIds() ||
+                null == orderRequestInfo.getOrder()) {
+            return badResult(ErrCodeMsg.ARGS_MISSING);
+        }
+        String mouldIds = orderRequestInfo.getMouldIds();
+        if(null == mouldIds ) {
+            return badResult(ErrCodeMsg.ARGS_MISSING);
+        }
+        String[] selectMoulds = mouldIds.split(",");
+        if(null == selectMoulds || selectMoulds.length <=0){
+            return badResult(ErrCodeMsg.ARGS_MISSING);
+        }
+        Long[] selectedMouldIds = new Long[selectMoulds.length];
+        for(int i=0; i<selectMoulds.length; i++){
+            selectedMouldIds[i] = Long.parseLong(selectMoulds[i]);
+        }
+        Order order = orderRequestInfo.getOrder();
+        if(order.getExpectedTime() == null){
+            order.setExpectedTime(new Date());
+        }
+
+        // 生成二维码并存入相应的地址
+        Date date = new Date();
+        String qrName = date.getTime()+"";
+        String  path = location+"qrcode"+"/" + qrName +".png";
+        Long orderId =  orderService.getMaxOrderID() + 1;
+        Map<String, Object> map = new HashMap<>();
+        order.setPresentStepName("待加工");
+        order.setPresentSchedule(0.0);
+        QrCodeUtil.zxingCodeCreate("http://39.107.78.95:8082/order.html?orderId="+orderId,500,500,path,"png");
+        String url = imgurl +"qrcode"+ "/" + qrName + ".png";
+        order.setQrCode(url);
+        Long i = orderService.addNewOrder(order, selectedMouldIds, orderRequestInfo.getControlOrderFrom());
+        if (i >= 1) {
+            // 发送信息给车间主管
+            String msg = "新订单【" + order.getOrderName()+"】,由  _ "+  order.getAddUserName() +" _ 创建成功,请查看";
+            String title = "新订单";
+            List<Long> ids = new ArrayList<>();
+            ids.add(order.getManagerId());
+            sendMessageService.toSendByIds(msg, title, ids);
+            map.put("id",i);
+            return  succResult(map);
+        } else {
+            return badResult(ErrCodeMsg.COMMON_FAIL);
+        }
+    }
 
     /**
      * 查询项目列表
@@ -98,7 +149,7 @@ public class OrderController extends BaseController{
      * @return
      */
     @RequestMapping(value = "/add/order", method = RequestMethod.POST)
-    public BaseResponseEntity addShouMo(Order order) {
+    public BaseResponseEntity addOrderInfo(Order order) {
         if(null == order  ) {
             return badResult(ErrCodeMsg.ARGS_MISSING);
         }
@@ -181,6 +232,27 @@ public class OrderController extends BaseController{
             e.printStackTrace();
             return  badResult(ErrCodeMsg.SYSTEM_ERROR);
         }
+    }
+
+
+    /**
+     * 更新模具选择
+     * @param mouldId
+     * @return
+     */
+
+    @RequestMapping(value = "/update/set/mould", method = RequestMethod.POST)
+    public BaseResponseEntity updateMould(@RequestParam("mouldId") Long mouldId){
+        if(null == mouldId) {
+            return badResult(ErrCodeMsg.ARGS_MISSING);
+        }
+        Boolean updateResult = orderService.updateMould(mouldId);
+        if(updateResult){
+            return succResult();
+        }else{
+            return badResult(ErrCodeMsg.COMMON_FAIL);
+        }
+
     }
 
     /**

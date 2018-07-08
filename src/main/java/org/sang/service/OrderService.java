@@ -5,8 +5,10 @@ import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Param;
 import org.sang.bean.*;
 import org.sang.bean.requestEntity.AddFuKuanRequest;
+import org.sang.bean.requestEntity.MouldRequest;
 import org.sang.bean.responseEntity.BaseResponseEntity;
 import org.sang.bean.responseEntity.FaMoOrder;
+import org.sang.bean.responseEntity.OrderAndProject;
 import org.sang.bean.responseEntity.OrderInfoResp;
 import org.sang.mapper.*;
 import org.sang.utils.DoubleUtil;
@@ -34,6 +36,29 @@ public class OrderService {
     @Autowired
     HrMapper hrMapper;
 
+    @Autowired
+    ControlOrderFromMapper controlOrderFromMapper;
+
+
+    /**
+     * 新的添加订单
+     * @param order
+     * @param mouldIds
+     * @param controlOrderFrom
+     * @return
+     */
+    @Transactional
+    public Long addNewOrder(Order order, Long[] mouldIds, ControlOrderFrom controlOrderFrom){
+        // 添加订单信息
+        Long orderId = orderMapper.addOrder(order);
+        controlOrderFrom.setOrderId(orderId);
+        controlOrderFromMapper.addControlOrderFrom(controlOrderFrom);
+        for (Long id : mouldIds){
+            mouldInfoMapper.updateMouldInfoBySelected(id, Long.parseLong(order.getAddUserId()), orderId);
+        }
+        return orderId;
+
+    }
 
 
     /**
@@ -59,11 +84,11 @@ public class OrderService {
      * @param pageInfoEntity
      * @return
      */
-    public PageBean<Order> getPlantOrdersList(PageInfoEntity pageInfoEntity, Long userId, Integer plantStatus) {
+    public PageBean<OrderAndProject> getPlantOrdersList(PageInfoEntity pageInfoEntity, Long userId, Integer plantStatus) {
         PageHelper.startPage(pageInfoEntity.getCurrentPage(),pageInfoEntity.getPagesize());
-        List<Order> list = orderMapper.getPlantOrdersList(userId, plantStatus);
+        List<OrderAndProject> list = orderMapper.getPlantOrdersList(userId, plantStatus);
         PageInfo page = new PageInfo(list);
-        PageBean<Order> pageData = new PageBean<>();
+        PageBean<OrderAndProject> pageData = new PageBean<>();
         pageData.setItems(list);
         pageData.setPageInfo(page);
         return  pageData;
@@ -205,4 +230,12 @@ public class OrderService {
     }
 
 
+    public Boolean updateMould(Long mouldId){
+        int i = mouldInfoMapper.updateMould(mouldId);
+        if(i>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

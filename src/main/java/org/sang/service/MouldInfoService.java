@@ -92,6 +92,7 @@ public class MouldInfoService {
                 for (ShouMoListResp shouMoList : list) {
 
                     Long id = shouMoList.getId();
+                    String  companyName = shouMoList.getClientCompanyName();
 
                     // 获取该批次中所有模具列表 按时间排序
                     List<MouldInfo> partList = shouMoList.getMouldInfos();
@@ -106,7 +107,10 @@ public class MouldInfoService {
                             treeMouldInfoResps.add(treeMouldInfoResp);
                         }
                         MouldPartChildrenResp mouldPartChildrenResp = new MouldPartChildrenResp();
-                        mouldPartChildrenResp.setLabel(shouMoList.getBatch());
+                        if(companyName == null || companyName.isEmpty()){
+                            companyName = "无";
+                        }
+                        mouldPartChildrenResp.setLabel(shouMoList.getBatch()+ "(" +companyName+")");
                         mouldPartChildrenResp.setId(shouMoList.getId());
                         mouldPartChildrenResp.setDisabled(true);
                         // 设置本批次下所有的模具节点

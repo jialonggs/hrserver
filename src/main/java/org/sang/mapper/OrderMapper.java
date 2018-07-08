@@ -6,6 +6,7 @@ import org.omg.PortableInterceptor.INACTIVE;
 import org.sang.bean.Order;
 import org.sang.bean.requestEntity.AddFuKuanRequest;
 import org.sang.bean.responseEntity.FaMoOrder;
+import org.sang.bean.responseEntity.OrderAndProject;
 import org.sang.bean.responseEntity.OrderInfoResp;
 import org.sang.bean.responseEntity.OverOrderResponse;
 import org.springframework.security.access.method.P;
@@ -22,13 +23,13 @@ public interface OrderMapper {
 
     List<FaMoOrder> getOrderAndProject(@Param("addUserId") Integer addUserId);
 
-    List<Order> getPlantOrdersList(@Param("userId") Long userId, @Param("plantStatus") Integer plantStatus);
+    List<OrderAndProject> getPlantOrdersList(@Param("userId") Long userId, @Param("plantStatus") Integer plantStatus);
 
     List<Order> getStroageOrdersList(@Param("liuChengStatus") Integer liuChengStatus, @Param("jingFengStatus") Integer jingFengStatus, @Param("storageStatus") Integer storageStatus);
 
     List<Order> getStroageOrdersList1(@Param("storageStatus") Integer storageStatus);
 
-    int addOrder(Order order);
+    Long addOrder(Order order);
 
     List<Order> getOrdersUnAddTech(@Param("techId") Boolean techId);
 

@@ -60,6 +60,74 @@
     </resultMap>
 
 
+    <resultMap type="org.sang.bean.responseEntity.OrderAndProject" id="orderAndProject">
+        <id column="id" property="id"/>
+        <result column="orderName" property="orderName"/>
+        <result column="qrCode" property="qrCode"/>
+        <result column="beiShu" property="beiShu"/>
+        <result column="projectId" property="projectId"/>
+        <result column="technologyId" property="technologyId"/>
+        <result column="managerId" property="managerId"/>
+        <result column="managerName" property="managerName"/>
+        <result column="expected" property="expected"/>
+        <result column="expectedTime" property="expectedTime"/>
+        <result column="presentStepId" property="presentStepId"/>
+        <result column="presentStepName" property="presentStepName"/>
+        <result column="presentSchedule" property="presentSchedule"/>
+        <result column="clientCompanyName" property="clientCompanyName"/>
+        <result column="urgency" property="urgency"/>
+        <result column="hasRemark" property="hasRemark"/>
+        <result column="machiningType" property="machiningType"/>
+        <result column="realityArea" property="realityArea"/>
+
+        <result column="stayArea" property="stayArea"/>
+        <result column="alreadyArea" property="alreadyArea"/>
+        <result column="perfectArea" property="perfectArea"/>
+        <result column="appliqueArea" property="appliqueArea"/>
+        <result column="ygb" property="ygb"/>
+        <result column="liuZhuanStatus" property="liuZhuanStatus"/>
+        <result column="liuZhuanArea" property="liuZhuanArea"/>
+        <result column="liuZhuanBiLi" property="liuZhuanBiLi"/>
+        <result column="nanDuDengJi" property="nanDuDengJi"/>
+        <result column="picUrls" property="picUrls"/>
+        <result column="finishTime" property="finishTime"/>
+        <result column="techId" property="techId"/>
+        <result column="yaoJian" property="yaoJian"/>
+        <result column="plantStatus" property="plantStatus"/>
+        <result column="liuChengStatus" property="liuChengStatus"/>
+        <result column="jingFengStatus" property="jingFengStatus"/>
+        <result column="piWenDaiMa" property="piWenDaiMa"/>
+
+        <result column="financeStatus" property="financeStatus"/>
+        <result column="financeBiLi" property="financeBiLi"/>
+        <result column="financeJinE" property="financeJinE"/>
+        <result column="financeTime" property="financeTime"/>
+
+        <result column="faMoStatus" property="faMoStatus"/>
+
+        <result column="addUserId" property="addUserId"/>
+        <result column="addUserName" property="addUserName"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="isDeleted" property="isDeleted"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="createTime" property="createTime"/>
+        <result column="storageTime" property="storageTime"/>
+
+        <association property="project" javaType="org.sang.bean.Project" column="projectId"
+            select="org.sang.mapper.ProjectMapper.getProjectById">
+         </association>
+
+        <collection property="qualityOrderUsers" ofType="org.sang.bean.QualityOrderUser" column="id"
+                    select="org.sang.mapper.QualityOrderUserMapper.getQualityOrders">
+        </collection>
+
+        <collection property="orderUsers" ofType="org.sang.bean.UserOrder" column="id"
+                    select="org.sang.mapper.UserOrderMapper.getByOrderId">
+        </collection>
+    </resultMap>
+
+
     <resultMap type="org.sang.bean.responseEntity.OrderInfoResp" id="getOrdersResp">
         <id column="id" property="id"/>
         <result column="orderName" property="orderName"/>
@@ -132,9 +200,13 @@
                     select="org.sang.mapper.MouldInfoMapper.getByOrderId">
         </collection>
 
+        <collection property="qualityOrderUsers" ofType="org.sang.bean.QualityOrderUser" column="id"
+                    select="org.sang.mapper.QualityOrderUserMapper.getQualityOrders">
+        </collection>
 
-
-
+        <collection property="orderUsers" ofType="org.sang.bean.UserOrder" column="id"
+                    select="org.sang.mapper.UserOrderMapper.getByOrderId">
+        </collection>
 
     </resultMap>
 
@@ -285,7 +357,7 @@
         SELECT * FROM work_orders WHERE isDeleted=FALSE AND id=#{orderId}
     </select>
 
-    <select id="getPlantOrdersList" resultType="org.sang.bean.Order">
+    <select id="getPlantOrdersList" resultMap="orderAndProject">
         SELECT * FROM work_orders
         <where>
             <if test=" userId!= 3 ">

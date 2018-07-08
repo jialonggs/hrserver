@@ -13,6 +13,8 @@ public interface UserOrderMapper {
 
     List<UserOrder> getUserOrderByOrderId(@Param("orderId") Long orderId, @Param("status") Integer status);
 
+    List<UserOrder> getByOrderId(@Param("id") Long orderId);
+
     int updateUserAage(@Param("userOrder") UserOrder userOrder);
 
     List<UserOrder> getByTime(@Param("startTime") String startTime);

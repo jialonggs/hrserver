@@ -27,4 +27,6 @@ public interface MouldInfoMapper {
 //    int updateMouldInfoBySelected(Map<String,Object> map);
    int updateMouldInfoBySelected(@Param("id") Long id, @Param("selectId") Long uid,@Param("orderId") Long orderId );
 
+   int updateMould(@Param("id") Long id);
+
 }

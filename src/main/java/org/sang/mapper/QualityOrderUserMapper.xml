@@ -82,6 +82,9 @@
         <association property="order" javaType="org.sang.bean.Order" column="orderId"
                      select="org.sang.mapper.OrderMapper.getOrderInfoById">
         </association>
+        <collection property="orderUsers" ofType="org.sang.bean.UserOrder" column="orderId"
+                    select="org.sang.mapper.UserOrderMapper.getByOrderId">
+        </collection>
     </resultMap>
 
     <select id="getQualityOrdersList" resultMap="getQualityOrdersMap">
