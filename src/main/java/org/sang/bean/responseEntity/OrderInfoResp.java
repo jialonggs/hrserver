@@ -12,6 +12,7 @@ public class OrderInfoResp extends Order{
     private Project project;
     private List<QualityOrderUser> qualityOrderUsers;
     private List<UserOrder> orderUsers;
+    private OrderFlow orderFlow;
 
     public List<MouldInfo> getMouldInfoList() {
         return mouldInfoList;
@@ -59,5 +60,14 @@ public class OrderInfoResp extends Order{
 
     public void setOrderUsers(List<UserOrder> orderUsers) {
         this.orderUsers = orderUsers;
+    }
+
+
+    public OrderFlow getOrderFlow() {
+        return orderFlow;
+    }
+
+    public void setOrderFlow(OrderFlow orderFlow) {
+        this.orderFlow = orderFlow;
     }
 }

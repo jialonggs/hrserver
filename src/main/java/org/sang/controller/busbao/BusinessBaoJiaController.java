@@ -10,6 +10,7 @@ import org.sang.bean.requestEntity.AddYuBaoJiaRequest;
 import org.sang.bean.requestEntity.BusinessProductRquest;
 import org.sang.bean.requestEntity.YuProductRquest;
 import org.sang.bean.responseEntity.BaseResponseEntity;
+import org.sang.bean.responseEntity.BusInfoResp;
 import org.sang.bean.responseEntity.ProjectListResp;
 import org.sang.config.ErrCodeMsg;
 import org.sang.controller.BaseController;
@@ -241,6 +242,25 @@ public class BusinessBaoJiaController extends BaseController{
         }else{
             return badResult(ErrCodeMsg.COMMON_FAIL);
         }
+    }
+
+
+
+    /**
+     * 获取详情
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    public BaseResponseEntity getInfoById(@RequestParam("id") Long id){
+        if(null == id ) {
+            return badResult(ErrCodeMsg.ARGS_MISSING);
+        }
+        Map<String, Object> map = new HashMap<>();
+        BusInfoResp busInfoResp = businessBaoJiaService.getById(id);
+        map.put("businfo", busInfoResp);
+        return succResult(map);
+
     }
 
 

@@ -196,6 +196,10 @@
                      select="org.sang.mapper.TechCardMapper.getByOrderId">
         </association>
 
+        <association property="orderFlow" javaType="org.sang.bean.OrderFlow" column="id"
+                     select="org.sang.mapper.OrderFlowMapper.getByOrderId">
+        </association>
+
         <collection property="mouldInfoList" ofType="org.sang.bean.MouldInfo" column="id"
                     select="org.sang.mapper.MouldInfoMapper.getByOrderId">
         </collection>
@@ -207,6 +211,10 @@
         <collection property="orderUsers" ofType="org.sang.bean.UserOrder" column="id"
                     select="org.sang.mapper.UserOrderMapper.getByOrderId">
         </collection>
+
+        <!--<collection property="mouldInfos" ofType="org.sang.bean.MouldInfo" column="id"-->
+                    <!--select="org.sang.mapper.MouldInfoMapper.getByOrderId">-->
+        <!--</collection>-->
 
     </resultMap>
 

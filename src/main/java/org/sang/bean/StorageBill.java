@@ -21,7 +21,7 @@ public class StorageBill {
     private String hanBaHen;
     private String wenLiShuJu;
     private String waiGuan;
-
+    private String picUrls;
 
     private String addUserId;
     private String addUserName;
@@ -221,5 +221,13 @@ public class StorageBill {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getPicUrls() {
+        return picUrls;
+    }
+
+    public void setPicUrls(String picUrls) {
+        this.picUrls = picUrls;
     }
 }

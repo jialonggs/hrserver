@@ -29,7 +29,7 @@
         guangZe=#{guangZe},qiKong=#{qiKong},pengChuanBian=#{pengChuanBian},chaiZhi=#{chaiZhi},
         teShuWenLi=#{teShuWenLi},queKou=#{queKou},guangBian=#{guangBian},
         lieFeng=#{lieFeng},hanBaHen=#{hanBaHen},wenLiShuJu=#{wenLiShuJu},
-        waiGuan=#{waiGuan},
+        waiGuan=#{waiGuan},picUrls=#{picUrls},
         addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},remark=#{remark},updateTime=now(),createTime=now(),isDeleted=FALSE
     </insert>
 

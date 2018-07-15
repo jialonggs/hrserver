@@ -5,6 +5,7 @@ import org.sang.bean.*;
 import org.sang.bean.requestEntity.AddYuBaoJiaRequest;
 import org.sang.bean.requestEntity.YuProductRquest;
 import org.sang.bean.responseEntity.BaseResponseEntity;
+import org.sang.bean.responseEntity.YuBaoJiaInfoResp;
 import org.sang.config.ErrCodeMsg;
 import org.sang.controller.BaseController;
 import org.sang.service.YuBaoJiaService;
@@ -129,6 +130,24 @@ public class YuBaoJiaController extends BaseController{
         }else{
             return badResult(ErrCodeMsg.COMMON_FAIL);
         }
+    }
+
+
+    /**
+     * 获取详情
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    public BaseResponseEntity getInfoById(@RequestParam("id") Long id){
+        if(null == id ) {
+            return badResult(ErrCodeMsg.ARGS_MISSING);
+        }
+        Map<String, Object> map = new HashMap<>();
+        YuBaoJiaInfoResp yuInfoResp = yuBaoJiaService.getById(id);
+        map.put("yuinfo", yuInfoResp);
+        return succResult(map);
+
     }
 
 
