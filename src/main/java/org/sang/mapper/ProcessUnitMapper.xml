@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.ProcessUnitMapper">
+
+
+    <resultMap id="BaseResultMap" type="org.sang.bean.ProcessUnit">
+        <id column="id" property="id"/>
+        <result column="clientCompanyName" property="clientCompanyName"/>
+        <result column="contactPerson" property="contactPerson"/>
+        <result column="contactPhone" property="contactPhone"/>
+        <result column="address" property="address"/>
+        <result column="addUserId" property="addUserId"/>
+        <result column="addUserName" property="addUserName"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="isDeleted" property="isDeleted"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="createTime" property="createTime"/>
+    </resultMap>
+    <resultMap id="lazyLoadCars" type="org.sang.bean.ProcessUnit" extends="BaseResultMap">
+        <collection property="cars" ofType="org.sang.bean.Car" select="org.sang.mapper.CarMapper.getByUnitId"
+                    column="id"></collection>
+    </resultMap>
+
+    <select id="getByName" resultType="org.sang.bean.ProcessUnit">
+        select * from work_process_nuit where clientCompanyName=#{name}
+    </select>
+
+    <select id="getById" resultType="org.sang.bean.ProcessUnit">
+        select * from work_process_nuit where id=#{unitId} AND isDeleted=FALSE
+    </select>
+
+    <insert id="addUnit" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.ProcessUnit">
+        INSERT INTO work_process_nuit set clientCompanyName=#{clientCompanyName},contactPerson=#{contactPerson},contactPhone=#{contactPhone}, address=#{address},addUserName=#{addUserName},remark=#{remark},
+        isDeleted=FALSE,updateTime=now(),createTime=now()
+    </insert>
+
+    <update id="updateUnit" parameterType="org.sang.bean.ProcessUnit">
+        update work_process_nuit
+        <set>
+            <if test="clientCompanyName != null">
+                clientCompanyName = #{clientCompanyName},
+            </if>
+            <if test="contactPerson != null">
+                contactPerson = #{contactPerson},
+            </if>
+            <if test="contactPhone != null">
+                contactPhone = #{contactPhone},
+            </if>
+            <if test="address != null">
+                address = #{address},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            updateTime = now()
+        </set>
+        where id = #{id}
+    </update>
+
+
+    <insert id="addCarForUnit">
+        INSERT INTO work_car_unit(u_id,c_id) VALUES
+        <foreach collection="c_ids" separator="," item="c_id">
+            (#{u_id},#{c_id})
+        </foreach>
+    </insert>
+
+
+    <!--获取加工单位列表-->
+    <select id="getUnitList" resultMap="lazyLoadCars">
+        SELECT * FROM work_process_nuit WHERE isDeleted=FALSE  ORDER BY id DESC
+    </select>
+
+
+    <!--<select id="getAllUnitList" resultMap="lazyLoadCars">-->
+        <!--SELECT * FROM work_process_nuit WHERE isDeleted=FALSE  ORDER BY id DESC-->
+    <!--</select>-->
+
+    <select id="getListByCarId" resultType="org.sang.bean.ProcessUnit">
+        SELECT * FROM work_process_nuit WHERE isDeleted=FALSE AND id IN (SELECT u_id FROM work_car_unit WHERE c_id = #{carId})ORDER BY id DESC
+    </select>
+
+    <delete id="deleteCarByUnitId" parameterType="Long">
+        DELETE FROM work_car_unit where u_id=#{unitId}
+    </delete>
+
+
+</mapper>

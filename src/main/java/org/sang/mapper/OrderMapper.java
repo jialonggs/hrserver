@@ -4,11 +4,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.omg.PortableInterceptor.INACTIVE;
 import org.sang.bean.Order;
+import org.sang.bean.Project;
 import org.sang.bean.requestEntity.AddFuKuanRequest;
-import org.sang.bean.responseEntity.FaMoOrder;
-import org.sang.bean.responseEntity.OrderAndProject;
-import org.sang.bean.responseEntity.OrderInfoResp;
-import org.sang.bean.responseEntity.OverOrderResponse;
+import org.sang.bean.responseEntity.*;
 import org.springframework.security.access.method.P;
 
 import java.util.Date;
@@ -33,7 +31,10 @@ public interface OrderMapper {
 
     List<Order> getOrdersUnAddTech(@Param("techId") Boolean techId);
 
-    int updateOrderTech(@Param("id") Long orderId, @Param("workArea") Double workArea);
+    List<TechOrder> getOrdersUnAddTech1();
+
+
+    int updateOrderTech(@Param("id") Long orderId, @Param("workArea") Double workArea, @Param("techNum") Integer techNum);
 
     List<Order> getUnYaoJianList(@Param("yaoJian") Boolean yaoJian);
 
@@ -66,6 +67,10 @@ public interface OrderMapper {
     List<OverOrderResponse> getOverOrdersList(@Param("jingFengStatus") Integer jingFengStatus, @Param("liuChengStatus") Integer liuChengStatus);
 
     List<Order> getCheckOrder(@Param("beginDate") String beginDate);
+
+    List<FaMoOrder> getOrderByCondition(@Param("addUserId") Long addUserId, @Param("projectList") List<Project> projectList);
+
+    List<FaMoOrder> getOrdersByPId(@Param("addUserId") Long addUserId,@Param("projectId")Long projectId);
 
 
 

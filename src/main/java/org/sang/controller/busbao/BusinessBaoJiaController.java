@@ -143,7 +143,7 @@ public class BusinessBaoJiaController extends BaseController{
             return badResult(ErrCodeMsg.ARGS_MISSING);
         }
         Map<String, Object> map = new HashMap<>();
-        List<Project> list = businessBaoJiaService.getProjectListByAddUserId(addUserId);
+        List<ProjectListResp>list = businessBaoJiaService.getProjectListByAddUserId(addUserId);
         if(null == list || list.isEmpty()){
             return badResult(ErrCodeMsg.COMMON_FAIL);
         }

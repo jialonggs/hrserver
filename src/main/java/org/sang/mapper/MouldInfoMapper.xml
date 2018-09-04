@@ -46,7 +46,7 @@
             AND createTime &lt;= #{endTime}
         </if>
     </where>
-    AND isDeleted=FALSE ORDER BY id
+    AND isDeleted=FALSE ORDER BY id DESC
 </select>
 
 

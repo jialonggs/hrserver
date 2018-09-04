@@ -4,6 +4,8 @@ import java.util.Date;
 
 public class Project {
     private Long id;
+    private Long unitId;
+    private Long carId;
     private String projectName;
     private String cilentCompanyName;
 
@@ -24,6 +26,9 @@ public class Project {
     private Boolean isDeleted;
     private Date updateTime;
     private Date createTime;
+
+    private Car car;
+    private ProcessUnit processUnit;
 
 
     public String getProjectName() {
@@ -176,5 +181,37 @@ public class Project {
 
     public void setKaiPiaoId(Long kaiPiaoId) {
         this.kaiPiaoId = kaiPiaoId;
+    }
+
+    public Long getUnitId() {
+        return unitId;
+    }
+
+    public void setUnitId(Long unitId) {
+        this.unitId = unitId;
+    }
+
+    public Long getCarId() {
+        return carId;
+    }
+
+    public void setCarId(Long carId) {
+        this.carId = carId;
+    }
+
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
+
+    public ProcessUnit getProcessUnit() {
+        return processUnit;
+    }
+
+    public void setProcessUnit(ProcessUnit processUnit) {
+        this.processUnit = processUnit;
     }
 }

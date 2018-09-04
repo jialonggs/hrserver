@@ -1,9 +1,6 @@
 package org.sang.bean.responseEntity;
 
-import org.sang.bean.BusinessBaoJia;
-import org.sang.bean.Order;
-import org.sang.bean.Project;
-import org.sang.bean.YuBaoJia;
+import org.sang.bean.*;
 
 import java.util.List;
 
@@ -22,6 +19,9 @@ public class ProjectListResp extends Project{
       private YuBaoJiaInfoResp yuBaoJia;
       private BusInfoResp businessBaoJia;
       private List<Order> orders;
+      private Car car;
+      private ProcessUnit processUnit;
+
 
 
     public YuBaoJiaInfoResp getYuBaoJia() {
@@ -54,5 +54,25 @@ public class ProjectListResp extends Project{
 
     public void setOrderNums(Integer orderNums) {
         this.orderNums = orderNums;
+    }
+
+    @Override
+    public Car getCar() {
+        return car;
+    }
+
+    @Override
+    public void setCar(Car car) {
+        this.car = car;
+    }
+
+    @Override
+    public ProcessUnit getProcessUnit() {
+        return processUnit;
+    }
+
+    @Override
+    public void setProcessUnit(ProcessUnit processUnit) {
+        this.processUnit = processUnit;
     }
 }

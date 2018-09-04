@@ -5,6 +5,7 @@ import java.util.Date;
 public class TechCard {
     private Long id;
     private Long orderId;
+    private Long wenliId;
     private String piWenDaiMa;
     private String nanDuXiShu;
     private Integer tieHuaBuShu;
@@ -148,5 +149,13 @@ public class TechCard {
 
     public void setOrderId(Long orderId) {
         this.orderId = orderId;
+    }
+
+    public Long getWenliId() {
+        return wenliId;
+    }
+
+    public void setWenliId(Long wenliId) {
+        this.wenliId = wenliId;
     }
 }

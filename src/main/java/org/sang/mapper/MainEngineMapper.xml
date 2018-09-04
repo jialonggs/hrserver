@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.MainEngineMapper">
+
+    <select id="getByName" resultType="org.sang.bean.MainEngine">
+        select * from work_main_engine where name=#{name}
+    </select>
+
+    <insert id="addMainEngine" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.MainEngine">
+        INSERT INTO work_main_engine set name=#{name},addUserId=#{addUserId},addUserName=#{addUserName},remark=#{remark},
+        isDeleted=FALSE,updateTime=now(),createTime=now()
+    </insert>
+
+    <!--获取主机厂列表-->
+    <select id="getEngineList" resultType="org.sang.bean.MainEngine">
+        SELECT * FROM work_main_engine WHERE isDeleted=FALSE  ORDER BY id DESC
+    </select>
+
+    <update id="updateEngine" parameterType="org.sang.bean.MainEngine">
+        update work_main_engine
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            updateTime = now()
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="getById" resultType="org.sang.bean.MainEngine">
+        select * from work_main_engine where id=#{id}
+    </select>
+
+
+</mapper>

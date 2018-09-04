@@ -7,6 +7,8 @@
     <resultMap type="org.sang.bean.responseEntity.ProjectListResp" id="getProjectListMap">
         <id column="id" property="id"/>
         <result column="projectName" property="projectName"/>
+        <result column="carId" property="carId"/>
+        <result column="unitId" property="unitId"/>
         <result column="cilentCompanyName" property="cilentCompanyName"/>
         <result column="addUserId" property="addUserId"/>
         <result column="addUserName" property="addUserName"/>
@@ -22,6 +24,12 @@
         <result column="shangWuStatus" property="shangWuStatus"/>
         <result column="orderNums" property="orderNums"/>
         <result column="orderSchedule" property="orderSchedule"/>
+        <association property="car" javaType="org.sang.bean.Car" column="carId"
+                     select="org.sang.mapper.CarMapper.getCarById">
+        </association>
+        <association property="processUnit" javaType="org.sang.bean.ProcessUnit" column="unitId"
+                     select="org.sang.mapper.ProcessUnitMapper.getById">
+        </association>
     </resultMap>
 
 
@@ -29,6 +37,8 @@
     <resultMap type="org.sang.bean.responseEntity.ProjectListResp" id="getProjectListMap1">
         <id column="id" property="id"/>
         <result column="projectName" property="projectName"/>
+        <result column="carId" property="carId"/>
+        <result column="unitId" property="unitId"/>
         <result column="cilentCompanyName" property="cilentCompanyName"/>
         <result column="addUserId" property="addUserId"/>
         <result column="addUserName" property="addUserName"/>
@@ -38,6 +48,18 @@
         <result column="isDeleted" property="isDeleted"/>
         <result column="updateTime" property="updateTime"/>
         <result column="createTime" property="createTime"/>
+        <association property="car" javaType="org.sang.bean.Car" column="carId"
+                     select="org.sang.mapper.CarMapper.getCarById">
+        </association>
+        <association property="processUnit" javaType="org.sang.bean.ProcessUnit" column="unitId"
+                     select="org.sang.mapper.ProcessUnitMapper.getById">
+        </association>
+        <association property="car" javaType="org.sang.bean.Car" column="carId"
+                     select="org.sang.mapper.CarMapper.getCarById">
+        </association>
+        <association property="processUnit" javaType="org.sang.bean.ProcessUnit" column="unitId"
+                     select="org.sang.mapper.ProcessUnitMapper.getById">
+        </association>
 
         <association property="yuBaoJia" javaType="org.sang.bean.YuBaoJia" column="id"
                      select="org.sang.mapper.YuBaoJiaMapper.getByProjectId">
@@ -53,12 +75,20 @@
 
 
     <!--查询项目列表-->
-    <resultMap type="org.sang.bean.Project" id="getProjectMap">
+    <resultMap type="org.sang.bean.responseEntity.ProjectListResp" id="getProjectMap">
         <id column="id" property="id"/>
+        <result column="carId" property="carId"/>
+        <result column="unitId" property="unitId"/>
         <result column="projectName" property="projectName"/>
         <result column="cilentCompanyName" property="cilentCompanyName"/>
         <result column="addUserId" property="addUserId"/>
         <result column="addUserName" property="addUserName"/>
+        <association property="car" javaType="org.sang.bean.Car" column="carId"
+                     select="org.sang.mapper.CarMapper.getCarById">
+        </association>
+        <association property="processUnit" javaType="org.sang.bean.ProcessUnit" column="unitId"
+                     select="org.sang.mapper.ProcessUnitMapper.getById">
+        </association>
     </resultMap>
 
     <!--获取项目列表-->
@@ -66,7 +96,7 @@
         SELECT * FROM work_project WHERE isDeleted=FALSE ORDER BY id DESC
     </select>
 
-    <select id="getProjectById" resultType="org.sang.bean.Project">
+    <select id="getProjectById" resultMap="getProjectListMap">
         SELECT * FROM work_project WHERE isDeleted=FALSE AND id=#{projectId}
     </select>
 
@@ -82,6 +112,19 @@
     <!--根据uid获取项目列表-->
     <select id="getByUid" resultType="org.sang.bean.Project">
         SELECT * FROM work_project WHERE isDeleted=FALSE  ORDER BY id DESC
+    </select>
+
+    <select id="getByUnitId" resultType="org.sang.bean.Project">
+    SELECT * FROM work_project WHERE isDeleted=FALSE  AND unitId=#{unitId} ORDER BY id DESC
+</select>
+
+
+    <select id="getByCarId" resultType="org.sang.bean.Project">
+        SELECT * FROM work_project WHERE isDeleted=FALSE  AND carId=#{carId} ORDER BY id DESC
+    </select>
+
+    <select id="getByEngineId" resultType="org.sang.bean.Project">
+        SELECT * FROM work_project WHERE isDeleted=FALSE  AND carId IN (SELECT id FROM work_car_type WHERE mainEngineId=#{engineId} ) ORDER BY id DESC
     </select>
 
     <!--<select id="getFinanceProject" resultType="org.sang.bean.Project">-->
@@ -112,7 +155,7 @@
 
 
     <insert id="addProject" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.Project">
-        INSERT INTO work_project set projectName=#{projectName},cilentCompanyName=#{cilentCompanyName},
+        INSERT INTO work_project set projectName=#{projectName},unitId=#{unitId},carId=#{carId},cilentCompanyName=#{cilentCompanyName},
         financeStatus=0,financeBiLi='0',financeJinE='0',financeRemark='',
         kaiPiaoStatus=0,
         addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},remark=#{remark},

@@ -1,9 +1,13 @@
 package org.sang.controller.tech;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import org.sang.bean.Order;
 import org.sang.bean.PageInfoEntity;
 import org.sang.bean.TechCard;
+import org.sang.bean.WenLi;
 import org.sang.bean.responseEntity.BaseResponseEntity;
+import org.sang.bean.responseEntity.TechOrder;
 import org.sang.config.ErrCodeMsg;
 import org.sang.controller.BaseController;
 import org.sang.service.OrderService;
@@ -35,18 +39,56 @@ public class TechController extends BaseController{
      * 查询未提交工艺卡
      * @return
      */
+//    @RequestMapping(value = "/listbypage", method = RequestMethod.GET)
+//    public BaseResponseEntity getOrdersList(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size
+//                                            ) {
+//
+//        Map<String, Object> map = new HashMap<>();
+//        PageInfoEntity pageInfoEntity = new PageInfoEntity();
+//        pageInfoEntity.setCurrentPage(page);
+//        pageInfoEntity.setPagesize(size);
+//        List<Order> stayorderlist = new ArrayList<>();
+//        PageBean<Order> list = orderService.getOrdersUnAddedTech(pageInfoEntity,false);
+//        if(null != list && list.getItems()!=null && list.getItems().size() !=0){
+//            stayorderlist = list.getItems();
+//            map.put("count",list.getPageInfo().getTotal());
+//        }
+//        map.put("stayorderlist", stayorderlist);
+//        return succResult(map);
+//    }
+
+
+    /**
+     * 查询未提交工艺卡
+     * @return
+     */
     @RequestMapping(value = "/listbypage", method = RequestMethod.GET)
     public BaseResponseEntity getOrdersList(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size
-                                            ) {
+    ) {
 
         Map<String, Object> map = new HashMap<>();
         PageInfoEntity pageInfoEntity = new PageInfoEntity();
         pageInfoEntity.setCurrentPage(page);
         pageInfoEntity.setPagesize(size);
-        List<Order> stayorderlist = new ArrayList<>();
-        PageBean<Order> list = orderService.getOrdersUnAddedTech(pageInfoEntity,false);
+        List<TechOrder> stayorderlist = new ArrayList<>();
+        PageBean<TechOrder> list = orderService.getOrdersUnAddedTech(pageInfoEntity);
         if(null != list && list.getItems()!=null && list.getItems().size() !=0){
+            //JSONArray jsonArray = new JSONArray();
             stayorderlist = list.getItems();
+//            for(Order order : stayorderlist){
+//                List<WenLi> wenLis = order.getWenlis();
+//                if(null != wenLis && !wenLis.isEmpty()){
+//                    for (WenLi wenLi : wenLis){
+//                        JSONObject item = new JSONObject();
+//                        item.put("orderName", order.getOrderName());
+//                        item.put("urgency", order.getUrgency());
+//                        item.put("addUserName", order.getAddUserName());
+//                        item.put("orderId", order.getId());
+//                        item.put("wenliName", wenLi.ge)
+//                    }
+//                }
+//            }
+
             map.put("count",list.getPageInfo().getTotal());
         }
         map.put("stayorderlist", stayorderlist);

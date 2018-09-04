@@ -1,6 +1,9 @@
 package org.sang.mapper;
 
 import org.sang.bean.TechCard;
+import org.sang.bean.responseEntity.TechAdded;
+
+import java.util.List;
 
 public interface TechCardMapper {
 
@@ -8,5 +11,9 @@ public interface TechCardMapper {
 
     TechCard getByOrderId(Long orderId);
 
+    List<TechCard> getNewByOrderId(Long orderId);
+
     int updateTechCard(TechCard techCard);
+
+    List<TechAdded> getAll();
 }

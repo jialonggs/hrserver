@@ -8,7 +8,8 @@ public class OrderInfoResp extends Order{
 
     private List<MouldInfo> mouldInfoList;
     private ControlOrderFrom controlOrderFrom;
-    private TechCard techCard;
+    private List<TechCard> techCardList;
+//    private TechCard techCard;
     private Project project;
     private List<QualityOrderUser> qualityOrderUsers;
     private List<UserOrder> orderUsers;
@@ -30,13 +31,7 @@ public class OrderInfoResp extends Order{
         this.controlOrderFrom = controlOrderFrom;
     }
 
-    public TechCard getTechCard() {
-        return techCard;
-    }
 
-    public void setTechCard(TechCard techCard) {
-        this.techCard = techCard;
-    }
 
     public Project getProject() {
         return project;
@@ -69,5 +64,13 @@ public class OrderInfoResp extends Order{
 
     public void setOrderFlow(OrderFlow orderFlow) {
         this.orderFlow = orderFlow;
+    }
+
+    public List<TechCard> getTechCardList() {
+        return techCardList;
+    }
+
+    public void setTechCardList(List<TechCard> techCardList) {
+        this.techCardList = techCardList;
     }
 }

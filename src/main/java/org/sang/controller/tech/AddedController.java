@@ -5,6 +5,7 @@ import org.sang.bean.Order;
 import org.sang.bean.PageInfoEntity;
 import org.sang.bean.TechCard;
 import org.sang.bean.responseEntity.BaseResponseEntity;
+import org.sang.bean.responseEntity.TechAdded;
 import org.sang.config.ErrCodeMsg;
 import org.sang.controller.BaseController;
 import org.sang.service.LanMoService;
@@ -47,8 +48,8 @@ public class AddedController extends BaseController{
         PageInfoEntity pageInfoEntity = new PageInfoEntity();
         pageInfoEntity.setCurrentPage(page);
         pageInfoEntity.setPagesize(size);
-        List<Order> stayorderlist = new ArrayList<>();
-        PageBean<Order> list = orderService.getOrdersUnAddedTech(pageInfoEntity,true);
+        List<TechAdded> stayorderlist = new ArrayList<>();
+        PageBean<TechAdded> list = techCardService.getOrdersAddedTech(pageInfoEntity);
         if(null != list && list.getItems()!=null && list.getItems().size() !=0){
             stayorderlist = list.getItems();
             map.put("count",list.getPageInfo().getTotal());

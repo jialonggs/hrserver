@@ -5,6 +5,7 @@ import org.sang.bean.*;
 import org.sang.bean.requestEntity.AddYuBaoJiaRequest;
 import org.sang.bean.requestEntity.YuProductRquest;
 import org.sang.bean.responseEntity.BaseResponseEntity;
+import org.sang.bean.responseEntity.ProjectListResp;
 import org.sang.bean.responseEntity.YuBaoJiaInfoResp;
 import org.sang.config.ErrCodeMsg;
 import org.sang.controller.BaseController;
@@ -197,7 +198,7 @@ public class YuBaoJiaController extends BaseController{
             return badResult(ErrCodeMsg.ARGS_MISSING);
         }
         Map<String, Object> map = new HashMap<>();
-        List<Project> list = yuBaoJiaService.getProjectListByAddUserId(addUserId);
+        List<ProjectListResp> list = yuBaoJiaService.getProjectListByAddUserId(addUserId);
         if(null == list || list.isEmpty()){
             return badResult(ErrCodeMsg.COMMON_FAIL);
         }

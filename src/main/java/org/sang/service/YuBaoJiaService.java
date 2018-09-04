@@ -105,22 +105,23 @@ public class YuBaoJiaService {
     }
 
 
-    public List<Project> getProjectListByAddUserId(Long addUserId){
+    public List<ProjectListResp> getProjectListByAddUserId(Long addUserId){
         List<ProjectListResp> list = projectMapper.getProjectListByUserId(addUserId);
         if(null == list || list.isEmpty()){
             return null;
         }
-        List<Project> listResp = new ArrayList<>();
-        for(ProjectListResp projectListResp : list){
-            if(null != projectListResp.getYuBaoJia()){
-                continue;
-            }
-            Project project = new Project();
-            project.setId(projectListResp.getId());
-            project.setProjectName(projectListResp.getProjectName());
-            listResp.add(project);
-        }
-        return listResp;
+        return list;
+//        List<Project> listResp = new ArrayList<>();
+//        for(ProjectListResp projectListResp : list){
+//            if(null != projectListResp.getYuBaoJia()){
+//                continue;
+//            }
+//            Project project = new Project();
+//            project.setId(projectListResp.getId());
+//            project.setProjectName(projectListResp.getProjectName());
+//            listResp.add(project);
+//        }
+//        return listResp;
     }
 
     public int aginAudit(YuBaoJia yuBaoJia){

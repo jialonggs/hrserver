@@ -1,6 +1,7 @@
 package org.sang.bean;
 
 import java.util.Date;
+import java.util.List;
 
 public class Order {
 
@@ -60,6 +61,8 @@ public class Order {
     private Date storageTime;
     private Date updateTime;
     private Date createTime;
+    private Integer techNum;
+    private List<WenLi> wenlis;
 
 
     public Long getId() {
@@ -478,5 +481,21 @@ public class Order {
 
     public void setStorageTime(Date storageTime) {
         this.storageTime = storageTime;
+    }
+
+    public List<WenLi> getWenlis() {
+        return wenlis;
+    }
+
+    public void setWenlis(List<WenLi> wenlis) {
+        this.wenlis = wenlis;
+    }
+
+    public Integer getTechNum() {
+        return techNum;
+    }
+
+    public void setTechNum(Integer techNum) {
+        this.techNum = techNum;
     }
 }

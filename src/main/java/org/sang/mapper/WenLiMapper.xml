@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.WenLiMapper">
+
+    <insert id="addWenLis">
+        insert into work_wenli (orderId, wenliName,
+        times, area,techId, addUserId, addUserName,
+        status, remark, isDeleted,
+        updateTime, createTime
+        )
+        values
+        <foreach collection="wenlis" item="emp" separator=",">
+            (#{emp.orderId}, #{emp.wenliName},
+            #{emp.times}, #{emp.area},0,
+             #{emp.addUserId}, #{emp.addUserName},
+            #{emp.status}, #{emp.remark}, FALSE,
+            now(), now()
+            )
+        </foreach>
+    </insert>
+
+    <select id="getByOrderId" resultType="org.sang.bean.WenLi">
+        SELECT * FROM work_wenli WHERE isDeleted=FALSE AND orderId=#{orderId}
+    </select>
+
+    <select id="getByUnAddTech" resultType="org.sang.bean.WenLi">
+        SELECT * FROM work_wenli WHERE isDeleted=FALSE AND orderId=#{orderId} AND techId =0
+    </select>
+
+    <select id="getById" resultType="org.sang.bean.WenLi">
+        SELECT * FROM work_wenli WHERE isDeleted=FALSE AND id=#{wenliId} AND techId !=0
+    </select>
+
+
+    <update id="updateYuProduct">
+        update work_yu_product
+        <set>
+            <if test="yuProduct.productName != null">
+                productName = #{yuProduct.productName},
+            </if>
+            <if test="yuProduct.wenlidaima != null">
+                wenlidaima = #{yuProduct.wenlidaima},
+            </if>
+            <if test="yuProduct.productNum != null">
+                productNum = #{yuProduct.productNum},
+            </if>
+            <if test="yuProduct.area != null">
+                area = #{yuProduct.area},
+            </if>
+            <if test="yuProduct.dongMo != null">
+                dongMo = #{yuProduct.dongMo},
+            </if>
+            <if test="yuProduct.coefficient != null">
+                coefficient = #{yuProduct.coefficient},
+            </if>
+            <if test="yuProduct.price != null">
+                price = #{yuProduct.price},
+            </if>
+            <if test="yuProduct.picUrls != null">
+                picUrls = #{yuProduct.picUrls},
+            </if>
+            <if test="yuProduct.noTaxPrice != null">
+                noTaxPrice = #{yuProduct.noTaxPrice},
+            </if>
+            <if test="yuProduct.total != null">
+                total = #{yuProduct.total},
+            </if>
+            <if test="yuProduct.remark != null">
+                remark = #{yuProduct.remark},
+            </if>
+            <if test="yuProduct.tax != null">
+                tax = #{yuProduct.tax},
+            </if>
+            updateTime = now()
+        </set>
+        where id = #{yuProduct.id}
+    </update>
+
+
+
+
+    <update id="updateTechId">
+        update work_wenli
+        <set>
+            techId = #{techId},
+            updateTime = now()
+        </set>
+        where id = #{id}
+    </update>
+
+
+</mapper>

@@ -60,7 +60,8 @@ public class OrderController extends BaseController{
     @RequestMapping(value = "/new/add", method = RequestMethod.POST)
     public BaseResponseEntity addNewOrderInfo( @RequestBody OrderRequestInfo orderRequestInfo){
         if(null == orderRequestInfo.getControlOrderFrom() || null == orderRequestInfo.getMouldIds() ||
-                null == orderRequestInfo.getOrder()) {
+                null == orderRequestInfo.getOrder() || null == orderRequestInfo.getWenlis()) {
+            System.out.print("测试嘿嘿");
             return badResult(ErrCodeMsg.ARGS_MISSING);
         }
         String mouldIds = orderRequestInfo.getMouldIds();
@@ -80,6 +81,9 @@ public class OrderController extends BaseController{
             order.setExpectedTime(new Date());
         }
 
+
+
+
         // 生成二维码并存入相应的地址
         Date date = new Date();
         String qrName = date.getTime()+"";
@@ -91,7 +95,7 @@ public class OrderController extends BaseController{
         QrCodeUtil.zxingCodeCreate("http://39.107.78.95:8082/order.html?orderId="+orderId,500,500,path,"png");
         String url = imgurl +"qrcode"+ "/" + qrName + ".png";
         order.setQrCode(url);
-        Long i = orderService.addNewOrder(order, selectedMouldIds, orderRequestInfo.getControlOrderFrom());
+        Long i = orderService.addNewOrder(order, selectedMouldIds, orderRequestInfo.getControlOrderFrom(), orderRequestInfo.getWenlis());
         if (i >= 1) {
             // 发送信息给车间主管
             String msg = "新订单【" + order.getOrderName()+"】,由  _ "+  order.getAddUserName() +" _ 创建成功,请查看";
@@ -326,6 +330,32 @@ public class OrderController extends BaseController{
         return succResult(map);
 
     }
+
+
+    @RequestMapping(value = "/by/condition", method = RequestMethod.GET)
+    public BaseResponseEntity getOrdersList(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size,
+                                            @RequestParam(value = "engineId" , required = false) Long engineId,
+                                            @RequestParam(value = "carId", required = false) Long carId,
+                                            @RequestParam(value = "projectId", required = false) Long projectId,
+                                            @RequestParam(value = "addUserId") Long addUserId,
+                                            @RequestParam(value = "unitId", required = false) Long unitId) {
+
+        Map<String, Object> map = new HashMap<>();
+        PageInfoEntity pageInfoEntity = new PageInfoEntity();
+        pageInfoEntity.setCurrentPage(page);
+        pageInfoEntity.setPagesize(size);
+        List<FaMoOrder> orderslist = new ArrayList<>();
+        PageBean<FaMoOrder> list = orderService.getOrdersByConditionList(pageInfoEntity, engineId, carId, projectId, addUserId, unitId);
+        if(null != list && list.getItems()!=null && list.getItems().size() !=0){
+            orderslist = list.getItems();
+            map.put("count",list.getPageInfo().getTotal());
+        }
+        map.put("orderlist", orderslist);
+        return succResult(map);
+    }
+
+
+
 
 
 }

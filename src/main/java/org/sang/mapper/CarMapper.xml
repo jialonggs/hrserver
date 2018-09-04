@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.CarMapper">
+
+    <resultMap id="user1" type="org.sang.bean.Car">
+        <id property="id" column="id"/>
+    </resultMap>
+
+    <resultMap type="org.sang.bean.responseEntity.CarResp" id="getCarList">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="mainEngineId" property="mainEngineId"/>
+        <result column="addUserId" property="addUserId"/>
+        <result column="addUserName" property="addUserName"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="isDeleted" property="isDeleted"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="createTime" property="createTime"/>
+
+        <association property="engine" javaType="org.sang.bean.MainEngine" column="mainEngineId"
+                     select="org.sang.mapper.MainEngineMapper.getById">
+        </association>
+    </resultMap>
+
+    <select id="getCarByName" resultType="org.sang.bean.Car">
+        select * from work_car_type where name=#{carName}
+    </select>
+
+    <select id="getCarById" resultType="org.sang.bean.Car">
+        select * from work_car_type where isDeleted=FALSE AND  id=#{carId}
+    </select>
+
+    <insert id="addCar" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.Car">
+        INSERT INTO work_car_type set name=#{name},mainEngineId=#{mainEngineId},addUserId=#{addUserId},addUserName=#{addUserName},remark=#{remark},
+        isDeleted=FALSE,updateTime=now(),createTime=now()
+    </insert>
+
+    <!--根据主机厂ID获取车型列表-->
+    <select id="getCarListByMain" resultType="org.sang.bean.Car">
+        SELECT * FROM work_car_type WHERE isDeleted=FALSE AND mainEngineId=#{mainEngineId} ORDER BY id DESC
+    </select>
+
+    <select id="getCarList" resultMap="getCarList">
+        SELECT * FROM work_car_type WHERE isDeleted=FALSE  ORDER BY id DESC
+    </select>
+
+    <select id="getByUnitId" resultMap="getCarList">
+        SELECT * FROM work_car_type WHERE isDeleted=FALSE AND id IN (SELECT c_id FROM work_car_unit WHERE u_id=#{unitId})ORDER BY id DESC
+    </select>
+
+
+    <update id="updateCar" parameterType="org.sang.bean.Car">
+        update work_car_type
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="mainEngineId != null">
+                mainEngineId = #{mainEngineId},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            updateTime = now()
+        </set>
+        where id = #{id}
+    </update>
+
+
+</mapper>

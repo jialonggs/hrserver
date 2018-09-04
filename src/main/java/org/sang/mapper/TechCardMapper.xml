@@ -25,13 +25,41 @@
     </resultMap>
 
 
+    <resultMap type="org.sang.bean.responseEntity.TechAdded" id="getAdded" extends="getTechMap">
+        <association property="order" javaType="org.sang.bean.Order" column="orderId"
+                     select="org.sang.mapper.OrderMapper.getOrderInfoById">
+        </association>
+        <association property="wenli" javaType="org.sang.bean.WenLi" column="wenliId"
+                     select="org.sang.mapper.WenLiMapper.getById">
+        </association>
+
+        <!--<result column="orderName" property="orderName"/>-->
+        <!--<result column="urgency" property="urgency"/>-->
+        <!--<result column="orderCreateTime" property="orderCreateTime"/>-->
+        <!--<result column="orderAddUsrName" property="orderAddUsrName"/>-->
+        <!--<result column="wenliName" property="wenliName"/>-->
+        <!--<result column="area" property="area"/>-->
+        <!--<result column="times" property="times"/>-->
+
+    </resultMap>
+
+
     <insert id="addTech" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.TechCard">
-        INSERT INTO work_tech set orderId=#{orderId},piWenDaiMa=#{piWenDaiMa},nanDuXiShu=#{nanDuXiShu},tieHuaBuShu=#{tieHuaBuShu},gongYiCanShu=#{gongYiCanShu},
+        INSERT INTO work_tech set orderId=#{orderId},wenliId=#{wenliId},piWenDaiMa=#{piWenDaiMa},nanDuXiShu=#{nanDuXiShu},tieHuaBuShu=#{tieHuaBuShu},gongYiCanShu=#{gongYiCanShu},
         guangZhe=#{guangZhe},chaiLiao=#{chaiLiao},tiaoZheng=#{tiaoZheng},addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},updateTime=now(),createTime=now(),isDeleted=FALSE
     </insert>
 
     <select id="getByOrderId" resultType="org.sang.bean.TechCard">
         SELECT * FROM work_tech WHERE isDeleted=FALSE AND orderId=#{orderId} ORDER BY id
+    </select>
+
+    <select id="getNewByOrderId" resultType="org.sang.bean.TechCard">
+        SELECT * FROM work_tech WHERE isDeleted=FALSE AND orderId=#{orderId} ORDER BY id
+    </select>
+
+
+    <select id="getAll" resultMap="getAdded">
+        SELECT * from work_tech  WHERE isDeleted=FALSE ORDER BY id
     </select>
 
 
@@ -63,6 +91,9 @@
         </set>
         where id = #{id}
     </update>
+
+
+
 
 
 

@@ -6,10 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.sang.bean.*;
 import org.sang.bean.requestEntity.AddFuKuanRequest;
 import org.sang.bean.requestEntity.MouldRequest;
-import org.sang.bean.responseEntity.BaseResponseEntity;
-import org.sang.bean.responseEntity.FaMoOrder;
-import org.sang.bean.responseEntity.OrderAndProject;
-import org.sang.bean.responseEntity.OrderInfoResp;
+import org.sang.bean.responseEntity.*;
 import org.sang.mapper.*;
 import org.sang.utils.DoubleUtil;
 import org.sang.utils.PageBean;
@@ -21,6 +18,9 @@ import java.util.*;
 
 @Service
 public class OrderService {
+    @Autowired
+    WenLiMapper wenLiMapper;
+
     @Autowired
     OrderMapper orderMapper;
 
@@ -39,6 +39,9 @@ public class OrderService {
     @Autowired
     ControlOrderFromMapper controlOrderFromMapper;
 
+    @Autowired
+    ProjectMapper projectMapper;
+
 
     /**
      * 新的添加订单
@@ -48,14 +51,20 @@ public class OrderService {
      * @return
      */
     @Transactional
-    public Long addNewOrder(Order order, Long[] mouldIds, ControlOrderFrom controlOrderFrom){
+    public Long addNewOrder(Order order, Long[] mouldIds, ControlOrderFrom controlOrderFrom, List<WenLi> wenLis){
         // 添加订单信息
+        order.setTechNum(wenLis.size());
         Long orderId = orderMapper.addOrder(order);
-        controlOrderFrom.setOrderId(orderId);
+
+        controlOrderFrom.setOrderId(order.getId());
         controlOrderFromMapper.addControlOrderFrom(controlOrderFrom);
         for (Long id : mouldIds){
-            mouldInfoMapper.updateMouldInfoBySelected(id, Long.parseLong(order.getAddUserId()), orderId);
+            mouldInfoMapper.updateMouldInfoBySelected(id, Long.parseLong(order.getAddUserId()), order.getId());
         }
+       for (WenLi wenLi : wenLis){
+            wenLi.setOrderId(order.getId());
+       }
+        wenLiMapper.addWenLis(wenLis);
         return orderId;
 
     }
@@ -127,15 +136,28 @@ public class OrderService {
      * @param pageInfoEntity
      * @return
      */
-    public PageBean<Order> getOrdersUnAddedTech(PageInfoEntity pageInfoEntity,Boolean techId) {
+//    public PageBean<Order> getOrdersUnAddedTech(PageInfoEntity pageInfoEntity) {
+//        PageHelper.startPage(pageInfoEntity.getCurrentPage(),pageInfoEntity.getPagesize());
+//        List<Order> list = orderMapper.getOrdersUnAddTech1();
+//        PageInfo page = new PageInfo(list);
+//        PageBean<Order> pageData = new PageBean<>();
+//        pageData.setItems(list);
+//        pageData.setPageInfo(page);
+//        return  pageData;
+//    }
+
+    public PageBean<TechOrder> getOrdersUnAddedTech(PageInfoEntity pageInfoEntity) {
         PageHelper.startPage(pageInfoEntity.getCurrentPage(),pageInfoEntity.getPagesize());
-        List<Order> list = orderMapper.getOrdersUnAddTech(techId);
+        List<TechOrder> list = orderMapper.getOrdersUnAddTech1();
         PageInfo page = new PageInfo(list);
-        PageBean<Order> pageData = new PageBean<>();
+        PageBean<TechOrder> pageData = new PageBean<>();
         pageData.setItems(list);
         pageData.setPageInfo(page);
         return  pageData;
     }
+
+
+
 
     public Long getMaxOrderID(){
        Long id =  orderMapper.getMaxOrderID();
@@ -237,5 +259,47 @@ public class OrderService {
         }else{
             return false;
         }
+    }
+
+
+    public PageBean<FaMoOrder> getOrdersByConditionList(PageInfoEntity pageInfoEntity, Long engineId, Long carId, Long projectId,
+                                                        Long addUserId, Long unitId) {
+        List<Project> projects = new ArrayList<>();
+        if(projectId != null || (engineId ==null && carId==null && unitId ==null)){
+            PageHelper.startPage(pageInfoEntity.getCurrentPage(),pageInfoEntity.getPagesize());
+            List<FaMoOrder> list = orderMapper.getOrdersByPId(addUserId,projectId);
+            PageInfo page = new PageInfo(list);
+            PageBean<FaMoOrder> pageData = new PageBean<>();
+            pageData.setItems(list);
+            pageData.setPageInfo(page);
+            return pageData;
+        }else{
+            if(unitId != null){
+                // 获取单位下的 projectId
+                projects = projectMapper.getByUnitId(unitId);
+            }else {
+                if(carId != null){
+                    // 获取carId下的所由Ids
+                    projects = projectMapper.getByCarId(carId);
+                }else{
+                    if(engineId != null){
+                        // 获取engId 下的所由Ids
+                        projects = projectMapper.getByEngineId(engineId);
+                    }
+                }
+            }
+        }
+        if(projects.isEmpty() || projects == null){
+            return null;
+        }
+        PageHelper.startPage(pageInfoEntity.getCurrentPage(),pageInfoEntity.getPagesize());
+        List<FaMoOrder> list = orderMapper.getOrderByCondition(addUserId,projects);
+        PageInfo page = new PageInfo(list);
+        PageBean<FaMoOrder> pageData = new PageBean<>();
+        pageData.setItems(list);
+        pageData.setPageInfo(page);
+        return pageData;
+
+
     }
 }

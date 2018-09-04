@@ -30,4 +30,10 @@ public interface ProjectMapper {
 
     int updateKiPiaoStatus(@Param("projectId") Long projectId, @Param("kaiPiaoId") Long kaiPiaoId, @Param("kaiPiaoStatus") Integer kaiPiaoStatus);
 
+    List<Project> getByUnitId(@Param("unitId") Long unitId);
+
+    List<Project> getByCarId(@Param("carId") Long carId);
+
+    List<Project> getByEngineId(@Param("engineId") Long engineId);
+
 }
