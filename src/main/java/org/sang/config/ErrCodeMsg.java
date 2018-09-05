@@ -30,6 +30,7 @@ public enum ErrCodeMsg {
     TOO_FAST(304, "操作过快"),
     GOODS_SOLD_OUT(305, "商品售罄"),
     CANNOT_BUY(306, "商品不可购买"),
+    ORDER_PLANTED_ERROR(307, "订单已分配 无需再分配"),
 
     FILE_ERROR_TYPE(401, "文件格式不正确"),
     FILE_UPLOAD_ERROR(402, "文件上传失败"),

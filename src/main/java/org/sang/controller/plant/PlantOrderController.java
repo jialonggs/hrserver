@@ -121,6 +121,9 @@ public class PlantOrderController extends BaseController{
         }
 
         Order order = orderService.getOrderInfoById(orderFenPeiRequest.getOrderId());
+        if (order.getPlantStatus() == 1){
+            return badResult(ErrCodeMsg.ORDER_PLANTED_ERROR);
+        }
         if(null == order){
             return badResult(ErrCodeMsg.COMMON_FAIL);
         }
