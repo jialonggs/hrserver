@@ -23,6 +23,7 @@ public class ControlOrderFrom {
     private String pengChuanKong;
     private String buPing;
     private String pianXi;
+    private String guangze;
 
 
     private String addUserId;
@@ -248,5 +249,13 @@ public class ControlOrderFrom {
 
     public void setPianXi(String pianXi) {
         this.pianXi = pianXi;
+    }
+
+    public String getGuangze() {
+        return guangze;
+    }
+
+    public void setGuangze(String guangze) {
+        this.guangze = guangze;
     }
 }

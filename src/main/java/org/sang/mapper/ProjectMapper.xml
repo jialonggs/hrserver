@@ -132,11 +132,11 @@
       <!--financeStatus=0 AND isDeleted=FALSE ORDER BY id-->
     <!--</select>-->
 
-    <select id="getFinanceProject" resultType="org.sang.bean.Project">
+    <select id="getFinanceProject" resultMap="getProjectListMap1">
         SELECT * FROM work_project WHERE  financeStatus&lt;3 AND isDeleted=FALSE ORDER BY id DESC
     </select>
 
-    <select id="getOverceFinanceProject" resultType="org.sang.bean.Project">
+    <select id="getOverceFinanceProject" resultMap="getProjectListMap1">
         SELECT * FROM work_project WHERE  financeStatus=3 AND isDeleted=FALSE ORDER BY id DESC
     </select>
 

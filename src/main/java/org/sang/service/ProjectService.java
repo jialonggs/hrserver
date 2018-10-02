@@ -101,9 +101,9 @@ public class ProjectService {
      * @param pageInfoEntity
      * @return
      */
-    public PageBean<Project> getFinanceProject(PageInfoEntity pageInfoEntity, Integer financeStatus) {
+    public PageBean<ProjectListResp> getFinanceProject(PageInfoEntity pageInfoEntity, Integer financeStatus) {
         PageHelper.startPage(pageInfoEntity.getCurrentPage(),pageInfoEntity.getPagesize());
-        List<Project> list = null;
+        List<ProjectListResp> list = null;
         if(financeStatus!=null && financeStatus.equals(3)){
              list = projectMapper.getOverceFinanceProject();
         }else{
@@ -111,7 +111,7 @@ public class ProjectService {
         }
 
         PageInfo page = new PageInfo(list);
-        PageBean<Project> pageData = new PageBean<>();
+        PageBean<ProjectListResp> pageData = new PageBean<>();
         pageData.setItems(list);
         pageData.setPageInfo(page);
         return  pageData;

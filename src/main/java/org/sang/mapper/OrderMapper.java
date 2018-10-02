@@ -8,6 +8,7 @@ import org.sang.bean.Project;
 import org.sang.bean.requestEntity.AddFuKuanRequest;
 import org.sang.bean.responseEntity.*;
 import org.springframework.security.access.method.P;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 import java.util.List;
@@ -71,6 +72,8 @@ public interface OrderMapper {
     List<FaMoOrder> getOrderByCondition(@Param("addUserId") Long addUserId, @Param("projectList") List<Project> projectList);
 
     List<FaMoOrder> getOrdersByPId(@Param("addUserId") Long addUserId,@Param("projectId")Long projectId);
+
+    int updateUgency(@Param("urgency") Integer urgency ,@Param("orderId") Integer orderId);
 
 
 

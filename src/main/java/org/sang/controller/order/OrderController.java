@@ -61,7 +61,6 @@ public class OrderController extends BaseController{
     public BaseResponseEntity addNewOrderInfo( @RequestBody OrderRequestInfo orderRequestInfo){
         if(null == orderRequestInfo.getControlOrderFrom() || null == orderRequestInfo.getMouldIds() ||
                 null == orderRequestInfo.getOrder() || null == orderRequestInfo.getWenlis()) {
-            System.out.print("测试嘿嘿");
             return badResult(ErrCodeMsg.ARGS_MISSING);
         }
         String mouldIds = orderRequestInfo.getMouldIds();
@@ -301,7 +300,7 @@ public class OrderController extends BaseController{
 
 
     @RequestMapping(value = "/update/order", method = RequestMethod.POST)
-    public BaseResponseEntity updateOrder(Order order) {
+    public BaseResponseEntity updateOrder(@RequestBody  Order order) {
         if(null == order  || order.getId() == null) {
             return badResult(ErrCodeMsg.ARGS_MISSING);
         }
@@ -352,6 +351,28 @@ public class OrderController extends BaseController{
         }
         map.put("orderlist", orderslist);
         return succResult(map);
+    }
+
+
+    /**
+     * 修改紧急程度
+     * @param urgency
+     * @param orderId
+     * @return
+     */
+    @RequestMapping(value = "/change/urgency", method = RequestMethod.POST)
+    public BaseResponseEntity changeJinJi(@RequestParam("urgency") Integer urgency, @RequestParam("orderId") Integer orderId){
+
+        if(urgency == null || orderId == null){
+            return badResult(ErrCodeMsg.ARGS_MISSING);
+        }
+
+        Boolean changeResult = orderService.changeJinJi(urgency, orderId);
+        if(changeResult){
+            return succResult();
+        }else{
+            return badResult(ErrCodeMsg.COMMON_FAIL);
+        }
     }
 
 

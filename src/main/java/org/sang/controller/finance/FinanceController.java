@@ -7,6 +7,7 @@ import org.sang.bean.PageInfoEntity;
 import org.sang.bean.Project;
 import org.sang.bean.requestEntity.AddFuKuanRequest;
 import org.sang.bean.responseEntity.BaseResponseEntity;
+import org.sang.bean.responseEntity.ProjectListResp;
 import org.sang.config.ErrCodeMsg;
 import org.sang.controller.BaseController;
 import org.sang.service.BusinessBaoJiaService;
@@ -48,8 +49,8 @@ public class FinanceController extends BaseController{
         PageInfoEntity pageInfoEntity = new PageInfoEntity();
         pageInfoEntity.setCurrentPage(page);
         pageInfoEntity.setPagesize(size);
-        List<Project> orderslist = new ArrayList<>();
-        PageBean<Project> list = projectService.getFinanceProject(pageInfoEntity, financeStatus);
+        List<ProjectListResp> orderslist = new ArrayList<>();
+        PageBean<ProjectListResp> list = projectService.getFinanceProject(pageInfoEntity, financeStatus);
         if(null != list && list.getItems()!=null && list.getItems().size() !=0){
             orderslist = list.getItems();
             map.put("count",list.getPageInfo().getTotal());

@@ -202,7 +202,25 @@ public class OrderService {
         return orderMapper.getOrderInfoById(orderId);
     }
 
+
+    @Transactional
     public Boolean updateBaseInfo(Order order){
+
+        // 添加订单信息
+//        order.setTechNum(wenLis.size());
+//        Long orderId = orderMapper.addOrder(order);
+//
+//        controlOrderFrom.setOrderId(order.getId());
+//        controlOrderFromMapper.addControlOrderFrom(controlOrderFrom);
+//        for (Long id : mouldIds){
+//            mouldInfoMapper.updateMouldInfoBySelected(id, Long.parseLong(order.getAddUserId()), order.getId());
+//        }
+//        for (WenLi wenLi : wenLis){
+//            wenLi.setOrderId(order.getId());
+//        }
+//        wenLiMapper.addWenLis(wenLis);
+//        return orderId;
+
         int i = orderMapper.updateOrderBaseInfo(order);
         if(i > 0){
             return true;
@@ -301,5 +319,15 @@ public class OrderService {
         return pageData;
 
 
+    }
+
+
+    public Boolean changeJinJi(Integer ugency, Integer orderId){
+        int i = orderMapper.updateUgency(ugency, orderId);
+        if(i>0){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

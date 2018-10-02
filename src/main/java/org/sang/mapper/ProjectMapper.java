@@ -14,9 +14,9 @@ public interface ProjectMapper {
 
     int addFuKuan(@Param("fuKuan")AddFuKuanRequest addFuKuanRequest);
 
-    List<Project> getOverceFinanceProject();
+    List<ProjectListResp> getOverceFinanceProject();
 
-    List<Project> getFinanceProject();
+    List<ProjectListResp> getFinanceProject();
 
     List<ProjectListResp> getProjectList();
 

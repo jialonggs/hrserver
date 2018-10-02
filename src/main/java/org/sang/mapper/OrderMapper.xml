@@ -763,9 +763,9 @@
             <if test="order.hasRemark != null">
                 hasRemark = #{order.hasRemark},
             </if>
-            <if test="order.beiShu != null">
-                beiShu = #{order.beiShu},
-            </if>
+            <!--<if test="order.beiShu != null">-->
+                <!--beiShu = #{order.beiShu},-->
+            <!--</if>-->
             <if test="order.picUrls != null">
                 picUrls = #{order.picUrls},
             </if>
@@ -825,6 +825,17 @@
             storageStatus = #{storageStatus},
             updateTime = now()
         </set>
+        where id = #{orderId}
+    </update>
+
+
+    <update id="updateUgency">
+        update work_orders
+        <set>
+            urgency = #{urgency},
+            updateTime = now()
+        </set>
+
         where id = #{orderId}
     </update>
 

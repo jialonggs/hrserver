@@ -1,5 +1,6 @@
 package org.sang.controller.project;
 
+import org.sang.bean.Order;
 import org.sang.bean.PageInfoEntity;
 import org.sang.bean.Project;
 import org.sang.bean.responseEntity.BaseResponseEntity;
@@ -46,12 +47,20 @@ public class ProjectController extends BaseController{
 
             projectlist = list.getItems();
             for (ProjectListResp projectListResp : projectlist){
+//                List<Order> orderList = projectListResp.getOrders();
+//                List<Order> newOrders = new ArrayList<>();
+//                if(null !=orderList && !orderList.isEmpty()){
+//                    for (Order itemOrder : orderList){
+//                        if (itemOrder.getAddUserId().equals())
+//                    }
+//                }
                 if(null != projectListResp.getOrders() && !projectListResp.getOrders().isEmpty() && !projectListResp.getOrders().equals("")){
                     projectListResp.setOrderNums(projectListResp.getOrders().size());
                 }else {
                     projectListResp.setOrderNums(0);
                 }
             }
+
             map.put("count",list.getPageInfo().getTotal());
         }
         map.put("projectlist", projectlist);
@@ -64,7 +73,7 @@ public class ProjectController extends BaseController{
      * @return
      */
     @RequestMapping(value = "/added", method = RequestMethod.GET)
-    public BaseResponseEntity getShouMoList(@RequestParam("userId") Long userId) {
+    public BaseResponseEntity getShouMoList1(@RequestParam("userId") Long userId) {
         Map<String, Object> map = new HashMap<>();
         List<Project> projectlist = new ArrayList<>();
         projectlist = projectService.getAdded(userId,Integer.parseInt(projectAddedMonth));

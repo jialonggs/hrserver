@@ -30,7 +30,7 @@
         INSERT INTO work_control_from set orderId=#{orderId},qiKong=#{qiKong},queKou=#{queKou},lieFeng=#{lieFeng},hanBa=#{hanBa},
         dianHuoHua=#{dianHuoHua},youShiSi=#{youShiSi},quYu=#{quYu},shenDu=#{shenDu},tongGZ=#{tongGZ},
         zuiHouShiMoJian=#{zuiHouShiMoJian},ckd=#{ckd},guangJian=#{guangJian},fenXingBian=#{fenXingBian},heMoBian=#{heMoBian},
-        pengChuanBian=#{pengChuanBian},pengChuanKong=#{pengChuanKong},pianXi=#{pianXi},buPing=#{buPing},addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},
+        pengChuanBian=#{pengChuanBian},pengChuanKong=#{pengChuanKong},pianXi=#{pianXi},buPing=#{buPing},guangze=#{guangze},addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},
         remark=#{remark},isDeleted=0,createTime=now(),updateTime=now()
     </insert>
 
@@ -74,6 +74,9 @@
             </if>
             <if test="order.ckd != null">
                 ckd = #{order.ckd},
+            </if>
+            <if test="order.guangze != null">
+                guangze = #{order.guangze},
             </if>
             <if test="order.guangJian != null">
                 guangJian = #{order.guangJian},
