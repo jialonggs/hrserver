@@ -190,8 +190,10 @@ public class QualityController extends BaseController {
                 order.setAlreadyArea(DoubleUtil.m2(item + wancheng));
                 order.setStayArea(DoubleUtil.m2(order.getWorkArea() - order.getAlreadyArea()));
                 Double all = item + wancheng;
-                Double jidDu = 100 * (all / order.getWorkArea());
-                order.setPresentSchedule(jidDu);
+                if(order.getWorkArea()>0){
+                    Double jidDu = 100 * (all / order.getWorkArea());
+                    order.setPresentSchedule(jidDu);
+                }
                 Boolean reslut = qualityOrderService.shenHe(order, orderFlow, userOrders, orderArgeLogs, status);
                 if (reslut) {
                     return succResult();
@@ -260,8 +262,10 @@ public class QualityController extends BaseController {
         order.setAlreadyArea(DoubleUtil.m2(item + wancheng));
         order.setStayArea(DoubleUtil.m2(order.getWorkArea() - order.getAlreadyArea()));
         Double all = item + wancheng;
-        Double jidDu = 100 * (all / order.getWorkArea());
-        order.setPresentSchedule(jidDu);
+        if(order.getWorkArea()>0){
+            Double jidDu = 100 * (all / order.getWorkArea());
+            order.setPresentSchedule(jidDu);
+        }
         Boolean reslut = qualityOrderService.toDefaultJingFeng(order, userOrders, orderArgeLogs, 0);
         if(reslut){
             return succResult();

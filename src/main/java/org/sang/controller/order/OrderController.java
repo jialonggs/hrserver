@@ -71,6 +71,7 @@ public class OrderController extends BaseController{
         if(null == selectMoulds || selectMoulds.length <=0){
             return badResult(ErrCodeMsg.ARGS_MISSING);
         }
+
         Long[] selectedMouldIds = new Long[selectMoulds.length];
         for(int i=0; i<selectMoulds.length; i++){
             selectedMouldIds[i] = Long.parseLong(selectMoulds[i]);
@@ -91,6 +92,10 @@ public class OrderController extends BaseController{
         Map<String, Object> map = new HashMap<>();
         order.setPresentStepName("待加工");
         order.setPresentSchedule(0.0);
+        Double relityArea = order.getRealityArea();
+        if(relityArea <= 0){
+            return badResult(ErrCodeMsg.AREA_NOT_ZREO);
+        }
         QrCodeUtil.zxingCodeCreate("http://39.107.78.95:8082/order.html?orderId="+orderId,500,500,path,"png");
         String url = imgurl +"qrcode"+ "/" + qrName + ".png";
         order.setQrCode(url);

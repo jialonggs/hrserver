@@ -498,4 +498,64 @@ public class Order {
     public void setTechNum(Integer techNum) {
         this.techNum = techNum;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", orderName='" + orderName + '\'' +
+                ", qrCode='" + qrCode + '\'' +
+                ", beiShu='" + beiShu + '\'' +
+                ", projectId=" + projectId +
+                ", technologyId=" + technologyId +
+                ", managerId=" + managerId +
+                ", managerName='" + managerName + '\'' +
+                ", expected='" + expected + '\'' +
+                ", expectedTime=" + expectedTime +
+                ", presentStepId=" + presentStepId +
+                ", presentStepName='" + presentStepName + '\'' +
+                ", presentSchedule=" + presentSchedule +
+                ", clientCompanyName='" + clientCompanyName + '\'' +
+                ", urgency=" + urgency +
+                ", hasRemark=" + hasRemark +
+                ", machiningType='" + machiningType + '\'' +
+                ", realityArea=" + realityArea +
+                ", workArea=" + workArea +
+                ", stayArea=" + stayArea +
+                ", alreadyArea=" + alreadyArea +
+                ", perfectArea=" + perfectArea +
+                ", appliqueArea=" + appliqueArea +
+                ", ygb=" + ygb +
+                ", picUrls='" + picUrls + '\'' +
+                ", finishTime=" + finishTime +
+                ", techId=" + techId +
+                ", yaoJian=" + yaoJian +
+                ", plantStatus=" + plantStatus +
+                ", liuChengStatus=" + liuChengStatus +
+                ", kuFangRemark='" + kuFangRemark + '\'' +
+                ", liuZhuanStatus=" + liuZhuanStatus +
+                ", liuZhuanArea=" + liuZhuanArea +
+                ", liuZhuanBiLi=" + liuZhuanBiLi +
+                ", nanDuDengJi='" + nanDuDengJi + '\'' +
+                ", piWenDaiMa='" + piWenDaiMa + '\'' +
+                ", jingFengStatus=" + jingFengStatus +
+                ", storageStatus=" + storageStatus +
+                ", financeStatus=" + financeStatus +
+                ", financeBiLi='" + financeBiLi + '\'' +
+                ", financeJinE='" + financeJinE + '\'' +
+                ", financeTime=" + financeTime +
+                ", financeRemark='" + financeRemark + '\'' +
+                ", faMoStatus=" + faMoStatus +
+                ", addUserId='" + addUserId + '\'' +
+                ", addUserName='" + addUserName + '\'' +
+                ", status='" + status + '\'' +
+                ", remark='" + remark + '\'' +
+                ", isDeleted=" + isDeleted +
+                ", storageTime=" + storageTime +
+                ", updateTime=" + updateTime +
+                ", createTime=" + createTime +
+                ", techNum=" + techNum +
+                ", wenlis=" + wenlis +
+                '}';
+    }
 }

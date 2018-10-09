@@ -37,6 +37,7 @@ public enum ErrCodeMsg {
     FILE_UPLOAD_ERR_SIZE(403, "文件大小超过2M"),
 
     CODE_UTF8_ERROR(501, "上传文件编码格式非UTF8"),
+    AREA_NOT_ZREO(503, "面积不能小于等于0"),
 
     SYSTEM_ERROR(900, "系统错误"),
 

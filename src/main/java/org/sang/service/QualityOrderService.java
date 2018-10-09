@@ -77,6 +77,8 @@ public class QualityOrderService {
 
     @Transactional
     public Boolean shenHe(Order order, OrderFlow orderFlow, List<UserOrder> userOrderList, List<OrderArgeLog> orderArgeLogs, Integer status){
+        System.out.print("----------------------------------------");
+        System.out.print(order.toString());
         int i =  orderMapper.updateOrder(order);
         int k = orderFlowMapper.updateOrderFlow(orderFlow);
         if(null != userOrderList && !userOrderList.isEmpty()){
