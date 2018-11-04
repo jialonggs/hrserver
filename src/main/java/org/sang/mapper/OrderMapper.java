@@ -76,5 +76,12 @@ public interface OrderMapper {
     int updateUgency(@Param("urgency") Integer urgency ,@Param("orderId") Integer orderId);
 
 
+    List<Order> getAfterOrdersList(@Param("afterStatus") Integer afterStatus);
+
+    int updateAfterStatus(@Param("orderId") Long orderId);
+
+    List<OrderShouhou> getAfterOrderShouHou(@Param("userId") Integer userId, @Param("status") Integer status);
+
+
 
 }

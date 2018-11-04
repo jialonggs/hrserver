@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.ShouHouMapper">
+    <!--查询收模列表-->
+
+    <resultMap type="org.sang.bean.responseEntity.OrderShouhou" id="getShouHouOrder">
+        <id column="id" property="id"/>
+        <result column="orderId" property="orderId"/>
+        <result column="userId" property="userId"/>
+        <result column="userName" property="userName"/>
+
+        <result column="addUserId" property="addUserId"/>
+        <result column="addUserName" property="addUserName"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="isDeleted" property="isDeleted"/>
+        <result column="finishTime" property="finishTime"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="createTime" property="createTime"/>
+
+        <association property="order" javaType="org.sang.bean.Order" column="orderId"
+                     select="org.sang.mapper.OrderMapper.getAfterOrderShouHou">
+        </association>
+
+        <association property="shBaoGao" javaType="org.sang.bean.SHBaoGao" column="orderId"
+                     select="org.sang.mapper.SHBaoGaoMapper.getByOrderId">
+        </association>
+
+    </resultMap>
+
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.ShouHou">
+        INSERT INTO work_shou_hou set orderId=#{orderId},userId=#{userId},userName=#{userName},addUserId=#{addUserId},
+      addUserName=#{addUserName},status=0,finishTime=now(),remark=#{remark},updateTime=now(),createTime=now(),isDeleted=FALSE
+    </insert>
+
+    <select id="getShouHouList" resultMap="getShouHouOrder">
+        SELECT * FROM work_shou_hou
+        <where>
+            isDeleted=FALSE
+            <if test="userId!= 3">
+               AND userId = #{userId}
+            </if>
+            <if test="status!= null">
+                AND status = #{status}
+            </if>
+
+        </where>
+          ORDER BY id DESC
+
+    </select>
+
+
+
+    <update id="updateShouHouStatus">
+        update work_shou_hou
+        <set>
+            <if test="orderId != null">
+                status = 1,
+            </if>
+            updateTime = now()
+        </set>
+        where orderId = #{orderId}
+    </update>
+
+
+
+
+
+
+
+
+</mapper>

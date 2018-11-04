@@ -623,6 +623,19 @@
         SELECT * FROM work_orders WHERE isDeleted=FALSE AND yaoJian=#{yaoJian} ORDER BY urgency DESC, id DESC
     </select>
 
+
+    <select id="getAfterOrdersList" resultType="org.sang.bean.Order">
+        SELECT * FROM work_orders WHERE isDeleted=FALSE AND afterStatus=#{afterStatus} AND financeStatus=1 ORDER BY urgency DESC, id DESC
+    </select>
+
+
+    <select id="getAfterOrderShouHou" resultType="org.sang.bean.Order">
+        SELECT * FROM work_orders WHERE isDeleted=FALSE AND afterStatus=1 AND financeStatus=1 ORDER BY urgency DESC, id DESC
+    </select>
+
+
+
+
     <insert id="addOrder" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.Order">
         INSERT INTO work_orders set orderName=#{orderName},qrCode=#{qrCode},beiShu=#{beiShu},projectId=#{projectId},managerId=#{managerId},
         managerName=#{managerName},expected=#{expected},expectedTime=#{expectedTime},presentStepId=#{presentStepId},
@@ -631,6 +644,16 @@
         realityArea=#{realityArea},stayArea=0,liuChengStatus=0,jingFengStatus=0,piWenDaiMa=#{piWenDaiMa},storageStatus=0,picUrls=#{picUrls},liuZhuanStatus=0,liuZhuanArea=0,liuZhuanBiLi=0,
         financeStatus=0,financeBiLi=0,financeJinE=0,faMoStatus=0,addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},updateTime=now(),createTime=now(),storageTime=now(),isDeleted=FALSE
     </insert>
+
+
+    <update id="updateAfterStatus">
+        update work_orders
+        <set>
+            afterStatus = 1 ,
+            updateTime = now()
+        </set>
+        where id = #{orderId}
+    </update>
 
 
     <update id="updateOrderTech">

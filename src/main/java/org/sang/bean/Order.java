@@ -63,6 +63,7 @@ public class Order {
     private Date createTime;
     private Integer techNum;
     private List<WenLi> wenlis;
+    private Integer afterStatus;
 
 
     public Long getId() {
@@ -497,6 +498,14 @@ public class Order {
 
     public void setTechNum(Integer techNum) {
         this.techNum = techNum;
+    }
+
+    public Integer getAfterStatus() {
+        return afterStatus;
+    }
+
+    public void setAfterStatus(Integer afterStatus) {
+        this.afterStatus = afterStatus;
     }
 
     @Override
