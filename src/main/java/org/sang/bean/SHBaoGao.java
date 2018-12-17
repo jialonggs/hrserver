@@ -5,9 +5,17 @@ import java.util.Date;
 public class SHBaoGao {
 
     private Long id;
-    private Long orderId;
+    private Integer orderId;
+    private String danwei;
+    private String address;
     private String picUrls;
     private String fileUrl;
+    private String fixContent;
+    private Integer customerAtti;
+    private Date toTime;
+    private String contactPhone;
+    private String contactUser;
+    private String companyName;
 
     private Long addUserId;
     private String addUserName;
@@ -25,11 +33,11 @@ public class SHBaoGao {
         this.id = id;
     }
 
-    public Long getOrderId() {
+    public Integer getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(Long orderId) {
+    public void setOrderId(Integer orderId) {
         this.orderId = orderId;
     }
 
@@ -103,5 +111,69 @@ public class SHBaoGao {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getFixContent() {
+        return fixContent;
+    }
+
+    public void setFixContent(String fixContent) {
+        this.fixContent = fixContent;
+    }
+
+    public Integer getCustomerAtti() {
+        return customerAtti;
+    }
+
+    public void setCustomerAtti(Integer customerAtti) {
+        this.customerAtti = customerAtti;
+    }
+
+    public Date getToTime() {
+        return toTime;
+    }
+
+    public void setToTime(Date toTime) {
+        this.toTime = toTime;
+    }
+
+    public String getContactPhone() {
+        return contactPhone;
+    }
+
+    public void setContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
+    }
+
+    public String getContactUser() {
+        return contactUser;
+    }
+
+    public void setContactUser(String contactUser) {
+        this.contactUser = contactUser;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getDanwei() {
+        return danwei;
+    }
+
+    public void setDanwei(String danwei) {
+        this.danwei = danwei;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

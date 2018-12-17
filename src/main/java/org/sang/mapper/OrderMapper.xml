@@ -68,6 +68,11 @@
     </resultMap>
 
 
+    <resultMap type="org.sang.bean.responseEntity.OrderAffterOffice" id="afterOffice" extends="ordeResp">
+        <association property="shouHou" javaType="org.sang.bean.ShouHou" select="org.sang.mapper.ShouHouMapper.getShouHouByOrderId"
+                    column="id"></association>
+    </resultMap>
+
 
     <!--查询收模列表-->
     <resultMap type="org.sang.bean.Order" id="getOrdersMap">
@@ -456,9 +461,9 @@
         <association property="project" javaType="org.sang.bean.Project" column="projectId"
                      select="org.sang.mapper.ProjectMapper.getProjectById">
         </association>
-        <association property="techCard" javaType="org.sang.bean.TechCard" column="id"
-                     select="org.sang.mapper.TechCardMapper.getByOrderId">
-        </association>
+        <!--<association property="techCard" javaType="org.sang.bean.TechCard" column="id"-->
+                     <!--select="org.sang.mapper.TechCardMapper.getByOrderId">-->
+        <!--</association>-->
         <collection property="wenlis" ofType="org.sang.bean.WenLi" select="org.sang.mapper.WenLiMapper.getByOrderId"
                     column="id"></collection>
     </resultMap>
@@ -508,7 +513,14 @@
     </select>
 
     <select id="getNeedFaMo" resultMap="getFaMoOrder">
-        SELECT * FROM work_orders WHERE storageStatus=#{storageStatus} AND faMoStatus=#{faMoStatus} AND isDeleted=FALSE AND addUserId=#{addUserId} ORDER BY id
+        SELECT * FROM work_orders
+        <where>
+            isDeleted=FALSE
+            <if test=" addUserId!= 3 ">
+                AND addUserId = #{addUserId}
+            </if>
+        </where>
+        AND  storageStatus=#{storageStatus} AND faMoStatus=#{faMoStatus} AND isDeleted=FALSE  ORDER BY id
     </select>
 
     <select id="getOrderAndProject" resultMap="getFaMoOrder">
@@ -624,13 +636,19 @@
     </select>
 
 
-    <select id="getAfterOrdersList" resultType="org.sang.bean.Order">
-        SELECT * FROM work_orders WHERE isDeleted=FALSE AND afterStatus=#{afterStatus} AND financeStatus=1 ORDER BY urgency DESC, id DESC
-    </select>
+    <!--<select id="getAfterOrdersList" resultType="org.sang.bean.Order">-->
+        <!--SELECT * FROM work_orders as order1 WHERE isDeleted=FALSE AND financeStatus=1-->
+         <!--LEFT JOIN work_shou_hou as sh ON sh.orderId = order1.id AND sh.status = '0' ORDER BY urgency DESC, id DESC-->
+    <!--</select>-->
 
 
     <select id="getAfterOrderShouHou" resultType="org.sang.bean.Order">
-        SELECT * FROM work_orders WHERE isDeleted=FALSE AND afterStatus=1 AND financeStatus=1 ORDER BY urgency DESC, id DESC
+        SELECT * FROM work_orders WHERE isDeleted=FALSE  AND id=#{orderId} ORDER BY urgency DESC, id DESC
+    </select>
+
+
+    <select id="getOrderAffterOffice" resultMap="afterOffice">
+        SELECT * FROM work_orders WHERE isDeleted=FALSE  AND financeStatus=1 AND addUserId=#{userId} ORDER BY urgency DESC, id DESC
     </select>
 
 
@@ -649,11 +667,13 @@
     <update id="updateAfterStatus">
         update work_orders
         <set>
-            afterStatus = 1 ,
+            afterStatus = #{afterStatus} ,
             updateTime = now()
         </set>
         where id = #{orderId}
     </update>
+
+
 
 
     <update id="updateOrderTech">

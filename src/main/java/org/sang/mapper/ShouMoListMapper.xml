@@ -70,6 +70,8 @@
     </select>
 
 
+
+
     <select id="getById" resultType="org.sang.bean.ShouMoList" >
         SELECT t1.* FROM work_shoumo_list t1 where id = #{id}
     </select>

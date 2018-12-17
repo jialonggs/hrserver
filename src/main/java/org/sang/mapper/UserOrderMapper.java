@@ -26,4 +26,6 @@ public interface UserOrderMapper {
     int updateUserOrder(@Param("userOrder") UserOrder userOrder);
 
     List<UserOrderCountResp> getCountUserOrder(@Param("userId") Integer userId, @Param("startTime") String startTime,  @Param("endTime") String endTime);
+
+    UserOrder checkOrderAuth(@Param("userId") Long userId, @Param("orderId") Long orderId);
 }

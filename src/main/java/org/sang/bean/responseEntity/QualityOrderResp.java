@@ -7,6 +7,7 @@ import org.sang.bean.UserOrder;
 import java.util.List;
 
 public class QualityOrderResp extends QualityOrderUser{
+    private Boolean isHaveAuth;
     private Order order;
 
     private List<UserOrder> orderUsers;
@@ -25,5 +26,13 @@ public class QualityOrderResp extends QualityOrderUser{
 
     public void setOrderUsers(List<UserOrder> orderUsers) {
         this.orderUsers = orderUsers;
+    }
+
+    public Boolean getHaveAuth() {
+        return isHaveAuth;
+    }
+
+    public void setHaveAuth(Boolean haveAuth) {
+        isHaveAuth = haveAuth;
     }
 }

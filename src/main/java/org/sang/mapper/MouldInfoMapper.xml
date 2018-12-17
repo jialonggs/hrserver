@@ -50,6 +50,17 @@
 </select>
 
 
+    <select id="getUnSelect" resultMap="MouldInfoMap" >
+        SELECT * FROM work_mould_info
+        <where>
+            <if test="begainTime != null and begainTime != ''">
+                createTime  &lt;= #{begainTime}
+            </if>
+        </where>
+        AND isDeleted=FALSE AND isSelected=0 ORDER BY id
+    </select>
+
+
     <select id="selectBy" resultMap="MouldInfoMap" >
         select * from `work_mould_info`
         <where>

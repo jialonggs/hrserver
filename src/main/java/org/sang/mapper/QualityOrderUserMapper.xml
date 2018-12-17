@@ -105,6 +105,11 @@
     </select>
 
 
+    <select id="checkOrderAuth" resultType="org.sang.bean.QualityOrderUser">
+        SELECT * FROM work_quality_order WHERE isDeleted=FALSE AND orderId=#{orderId} AND userId=#{userId}
+    </select>
+
+
     <!--<select id="getStepsList" resultType="org.sang.bean.Step">-->
     <!--SELECT * FROM work_step WHERE isDeleted=FALSE ORDER BY id-->
     <!--</select>-->

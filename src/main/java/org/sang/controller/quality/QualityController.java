@@ -69,6 +69,49 @@ public class QualityController extends BaseController {
         return succResult(map);
     }
 
+
+    @RequestMapping(value = "/process/all/listbypage", method = RequestMethod.GET)
+    public BaseResponseEntity getOrdersListAll(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size,
+                                            @RequestParam(value = "userId") Integer userId,
+                                            @RequestParam(value = "status") Integer status) {
+
+        Map<String, Object> map = new HashMap<>();
+        PageInfoEntity pageInfoEntity = new PageInfoEntity();
+        pageInfoEntity.setCurrentPage(page);
+        pageInfoEntity.setPagesize(size);
+        List<QualityOrderResp> qualityOrderResps = new ArrayList<>();
+        PageBean<QualityOrderResp> list = qualityOrderService.getQualityOrdersAll(pageInfoEntity, userId, status);
+        if (null != list && list.getItems() != null && list.getItems().size() != 0) {
+            qualityOrderResps = list.getItems();
+            map.put("count", list.getPageInfo().getTotal());
+        }
+        if(null != qualityOrderResps){
+            List<Long> orderIds = new ArrayList<>();
+            for (QualityOrderResp qualityOrderResp : qualityOrderResps){
+               if((qualityOrderResp.getUserId() + "").equals(""+userId)){
+                   orderIds.add(qualityOrderResp.getOrderId());
+               }
+            }
+
+            for (QualityOrderResp qualityOrderResp : qualityOrderResps){
+                Boolean flag = false;
+                for (Long orderId : orderIds){
+                     if(qualityOrderResp.getOrderId().equals(orderId)){
+                         flag = true;
+                         break;
+                     }
+                }
+                if(flag){
+                    qualityOrderResp.setHaveAuth(true);
+                }else{
+                    qualityOrderResp.setHaveAuth(false);
+                }
+            }
+        }
+        map.put("qualityorderlist", qualityOrderResps);
+        return succResult(map);
+    }
+
     /**
      * 查询已完结的订单列表
      *
@@ -105,6 +148,10 @@ public class QualityController extends BaseController {
                                           @RequestParam("auditResult") Integer auditResult) {
         if (null == orderId || null == presentStepId) {
             return badResult(ErrCodeMsg.ARGS_MISSING);
+        }
+        QualityOrderUser checkAuth = qualityOrderService.checkUserOrderAuth(userId, orderId);
+        if(null == checkAuth){
+            return badResult(ErrCodeMsg.NO_HAVE_ORDER_AUTH);
         }
         Order order = orderService.getOrderInfoById(orderId);
         if (null == order) {

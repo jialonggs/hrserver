@@ -201,7 +201,8 @@ public class OrderController extends BaseController{
     public BaseResponseEntity getMouldTree(){
         try {
             Map<String, Object> map = new HashMap<>();
-            List<MouldPartTreeResp> list = mouldInfoService.getCollectInfosByTime(Integer.parseInt(days));
+            //List<MouldPartTreeResp> list = mouldInfoService.getByTime(Integer.parseInt(days));
+            List<MouldPartTreeResp> list = mouldInfoService.getByTimeNew(Integer.parseInt(days));
             if(null != list && list.size()>0){
                 map.put("tree", list);
                 return succResult(map);

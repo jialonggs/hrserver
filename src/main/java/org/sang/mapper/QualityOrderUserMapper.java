@@ -15,4 +15,6 @@ public interface QualityOrderUserMapper {
     int updateStatus(@Param("status") Integer status, @Param("orderId") Long orderId);
 
     List<QualityOrderResp> getOverOrdersList();
+
+    QualityOrderUser checkOrderAuth(@Param("userId") Long userId, @Param("orderId") Long orderId);
 }

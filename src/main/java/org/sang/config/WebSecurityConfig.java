@@ -50,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/index.html", "/order.html","/jl/**","/static/**","/login_p" ,"/config/info/**","/plant/order/info/**","/work/flow/list/steps" );
+        web.ignoring().antMatchers("/index.html","/order/list/mangers", "/order.html","/jl/**","/static/**","/login_p" ,"/config/info/**","/plant/order/info/**","/work/flow/list/steps" );
     }
 
     @Override

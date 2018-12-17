@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.ShXzOrderMapper">
+    <!--查询收模列表-->
+    <resultMap type="org.sang.bean.ShXzOrder" id="getCaiMoList">
+        <id column="id" property="id"/>
+        <result column="yuJi" property="yuJi"/>
+        <result column="startDate" property="startDate"/>
+        <result column="contactContent" property="contactContent"/>
+        <result column="transferAddress" property="transferAddress"/>
+        <result column="transferProblem" property="transferProblem"/>
+        <result column="transferCompany" property="transferCompany"/>
+        <result column="transferContact" property="transferContact"/>
+        <result column="gongJu" property="gongJu"/>
+        <result column="caiLiaoSha" property="caiLiaoSha"/>
+        <result column="caiLiaoYongPin" property="caiLiaoYongPin"/>
+        <result column="caiLiao" property="caiLiao"/>
+        <result column="houQi" property="houQi"/>
+        <result column="houQiRemark" property="houQiRemark"/>
+        <result column="waiPaiRenYuan" property="waiPaiRenYuan"/>
+        <result column="jiaoTong" property="jiaoTong"/>
+
+        <result column="addUserId" property="addUserId"/>
+        <result column="addUserName" property="addUserName"/>
+        <result column="remark" property="remark"/>
+        <result column="status" property="remark"/>
+        <result column="isDeleted" property="isDeleted"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="createTime" property="createTime"/>
+    </resultMap>
+
+
+    <insert id="addShXzOrder" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.ShXzOrder">
+        INSERT INTO work_sh_xz set yuJi=#{yuJi},startDate=#{startDate},contactContent=#{contactContent},transferAddress=#{transferAddress},
+        transferProblem=#{transferProblem},transferCompany=#{transferCompany},transferContact=#{transferContact},gongJu=#{gongJu},orderId=#{orderId},shouHouId=#{shouHouId},
+        caiLiaoSha=#{caiLiaoSha},caiLiaoYongPin=#{caiLiaoYongPin},caiLiao=#{caiLiao},houQi=#{houQi},houQiRemark=#{houQiRemark},waiPaiRenYuan=#{waiPaiRenYuan},
+        jiaoTong=#{jiaoTong},addUserId=#{addUserId},addUserName=#{addUserName},remark=#{remark},status=#{status},
+        isDeleted=FALSE,updateTime=now(),createTime=now()
+    </insert>
+
+    <select id="getByOrderId" resultType="org.sang.bean.ShXzOrder">
+        SELECT * FROM work_sh_xz where orderId = #{orderId}
+    </select>
+
+    <update id="updateSh">
+        update work_sh_xz
+        <set>
+            <if test="order.yuJi != null">
+                yuJi = #{order.yuJi},
+            </if>
+            <if test="order.startDate != null">
+                startDate = #{order.startDate},
+            </if>
+            <if test="order.contactContent != null">
+                contactContent = #{order.contactContent},
+            </if>
+            <if test="order.transferAddress != null">
+                transferAddress = #{order.transferAddress},
+            </if>
+            <if test="order.transferProblem != null">
+                transferProblem = #{order.transferProblem},
+            </if>
+            <if test="order.transferContact != null">
+                transferContact = #{order.transferContact},
+            </if>
+            <if test="order.gongJu != null">
+                gongJu = #{order.gongJu},
+            </if>
+            <if test="order.caiLiaoSha != null">
+                caiLiaoSha = #{order.caiLiaoSha},
+            </if>
+            <if test="order.caiLiaoYongPin != null">
+                caiLiaoYongPin = #{order.caiLiaoYongPin},
+            </if>
+            <if test="order.caiLiao != null">
+                caiLiao = #{order.caiLiao},
+            </if>
+            <if test="order.houQi != null">
+                houQi = #{order.houQi},
+            </if>
+            <if test="order.houQiRemark != null">
+                houQiRemark = #{order.houQiRemark},
+            </if>
+            <if test="order.waiPaiRenYuan != null">
+                waiPaiRenYuan = #{order.waiPaiRenYuan},
+            </if>
+            <if test="order.jiaoTong != null">
+                jiaoTong = #{order.jiaoTong},
+            </if>
+            updateTime = now()
+        </set>
+        where id = #{order.id}
+    </update>
+
+</mapper>

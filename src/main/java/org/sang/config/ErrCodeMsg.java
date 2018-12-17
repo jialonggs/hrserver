@@ -46,7 +46,9 @@ public enum ErrCodeMsg {
     SERVICE_RETURN_NULL(902, "依赖后端接口未返回"),
     LOCK_FAIL(903, "加锁失败"),
     OLD_PASSWORD_ERROR(1001, "旧密码错误"),
+    NO_HAVE_ORDER_AUTH(1012, "对此订单无审核权限"),
     MESSAGE_NOT_UPDATE(1000, "信息未更新");
+
 
 
     private int code;

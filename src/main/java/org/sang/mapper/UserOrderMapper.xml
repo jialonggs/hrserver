@@ -29,7 +29,7 @@
         <result column="updateTime" property="updateTime"/>
         <result column="createTime" property="createTime"/>
 
-        <collection property="orderInfo" ofType="org.sang.bean.responseEntity.FaMoOrder" column="orderId"
+        <collection property="orderInfo" ofType="org.sang.bean.responseEntity.CountOrderResp" column="orderId"
                     select="org.sang.mapper.OrderMapper.getCountUserOrder">
         </collection>
     </resultMap>
@@ -61,6 +61,10 @@
 
     <select id="getByOrderId" resultType="org.sang.bean.UserOrder">
         SELECT * FROM work_user_order WHERE isDeleted=FALSE AND orderId=#{id}
+    </select>
+
+    <select id="checkOrderAuth" resultType="org.sang.bean.UserOrder">
+        SELECT * FROM work_user_order WHERE  isDeleted=FALSE AND orderId=#{orderId} AND userId=#{userId}
     </select>
 
 

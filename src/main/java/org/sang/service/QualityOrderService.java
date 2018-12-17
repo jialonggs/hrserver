@@ -39,7 +39,7 @@ public class QualityOrderService {
      * @return
      */
     public PageBean<QualityOrderResp> getQualityOrders(PageInfoEntity pageInfoEntity, Integer userId, Integer status) {
-        if(null != userId){
+        if(null != userId && 3 != userId){
             PageHelper.startPage(pageInfoEntity.getCurrentPage(),pageInfoEntity.getPagesize());
             List<QualityOrderResp> list = qualityOrderUserMapper.getQualityOrdersList(userId, status);
             PageInfo page = new PageInfo(list);
@@ -57,8 +57,22 @@ public class QualityOrderService {
             return  pageData;
         }
 
+    }
+
+
+    public PageBean<QualityOrderResp> getQualityOrdersAll(PageInfoEntity pageInfoEntity, Integer userId, Integer status) {
+            PageHelper.startPage(pageInfoEntity.getCurrentPage(),pageInfoEntity.getPagesize());
+            List<QualityOrderResp> list = qualityOrderUserMapper.getQualityOrdersList(3, status);
+            PageInfo page = new PageInfo(list);
+            PageBean<QualityOrderResp> pageData = new PageBean<>();
+            pageData.setItems(list);
+            pageData.setPageInfo(page);
+            return  pageData;
+
 
     }
+
+
 
     /**
      * 获取加工完成的列表
@@ -77,8 +91,6 @@ public class QualityOrderService {
 
     @Transactional
     public Boolean shenHe(Order order, OrderFlow orderFlow, List<UserOrder> userOrderList, List<OrderArgeLog> orderArgeLogs, Integer status){
-        System.out.print("----------------------------------------");
-        System.out.print(order.toString());
         int i =  orderMapper.updateOrder(order);
         int k = orderFlowMapper.updateOrderFlow(orderFlow);
         if(null != userOrderList && !userOrderList.isEmpty()){
@@ -144,6 +156,12 @@ public class QualityOrderService {
             int result = userOrderMapper.addUserOrder(needAdd);
         }
         return true;
+    }
+
+
+    public QualityOrderUser checkUserOrderAuth(Long userId, Long orderId){
+        QualityOrderUser qu = qualityOrderUserMapper.checkOrderAuth(userId, orderId);
+        return qu;
     }
 
 }

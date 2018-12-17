@@ -29,4 +29,6 @@ public interface MouldInfoMapper {
 
    int updateMould(@Param("id") Long id);
 
+   List<MouldInfo> getUnSelect(@Param("begainTime") String begainTime);
+
 }

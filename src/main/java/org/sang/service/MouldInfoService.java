@@ -135,4 +135,146 @@ public class MouldInfoService {
         return reslist;
 
     }
+
+
+
+    public List<MouldPartTreeResp> getByTimeNew(Integer days){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar endTime =  Calendar.getInstance();
+        Calendar begainTime = Calendar.getInstance();
+        // 结束时间
+        endTime.set(Calendar.HOUR,0);
+        endTime.set(Calendar.MINUTE,0);
+        endTime.set(Calendar.SECOND,0);
+        endTime.set(Calendar.MILLISECOND,0);
+        String endTime1 = sdf.format(endTime.getTime());
+
+        begainTime.add(Calendar.DATE ,-days);
+        begainTime.set(Calendar.HOUR,23);
+        begainTime.set(Calendar.MINUTE,59);
+        begainTime.set(Calendar.SECOND,59);
+        begainTime.set(Calendar.MILLISECOND,59);
+        String begainTime1 = sdf.format(begainTime.getTime());
+        List<ShouMoListResp> list = shouMoListMapper.getShouMoByTime2(begainTime1, endTime1);
+        List<MouldInfo> unSelect = mouldInfoMapper.getUnSelect(begainTime1);
+        List<MouldPartTreeResp> resp = new ArrayList<>();
+        if(null != list && list.size()>0){
+            resp = this.toFilter(days, list);
+        }
+        if(null != unSelect && unSelect.size()>0){
+            resp = this.filterUnselect(unSelect, resp);
+        }
+        return resp;
+    }
+
+    public List<MouldPartTreeResp> filterUnselect(List<MouldInfo> unSelectResp, List<MouldPartTreeResp> select){
+        List<MouldPartChildrenResp> resps = new ArrayList<>();
+      //  for (ShouMoListResp shouMoListResp : unSelectResp) {
+
+                if(unSelectResp != null && unSelectResp.size()>0){
+                    List<TreeMouldInfoResp> treeMouldInfoResps = new ArrayList<>();
+                    for (MouldInfo part: unSelectResp){
+                        TreeMouldInfoResp treeMouldInfoResp = new TreeMouldInfoResp();
+                        treeMouldInfoResp.setDisabled(part.getSelected());
+                        treeMouldInfoResp.setLabel(part.getMouldName());
+                        treeMouldInfoResp.setId(part.getId());
+                        treeMouldInfoResp.setCollectPartinfoEntity(part);
+                        treeMouldInfoResps.add(treeMouldInfoResp);
+                    }
+                    MouldPartChildrenResp mouldPartChildrenResp = new MouldPartChildrenResp();
+
+                    mouldPartChildrenResp.setLabel("请校验");
+                    mouldPartChildrenResp.setId(10000000L);
+                    mouldPartChildrenResp.setDisabled(true);
+                    // 设置本批次下所有的模具节点
+                    mouldPartChildrenResp.setChildren(treeMouldInfoResps);
+                    resps.add(mouldPartChildrenResp);
+                }
+        //}
+
+        if(null != resps && resps.size()>0){
+            MouldPartTreeResp mouldPartTreeResp = new MouldPartTreeResp();
+            mouldPartTreeResp.setLabel("历史未被选择集合");
+            mouldPartTreeResp.setId((select.size() + 1 )+"");
+            mouldPartTreeResp.setDisabled(true);
+            mouldPartTreeResp.setChildren(resps);
+            select.add(mouldPartTreeResp);
+        }
+        return select;
+
+    }
+
+
+
+    public List<MouldPartTreeResp> toFilter( Integer days, List<ShouMoListResp> list){
+        List<MouldPartTreeResp> reslist = new ArrayList<>();
+        for(int i= 0;i<days; i++) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Calendar nowTime =  Calendar.getInstance();
+            Calendar endTime = Calendar.getInstance();
+            // 结束时间
+            nowTime.add(Calendar.DATE ,-i);
+            nowTime.set(Calendar.HOUR,0);
+            nowTime.set(Calendar.MINUTE,0);
+            nowTime.set(Calendar.SECOND,0);
+            nowTime.set(Calendar.MILLISECOND,0);
+            String begainTime = sdf.format(nowTime.getTime());
+
+            endTime.add(Calendar.DATE ,-i);
+            endTime.set(Calendar.HOUR,23);
+            endTime.set(Calendar.MINUTE,59);
+            endTime.set(Calendar.SECOND,59);
+            endTime.set(Calendar.MILLISECOND,59);
+            String endTime1 = sdf.format(endTime.getTime());
+
+            // 获取当天的收模列表 --按批次排序
+
+                List<MouldPartChildrenResp> resps = new ArrayList<>();
+                for (ShouMoListResp shouMoList : list) {
+                    Date createTime = shouMoList.getCreateTime();
+                    Calendar compareTime = Calendar.getInstance();
+                    compareTime.setTime(createTime);
+                    if (compareTime.compareTo(endTime) < 0 && compareTime.compareTo(nowTime) >0) {
+                        Long id = shouMoList.getId();
+                        String  companyName = shouMoList.getClientCompanyName();
+                        // 获取该批次中所有模具列表 按时间排序
+                        List<MouldInfo> partList = shouMoList.getMouldInfos();
+                        if(partList != null && partList.size()>0){
+                            List<TreeMouldInfoResp> treeMouldInfoResps = new ArrayList<>();
+                            for (MouldInfo part: partList){
+                                TreeMouldInfoResp treeMouldInfoResp = new TreeMouldInfoResp();
+                                treeMouldInfoResp.setDisabled(part.getSelected());
+                                treeMouldInfoResp.setLabel(part.getMouldName());
+                                treeMouldInfoResp.setId(part.getId());
+                                treeMouldInfoResp.setCollectPartinfoEntity(part);
+                                treeMouldInfoResps.add(treeMouldInfoResp);
+                            }
+                            MouldPartChildrenResp mouldPartChildrenResp = new MouldPartChildrenResp();
+                            if(companyName == null || companyName.isEmpty()){
+                                companyName = "无";
+                            }
+                            mouldPartChildrenResp.setLabel(shouMoList.getBatch()+ "(" +companyName+")");
+                            mouldPartChildrenResp.setId(shouMoList.getId());
+                            mouldPartChildrenResp.setDisabled(true);
+                            // 设置本批次下所有的模具节点
+                            mouldPartChildrenResp.setChildren(treeMouldInfoResps);
+                            resps.add(mouldPartChildrenResp);
+
+                        }
+                    }
+                }
+                // 设置该天
+                if(null != resps &&resps.size()>0){
+                    MouldPartTreeResp mouldPartTreeResp = new MouldPartTreeResp();
+                    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+                    String label = sdf1.format(nowTime.getTime());
+                    mouldPartTreeResp.setId(i+"");
+                    mouldPartTreeResp.setLabel(label);
+                    mouldPartTreeResp.setDisabled(true);
+                    mouldPartTreeResp.setChildren(resps);
+                    reslist.add(mouldPartTreeResp);
+                }
+        }
+        return reslist;
+    }
 }

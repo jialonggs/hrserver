@@ -10,7 +10,17 @@ public interface ShouHouMapper {
 
     int add(ShouHou shouHou);
 
+    int updateShouHou(ShouHou shouHou);
+
     List<OrderShouhou> getShouHouList(@Param("userId") Integer userId, @Param("status")Integer status);
 
-    int updateShouHouStatus(@Param("orderId") Long orderId);
+    int updateShouHouStatus(@Param("orderId") Integer orderId, @Param("status") Integer status);
+
+    ShouHou getShouHouByOrderId(@Param("orderId") Integer orderId);
+
+    List<OrderShouhou> getAfterOrdersList(@Param("status") Integer status);
+
+    int updateXzOrBg(@Param("id") Long id, @Param("xzId") Integer xzId, @Param("shId") Integer shId);
+
+    int updateBGIdStatus (@Param("orderId") Integer orderId, @Param("shId") Long shId, @Param("status") Integer status);
 }

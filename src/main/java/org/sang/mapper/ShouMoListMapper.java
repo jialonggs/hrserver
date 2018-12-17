@@ -22,4 +22,6 @@ public interface ShouMoListMapper {
     int updateShouMo(@Param("shouMo") ShouMoList shouMoList);
 
     ShouMoList getById(@Param("id") Integer id);
+
+
 }

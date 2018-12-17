@@ -5,14 +5,18 @@ import java.util.Date;
 public class ShouHou {
 
     private Long id;
-    private Long orderId;
+    private Integer orderId;
+    private Integer xzId;
+    private Integer shId;
+    private String address;
+    private String danwei;
     private Long userId;
     private String userName;
 
-    private Long addUserId;
+    private String addUserId;
     private String addUserName;
     private Date finishTime;
-    private String status;
+    private Integer status;
     private String remark;
     private Boolean isDeleted;
     private Date updateTime;
@@ -27,11 +31,12 @@ public class ShouHou {
         this.id = id;
     }
 
-    public Long getOrderId() {
+
+    public Integer getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(Long orderId) {
+    public void setOrderId(Integer orderId) {
         this.orderId = orderId;
     }
 
@@ -51,11 +56,11 @@ public class ShouHou {
         this.userName = userName;
     }
 
-    public Long getAddUserId() {
+    public String getAddUserId() {
         return addUserId;
     }
 
-    public void setAddUserId(Long addUserId) {
+    public void setAddUserId(String addUserId) {
         this.addUserId = addUserId;
     }
 
@@ -75,11 +80,11 @@ public class ShouHou {
         this.finishTime = finishTime;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -113,5 +118,37 @@ public class ShouHou {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getDanwei() {
+        return danwei;
+    }
+
+    public void setDanwei(String danwei) {
+        this.danwei = danwei;
+    }
+
+    public Integer getXzId() {
+        return xzId;
+    }
+
+    public void setXzId(Integer xzId) {
+        this.xzId = xzId;
+    }
+
+    public Integer getShId() {
+        return shId;
+    }
+
+    public void setShId(Integer shId) {
+        this.shId = shId;
     }
 }

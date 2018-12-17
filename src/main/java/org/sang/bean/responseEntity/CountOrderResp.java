@@ -3,13 +3,15 @@ package org.sang.bean.responseEntity;
 import org.sang.bean.Order;
 import org.sang.bean.Project;
 import org.sang.bean.TechCard;
+import org.sang.bean.WenLi;
+
+import java.util.List;
 
 public class CountOrderResp extends Order{
 
     private Project project;
 
-    private TechCard techCard;
-
+    public List<WenLi> wenlis;
     public Project getProject() {
         return project;
     }
@@ -18,11 +20,13 @@ public class CountOrderResp extends Order{
         this.project = project;
     }
 
-    public TechCard getTechCard() {
-        return techCard;
+    @Override
+    public List<WenLi> getWenlis() {
+        return wenlis;
     }
 
-    public void setTechCard(TechCard techCard) {
-        this.techCard = techCard;
+    @Override
+    public void setWenlis(List<WenLi> wenlis) {
+        this.wenlis = wenlis;
     }
 }
