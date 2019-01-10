@@ -26,6 +26,7 @@ public class ShouMoList {
     private Boolean isDeleted;
     private Date updateTime;
     private Date createTime;
+    private Date trueTime;
 
     public Long getId() {
         return id;
@@ -164,4 +165,11 @@ public class ShouMoList {
         this.createTime = createTime;
     }
 
+    public Date getTrueTime() {
+        return trueTime;
+    }
+
+    public void setTrueTime(Date trueTime) {
+        this.trueTime = trueTime;
+    }
 }

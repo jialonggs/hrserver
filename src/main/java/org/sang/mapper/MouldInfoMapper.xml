@@ -91,6 +91,9 @@
             <if test="selectId != null">
                 selectId= #{selectId},
             </if>
+            <if test="picUrls != null">
+                picUrls= #{picUrls},
+            </if>
             <if test="orderId != null">
                 orderId=#{orderId},
             </if>

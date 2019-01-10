@@ -22,8 +22,17 @@ public class ShouMoListResp {
     private String status;
     private String remark;
     private Boolean isDeleted;
+    private Date trueTime;
     private Date updateTime;
     private Date createTime;
+
+    public Date getTrueTime() {
+        return trueTime;
+    }
+
+    public void setTrueTime(Date trueTime) {
+        this.trueTime = trueTime;
+    }
 
     public Long getId() {
         return id;

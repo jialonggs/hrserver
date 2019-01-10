@@ -21,6 +21,7 @@
         <result column="driverPhone" property="driverPhone"/>
         <result column="status" property="status"/>
         <result column="updateTime" property="updateTime"/>
+        <result column="trueTime" property="trueTime"/>
         <result column="createTime" property="createTime"/>
         <!-- 关联模具信息 -->
         <collection property="mouldInfos" ofType="org.sang.bean.MouldInfo" column="id"
@@ -30,16 +31,16 @@
 
 
     <select id="getAllShouMoList" resultType="org.sang.bean.ShouMoList">
-        SELECT * FROM work_shoumo_list WHERE isDeleted=FALSE ORDER BY id
+        SELECT * FROM work_shoumo_list WHERE isDeleted=FALSE ORDER BY id DESC
     </select>
     <!-- 一对多查询-->
     <select id="getShouMoList" resultMap="shouMoLisAndMouldInfo">
-        SELECT t1.* FROM work_shoumo_list t1 WHERE isDeleted=FALSE ORDER BY id
+        SELECT t1.* FROM work_shoumo_list t1 WHERE isDeleted=FALSE ORDER BY id DESC
     </select>
 
     <insert id="createShouMo" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.ShouMoList">
         INSERT INTO work_shoumo_list set clientCompanyName=#{clientCompanyName},batch=#{batch},freightType=#{freightType},woodenCaseNum=#{woodenCaseNum},palletNum=#{palletNum},diaoHuanNum=#{diaoHuanNum},jianBao=#{jianBao},
-        carNum=#{carNum},driverPhone=#{driverPhone},addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},remark=#{remark},isDeleted=FALSE,updateTime=now(),createTime=#{createTime}
+        carNum=#{carNum},driverPhone=#{driverPhone},addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},remark=#{remark},isDeleted=FALSE,updateTime=now(),createTime=#{createTime},trueTime=now()
     </insert>
 
     <select id="getShouMoByTime" resultMap="shouMoLisAndMouldInfo" parameterType="map">
@@ -111,8 +112,8 @@
                 addUserName = #{shouMo.addUserName,jdbcType=VARCHAR},
             </if>
             <if test="shouMo.addUserId != null">
-                addUserId = #{shouMo.addUserId},
-            </if>
+                  addUserId = #{shouMo.addUserId},
+             </if>
             <if test="shouMo.status != null">
                 status = #{shouMo.status,jdbcType=VARCHAR},
             </if>

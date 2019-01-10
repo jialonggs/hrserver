@@ -1,10 +1,7 @@
 package org.sang.controller;
 
 import org.apache.ibatis.annotations.Param;
-import org.sang.bean.Hr;
-import org.sang.bean.Menu;
-import org.sang.bean.RespBean;
-import org.sang.bean.ResponseDataEntity;
+import org.sang.bean.*;
 import org.sang.bean.responseEntity.BaseResponseEntity;
 import org.sang.bean.responseEntity.OrderInfoResp;
 import org.sang.common.HrUtils;
@@ -134,6 +131,27 @@ public class ConfigController extends BaseController{
             return badResult(ErrCodeMsg.COMMON_FAIL);
         }
         return succResult(list);
+    }
+
+
+
+    @RequestMapping(value = "/add/pic", method = RequestMethod.POST)
+    public BaseResponseEntity addPicurl(String picUrls){
+        if(null == picUrls){
+            badResult(ErrCodeMsg.ARGS_MISSING);
+        }
+        Boolean add = hrService.addPic(picUrls);
+        if(add){
+            return succResult();
+        }else{
+            return badResult(ErrCodeMsg.COMMON_FAIL);
+        }
+    }
+
+    @RequestMapping(value = "/get/pic", method = RequestMethod.GET)
+    public BaseResponseEntity getPic(){
+        AppPic appPic = hrService.geAppPic();
+        return  succResult(appPic);
     }
 
 }

@@ -1,8 +1,10 @@
 package org.sang.service;
 
+import org.sang.bean.AppPic;
 import org.sang.bean.Hr;
 import org.sang.bean.responseEntity.UserInfoResp;
 import org.sang.common.HrUtils;
+import org.sang.mapper.AppPicMapper;
 import org.sang.mapper.HrMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +25,9 @@ public class HrService implements UserDetailsService {
 
     @Autowired
     HrMapper hrMapper;
+
+    @Autowired
+    AppPicMapper appPicMapper;
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
@@ -125,6 +130,24 @@ public Long hrReg(Hr hr) {
         }else{
             return false;
         }
+    }
+
+
+    public Boolean addPic(String picUrls){
+        AppPic select = appPicMapper.getAppPic();
+        if(null == select){
+            AppPic newApp = new AppPic();
+            newApp.setUrl(picUrls);
+            appPicMapper.addPicUrl(newApp);
+        }else{
+            appPicMapper.updatePicUrl(select.getId(), picUrls);
+        }
+
+        return  true;
+    }
+
+    public AppPic geAppPic(){
+        return  appPicMapper.getAppPic();
     }
 
 }

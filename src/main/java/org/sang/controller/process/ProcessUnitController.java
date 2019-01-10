@@ -48,7 +48,7 @@ public class ProcessUnitController extends BaseController{
         }
         ProcessUnit processUnit1 = processUnitService.getByName(processUnit.getClientCompanyName());
         if(null != processUnit1){
-            return badResult(ErrCodeMsg.COMMON_FAIL);
+            return badResult(ErrCodeMsg.DAN_WEI_NAME);
         }
         Boolean result = processUnitService.addUnit(processUnit);
         if(result){

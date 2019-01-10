@@ -80,10 +80,13 @@
 </header>
 <div class="mui-content">
 	<div>
-		<div class="mui-btn-text" style="padding-left: 10px;">添  加 人:<span id="tianjiaren"></span></div>
+		<div class="mui-btn-text" style="padding-left: 10px;">添  加 人 :<span id="tianjiaren"></span></div>
 		<div class="mui-btn-text" style="padding-left: 10px;">订单名称:<span id="xiangmu"></span></div>
 		<div class="mui-btn-text" style="padding-left: 10px;">模具名称:<span id="moju"></span></div>
 		<div class="mui-btn-text" style="padding-left: 10px;">订单进度:<span id="jindu"></span></div>
+		<div class="mui-btn-text" style="padding-left: 10px;">质量总监:<span id="ziliangzongjian"></span></div>
+		<div class="mui-btn-text" style="padding-left: 10px;">贴花人员:<span id="tiehuarenyuan"></span></div>
+
 
 	</div>
 	<div id="nomal_info" style="display: none;">
@@ -104,12 +107,13 @@
 		<div class="mui-btn-text">已完成面积：<span id="yiwanchengmianji">：</span></div>
 		<div class="mui-btn-text">未完成面积：<span id="weiwanchengmianji">：</span></div>
 	</div>
+	<div id="nomal_wenlis" style="display: none;">
+		<p style="text-align: left;color: #2a86e8;text-indent: 0;padding-left: 1em;;font-size：130%;padding-top: 15px;">纹理信息</p>
+		<div id="wenlis"></div>
+	</div>
 	<div id="nomal_gongyika" style="display: none;">
 		<p style="text-align: left;color: #2a86e8;text-indent: 0;padding-left: 1em;;font-size：130%;padding-top: 15px;">工艺卡信息</p>
-		<div class="mui-btn-text">难度系数：<span id="nanduxishu">：</span></div>
-		<div class="mui-btn-text">贴花步数：<span id="tiehuabuzhou">：</span></div>
-		<div class="mui-btn-text">工艺参数：<span id="gongxicanshu">：</span></div>
-		<div class="mui-btn-text">备注：<span id="gongyibeizhu">：</span></div>
+		<div id="gongyikas"></div>
 	</div>
 	<div id="nomal_kongzhidan" style="display: none;">
 		<p style="text-align: left;color: #2a86e8;text-indent: 0;padding-left: 1em;;font-size：130%;padding-top: 15px;">控制单信息</p>
@@ -163,6 +167,7 @@
                     theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);
                 }
             }
+            console.log(theRequest);
             return theRequest;
         }
         function setCookie(name,value)
@@ -215,6 +220,52 @@
                     mouldName =itemName + "," + mouldName;
                 }
 			}
+			var ziliangzongjians = order.qualityOrderUsers;
+            var ziliangzongjianName = "";
+            if(ziliangzongjians !='' && ziliangzongjians.length > 0){
+                for (var i=0; i<ziliangzongjians.length; i++){
+                    var itemName=ziliangzongjians[i].userName;
+                    ziliangzongjianName =itemName + "," + ziliangzongjianName;
+                }
+            }
+
+            var tiehuarenyuans = order.orderUsers;
+            var tiehuarenyuanName = "";
+            if(tiehuarenyuans !='' && tiehuarenyuans.length > 0){
+                for (var i=0; i<tiehuarenyuans.length; i++){
+                    var itemName=tiehuarenyuans[i].userName;
+                    tiehuarenyuanName =itemName + "," + tiehuarenyuanName;
+                }
+            }
+            // 添加工艺卡信息
+			var gongyika = order.techCardList;
+            var tiehuarenyuanStr = "";
+            if(gongyika !='' && gongyika.length > 0){
+                for (var i=0; i<gongyika.length; i++){
+                   var str1 =  '<p>对应纹理：'+ gongyika[i].piWenDaiMa + '</p>';
+                   var str2 = '<div class="mui-btn-text">难度系数：' + gongyika[i].nanDuXiShu + '</div>';
+                   var str3 = '<div class="mui-btn-text">贴花步数：' + gongyika[i].tieHuaBuShu + '</div>';
+                   var str4 = '<div class="mui-btn-text">工艺参数：' + gongyika[i].gongYiCanShu + '</div>';
+                   tiehuarenyuanStr = str1 + str2 + str3 + str4 + tiehuarenyuanStr;
+                }
+            }
+            // 添加纹理信息
+            var wenlis = order.wenlis;
+            var wenlisStr = "";
+            if(wenlis !='' && wenlis.length > 0){
+                for (var i=0; i<wenlis.length; i++){
+                    var str1 =  '<p>纹理名称：'+ wenlis[i].wenliName + '</p>';
+                    var str2 = '<div class="mui-btn-text">纹理面积：' + wenlis[i].area + '</div>';
+                    var str3 = '<div class="mui-btn-text">倍数：' + wenlis[i].times + '</div>';
+                    wenlisStr = str1 + str2 + str3 + wenlisStr;
+                }
+            }
+
+
+            document.getElementById("gongyikas").innerHTML=tiehuarenyuanStr;
+
+            document.getElementById("tiehuarenyuan").innerHTML=tiehuarenyuanName;
+            document.getElementById("ziliangzongjian").innerHTML=ziliangzongjianName;
             document.getElementById("xiangmu").innerHTML=order.orderName;
             document.getElementById("gongsi").innerHTML=order.project.cilentCompanyName;
             document.getElementById("jindu").innerHTML=order.alreadyArea==0?"未加工":Math.round(order.alreadyArea*100/order.workArea)+"%";
@@ -232,10 +283,10 @@
             document.getElementById("dangqianbuzou").innerHTML=order.presentStepName;
             document.getElementById("yiwanchengmianji").innerHTML=order.alreadyArea;
             document.getElementById("weiwanchengmianji").innerHTML=order.stayArea;
-            document.getElementById("nanduxishu").innerHTML=order.techCard.nanDuXiShu==undefined?"未填写":order.techCard.nanDuXiShu;
-            document.getElementById("tiehuabuzhou").innerHTML=order.techCard.tieHuaBuShu==undefined?"未填写":order.techCard.tieHuaBuShu;
-            document.getElementById("gongxicanshu").innerHTML=order.techCard.gongYiCanShu==undefined?"未填写":order.techCard.gongYiCanShu;
-            document.getElementById("gongyibeizhu").innerHTML=order.techCard.remark==undefined?"未填写":order.techCard.remark;
+//            document.getElementById("nanduxishu").innerHTML=order.techCard.nanDuXiShu==undefined?"未填写":order.techCard.nanDuXiShu;
+//            document.getElementById("tiehuabuzhou").innerHTML=order.techCard.tieHuaBuShu==undefined?"未填写":order.techCard.tieHuaBuShu;
+//            document.getElementById("gongxicanshu").innerHTML=order.techCard.gongYiCanShu==undefined?"未填写":order.techCard.gongYiCanShu;
+//            document.getElementById("gongyibeizhu").innerHTML=order.techCard.remark==undefined?"未填写":order.techCard.remark;
             document.getElementById("qikong").innerHTML=order.controlOrderFrom.qiKong;
             document.getElementById("quekou").innerHTML=order.controlOrderFrom.queKou;
             document.getElementById("hanba").innerHTML=order.controlOrderFrom.hanBa;
@@ -256,6 +307,7 @@
         };
 
         $.getJSON("http://39.107.78.95:8082/config/info?orderId="+GetRequest()["orderId"],data, success);
+        //$.getJSON("http://localhost:8082/config/info?orderId=237",data, success);
         var loginSuccess = function(response) {
             if(response.status=="success"){
                 var roles=response.msg.roles;

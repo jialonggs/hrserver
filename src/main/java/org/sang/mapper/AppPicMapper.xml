@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.AppPicMapper">
+    <!--查询收模列表-->
+    <resultMap type="org.sang.bean.AppPic" id="appPic">
+    <id column="id" property="id"/>
+    <result column="url" property="url"/>
+    </resultMap>
+
+    <insert id="addPicUrl" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.AppPic">
+        INSERT INTO work_app_pic set url=#{url},updateTime=now(),createTime=now()
+    </insert>
+
+    <select id="getAppPic" resultType="org.sang.bean.AppPic">
+        SELECT * FROM work_app_pic limit 1;
+    </select>
+
+    <update id="updatePicUrl">
+        update work_app_pic
+        <set>
+            url = #{url},
+            updateTime = now()
+        </set>
+        where id = #{id}
+    </update>
+
+
+
+
+</mapper>

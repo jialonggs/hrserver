@@ -54,9 +54,9 @@
         <association property="processUnit" javaType="org.sang.bean.ProcessUnit" column="unitId"
                      select="org.sang.mapper.ProcessUnitMapper.getById">
         </association>
-        <association property="car" javaType="org.sang.bean.Car" column="carId"
-                     select="org.sang.mapper.CarMapper.getCarById">
-        </association>
+        <!--<association property="car" javaType="org.sang.bean.Car" column="carId"-->
+                     <!--select="org.sang.mapper.CarMapper.getCarById">-->
+        <!--</association>-->
         <!--<association property="processUnit" javaType="org.sang.bean.ProcessUnit" column="unitId"-->
                      <!--select="org.sang.mapper.ProcessUnitMapper.getById">-->
         <!--</association>-->

@@ -38,6 +38,7 @@ public enum ErrCodeMsg {
 
     CODE_UTF8_ERROR(501, "上传文件编码格式非UTF8"),
     AREA_NOT_ZREO(503, "面积不能小于等于0"),
+    DAN_WEI_NAME(504, "该单位已被录入请检查（单位名称已被占用）"),
 
     SYSTEM_ERROR(900, "系统错误"),
 
