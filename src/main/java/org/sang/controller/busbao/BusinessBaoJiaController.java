@@ -92,6 +92,11 @@ public class BusinessBaoJiaController extends BaseController{
         if(null == addBusBaoJiaRequest  ) {
             return badResult(ErrCodeMsg.ARGS_MISSING);
         }
+        Long projectId = addBusBaoJiaRequest.getBusinessBaoJia().getProjectId();
+        BusinessBaoJia businessBaoJia = businessBaoJiaService.getProjectBuInfo(projectId);
+        if(null != businessBaoJia){
+            return badResult(ErrCodeMsg.YU_BAO_JIA_IS_HAVE);
+        }
         if(addBusBaoJiaRequest.getBusinessBaoJia().getSubmitType() == 0){
             if(null == addBusBaoJiaRequest.getBusinessProductList() || addBusBaoJiaRequest.getBusinessProductList().size() <=0){
                 return badResult(ErrCodeMsg.ARGS_MISSING);

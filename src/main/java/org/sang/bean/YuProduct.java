@@ -10,7 +10,7 @@ public class YuProduct {
     private Integer productNum;
     private Integer area;
     private Boolean dongMo;
-    private Integer coefficient;
+    private String coefficient;
     private Integer price;
     private String picUrls;
     private Double noTaxPrice;
@@ -82,11 +82,11 @@ public class YuProduct {
         this.dongMo = dongMo;
     }
 
-    public Integer getCoefficient() {
+    public String getCoefficient() {
         return coefficient;
     }
 
-    public void setCoefficient(Integer coefficient) {
+    public void setCoefficient(String coefficient) {
         this.coefficient = coefficient;
     }
 

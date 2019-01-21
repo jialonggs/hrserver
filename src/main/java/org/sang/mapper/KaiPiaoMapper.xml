@@ -10,7 +10,7 @@
         unitShuiHao=#{unitShuiHao},unitDiZhi=#{unitDiZhi},unitTel=#{unitTel},
         unitYinHang=#{unitYinHang},unitZhangHao=#{unitZhangHao},laoWuMingCheng=#{laoWuMingCheng},
         guiGeXingHao=#{guiGeXingHao},danWei=#{danWei},shuLiang=#{shuLiang},jinE=#{jinE},fuKuanType=#{fuKuanType},
-        fuQing=#{fuQing},faPiaoNum=#{faPiaoNum},kaiPiaoId=#{kaiPiaoId},
+        fuQing=#{fuQing},faPiaoNum=#{faPiaoNum},kaiPiaoId=#{kaiPiaoId},kaiPiaoType=#{kaiPiaoType},
         kaiPiaoName=#{kaiPiaoName},tongZhiId=#{tongZhiId},tongZhiName=#{tongZhiName},
         auditJson=#{auditJson},
         addUserId=#{addUserId},addUserName=#{addUserName},status=0,remark=#{remark},updateTime=now(),
@@ -19,7 +19,13 @@
 
 
     <select id="getKaiPiaoList" resultType="org.sang.bean.KaiPiao">
-        SELECT * FROM work_kai_piao WHERE isDeleted=FALSE AND status=#{status} ORDER BY id
+        SELECT * FROM work_kai_piao WHERE isDeleted=FALSE AND status=#{status}
+        <choose>
+            <when test="type !=null and type != ''">
+                and kaiPiaoType = #{type}
+            </when>
+        </choose>
+         ORDER BY id
     </select>
 
     <update id="updateKaiPiao">

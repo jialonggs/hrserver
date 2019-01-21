@@ -17,6 +17,8 @@ public class Project {
     private Long financeId;
     private Integer kaiPiaoStatus;
     private Long kaiPiaoId;
+    private Double needKaiPiao;
+    private Double kaiPiaoMoney;
 
     private Long addUserId;
     private String addUserName;
@@ -26,10 +28,35 @@ public class Project {
     private Boolean isDeleted;
     private Date updateTime;
     private Date createTime;
+    private Integer busStatus;
 
     private Car car;
     private ProcessUnit processUnit;
 
+
+    public Double getNeedKaiPiao() {
+        return needKaiPiao;
+    }
+
+    public void setNeedKaiPiao(Double needKaiPiao) {
+        this.needKaiPiao = needKaiPiao;
+    }
+
+    public Double getKaiPiaoMoney() {
+        return kaiPiaoMoney;
+    }
+
+    public void setKaiPiaoMoney(Double kaiPiaoMoney) {
+        this.kaiPiaoMoney = kaiPiaoMoney;
+    }
+
+    public Integer getBusStatus() {
+        return busStatus;
+    }
+
+    public void setBusStatus(Integer busStatus) {
+        this.busStatus = busStatus;
+    }
 
     public String getProjectName() {
         return projectName;

@@ -54,6 +54,10 @@ public class ProjectService {
         return  projectMapper.getAdded(userId, beginTimeString, endTimeString);
     }
 
+    public Project getByProjectById(Long projectId){
+        return projectMapper.getProjectById(projectId);
+    }
+
 
 
     /**

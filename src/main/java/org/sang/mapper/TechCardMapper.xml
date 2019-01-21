@@ -59,7 +59,7 @@
 
 
     <select id="getAll" resultMap="getAdded">
-        SELECT * from work_tech  WHERE isDeleted=FALSE ORDER BY id
+        SELECT * from work_tech  WHERE isDeleted=FALSE ORDER BY id DESC
     </select>
 
 

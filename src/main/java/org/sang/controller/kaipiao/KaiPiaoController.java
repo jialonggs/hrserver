@@ -3,10 +3,12 @@ package org.sang.controller.kaipiao;
 import org.sang.bean.FaMo;
 import org.sang.bean.KaiPiao;
 import org.sang.bean.PageInfoEntity;
+import org.sang.bean.Project;
 import org.sang.bean.responseEntity.BaseResponseEntity;
 import org.sang.config.ErrCodeMsg;
 import org.sang.controller.BaseController;
 import org.sang.service.KaiPiaoService;
+import org.sang.service.ProjectService;
 import org.sang.utils.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +28,9 @@ public class KaiPiaoController extends BaseController{
     @Autowired
     KaiPiaoService kaiPiaoService;
 
+    @Autowired
+    ProjectService projectService;
+
 
     /**
      * 添加项目开票申请
@@ -37,7 +42,25 @@ public class KaiPiaoController extends BaseController{
         if (null == kaiPiao){
             return badResult(ErrCodeMsg.COMMON_FAIL);
         }
-        Boolean result = kaiPiaoService.addKaiPiao(kaiPiao);
+        //校验是否所有金钱已开票
+        Project project = projectService.getByProjectById(kaiPiao.getProjectId());
+        if(null == project){
+            return badResult(ErrCodeMsg.PROJECT_IS_NULL_ERROR);
+        }
+        if(Integer.parseInt(project.getFinanceBiLi()) < 100){
+            // 设置开票类型
+            kaiPiao.setKaiPiaoType(1);
+        }
+        if(project.getNeedKaiPiao() == 0){
+            return badResult(ErrCodeMsg.PROJECT_NEED_KAIPIAO_ERROR);
+        }
+        System.out.print("---------------------------------");
+        System.out.print(project.getNeedKaiPiao() - Double.parseDouble(kaiPiao.getJinE()));
+        System.out.print("---------------------------------");
+        if(( project.getNeedKaiPiao() - Double.parseDouble(kaiPiao.getJinE())) < 0){
+            return badResult(ErrCodeMsg.PROJECT_KAIPIAO_MONEY);
+        }
+        Boolean result = kaiPiaoService.addKaiPiao(kaiPiao,project);
         if(result){
             return succResult();
         }else{
@@ -51,7 +74,7 @@ public class KaiPiaoController extends BaseController{
      */
     @RequestMapping(value = "/listbypage", method = RequestMethod.GET)
     public BaseResponseEntity getYuBaoJiaList(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size,
-                                              @RequestParam(value = "status") Integer status) {
+                                              @RequestParam(value = "status") Integer status, @RequestParam(value = "type",required = false) Integer type) {
         if(null == status ) {
             return badResult(ErrCodeMsg.ARGS_MISSING);
         }
@@ -60,7 +83,7 @@ public class KaiPiaoController extends BaseController{
         pageInfoEntity.setCurrentPage(page);
         pageInfoEntity.setPagesize(size);
         List<KaiPiao> famolist = new ArrayList<>();
-        PageBean<KaiPiao> list = kaiPiaoService.getKaiPiaoList(pageInfoEntity, status);
+        PageBean<KaiPiao> list = kaiPiaoService.getKaiPiaoList(pageInfoEntity, status, type);
         if(null != list && list.getItems()!=null && list.getItems().size() !=0){
             famolist = list.getItems();
             map.put("count",list.getPageInfo().getTotal());

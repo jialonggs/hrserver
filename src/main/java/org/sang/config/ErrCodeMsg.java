@@ -39,16 +39,22 @@ public enum ErrCodeMsg {
     CODE_UTF8_ERROR(501, "上传文件编码格式非UTF8"),
     AREA_NOT_ZREO(503, "面积不能小于等于0"),
     DAN_WEI_NAME(504, "该单位已被录入请检查（单位名称已被占用）"),
+    YU_BAO_JIA_IS_HAVE(505, "此项目报价已添加，请勿重复添加"),
 
     SYSTEM_ERROR(900, "系统错误"),
 
     SERVICE_TIMEOUT(901, "依赖后端接口超时"),
+    PROJECT_IS_NULL_ERROR(506, "项目不存在"),
+    PROJECT_KAIPIAO_MONEY(507, "开票金额有误"),
+    PROJECT_NEED_KAIPIAO_ERROR(508, "项目金额已全部开票"),
 
     SERVICE_RETURN_NULL(902, "依赖后端接口未返回"),
     LOCK_FAIL(903, "加锁失败"),
     OLD_PASSWORD_ERROR(1001, "旧密码错误"),
     NO_HAVE_ORDER_AUTH(1012, "对此订单无审核权限"),
-    MESSAGE_NOT_UPDATE(1000, "信息未更新");
+    MESSAGE_NOT_UPDATE(1000, "信息未更新"),
+    TECH_IS_ADD(1002, "订单技术卡已添加完成，无需添加"),
+    ORDER_IS_NULL(1001, "订单查询不存在");
 
 
 

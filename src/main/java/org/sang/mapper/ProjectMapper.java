@@ -12,6 +12,8 @@ import java.util.List;
 @Mapper
 public interface ProjectMapper {
 
+    int updateProjectBus(@Param("projectId") Long projectId, @Param("busStatus") Integer busStatus, @Param("needKaiPiao") Double needKaiPiao);
+
     int addFuKuan(@Param("fuKuan")AddFuKuanRequest addFuKuanRequest);
 
     List<ProjectListResp> getOverceFinanceProject();
@@ -28,12 +30,14 @@ public interface ProjectMapper {
 
     List<Project> getAdded(@Param("userId") Long uid, @Param("beginTime")String beginTime, @Param("endTime") String endTime);
 
-    int updateKiPiaoStatus(@Param("projectId") Long projectId, @Param("kaiPiaoId") Long kaiPiaoId, @Param("kaiPiaoStatus") Integer kaiPiaoStatus);
+    int updateKiPiaoStatus(@Param("projectId") Long projectId, @Param("kaiPiaoId") Long kaiPiaoId, @Param("kaiPiaoStatus") Integer kaiPiaoStatus, @Param("needKaiPiao") Double needKaiPiao);
 
     List<Project> getByUnitId(@Param("unitId") Long unitId);
 
     List<Project> getByCarId(@Param("carId") Long carId);
 
     List<Project> getByEngineId(@Param("engineId") Long engineId);
+
+    Project getProjectById(@Param("projectId") Long projecId);
 
 }

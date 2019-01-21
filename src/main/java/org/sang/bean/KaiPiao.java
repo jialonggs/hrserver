@@ -19,6 +19,7 @@ public class KaiPiao {
     private String danWei;
     private String shuLiang;
     private String jinE;
+    private Integer kaiPiaoType;
     private String fuKuanType;
     private Boolean fuQing;
     private String faPiaoNum;
@@ -49,6 +50,14 @@ public class KaiPiao {
     private Boolean isDeleted;
     private Date updateTime;
     private Date createTime;
+
+    public Integer getKaiPiaoType() {
+        return kaiPiaoType;
+    }
+
+    public void setKaiPiaoType(Integer kaiPiaoType) {
+        this.kaiPiaoType = kaiPiaoType;
+    }
 
     public String getAuditShangId() {
         return auditShangId;

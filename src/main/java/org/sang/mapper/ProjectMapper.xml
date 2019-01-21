@@ -22,6 +22,7 @@
         <result column="yuBaoJiaStatus" property="yuBaoJiaStatus"/>
         <result column="shangWuId" property="shangWuId"/>
         <result column="shangWuStatus" property="shangWuStatus"/>
+        <result column="busStatus" property="busStatus"/>
         <result column="orderNums" property="orderNums"/>
         <result column="orderSchedule" property="orderSchedule"/>
         <association property="car" javaType="org.sang.bean.Car" column="carId"
@@ -45,6 +46,7 @@
         <result column="finishTime" property="finishTime"/>
         <result column="status" property="status"/>
         <result column="remark" property="remark"/>
+        <result column="busStatus" property="busStatus"/>
         <result column="isDeleted" property="isDeleted"/>
         <result column="updateTime" property="updateTime"/>
         <result column="createTime" property="createTime"/>
@@ -92,11 +94,12 @@
     </resultMap>
 
     <!--获取项目列表-->
+    <!--获取项目列表-->
     <select id="getProjectList" resultMap="getProjectListMap1">
         SELECT * FROM work_project WHERE isDeleted=FALSE ORDER BY id DESC
     </select>
 
-    <select id="getProjectById" resultMap="getProjectListMap">
+    <select id="getProjectById" resultType="org.sang.bean.Project">
         SELECT * FROM work_project WHERE isDeleted=FALSE AND id=#{projectId}
     </select>
 
@@ -105,8 +108,8 @@
     </select>
 
     <!--<select id="getProjectList" resultMap="getProjectListMap">-->
-        <!--SELECT t1.*, t2.id as 'yuBaoJiaId',t2.audit as yuBaoJiaStatus,t3.id as shangWuId, t3.audit as shangWuStatus FROM-->
-        <!--work_project t1, work_yubaojia t2, work_bus_bj t3 WHERE isDeleted=FALSE ORDER BY id-->
+    <!--SELECT t1.*, t2.id as 'yuBaoJiaId',t2.audit as yuBaoJiaStatus,t3.id as shangWuId, t3.audit as shangWuStatus FROM-->
+    <!--work_project t1, work_yubaojia t2, work_bus_bj t3 WHERE isDeleted=FALSE ORDER BY id-->
     <!--</select>-->
 
     <!--根据uid获取项目列表-->
@@ -115,8 +118,8 @@
     </select>
 
     <select id="getByUnitId" resultType="org.sang.bean.Project">
-    SELECT * FROM work_project WHERE isDeleted=FALSE  AND unitId=#{unitId} ORDER BY id DESC
-</select>
+        SELECT * FROM work_project WHERE isDeleted=FALSE  AND unitId=#{unitId} ORDER BY id DESC
+    </select>
 
 
     <select id="getByCarId" resultType="org.sang.bean.Project">
@@ -128,8 +131,8 @@
     </select>
 
     <!--<select id="getFinanceProject" resultType="org.sang.bean.Project">-->
-      <!--SELECT * FROM work_project WHERE id in (SELECT projectId FROM work_orders WHERE storageStatus=2 AND isDeleted=FALSE  GROUP BY projectId) AND-->
-      <!--financeStatus=0 AND isDeleted=FALSE ORDER BY id-->
+    <!--SELECT * FROM work_project WHERE id in (SELECT projectId FROM work_orders WHERE storageStatus=2 AND isDeleted=FALSE  GROUP BY projectId) AND-->
+    <!--financeStatus=0 AND isDeleted=FALSE ORDER BY id-->
     <!--</select>-->
 
     <select id="getFinanceProject" resultMap="getProjectListMap1">
@@ -157,7 +160,7 @@
     <insert id="addProject" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.Project">
         INSERT INTO work_project set projectName=#{projectName},unitId=#{unitId},carId=#{carId},cilentCompanyName=#{cilentCompanyName},
         financeStatus=0,financeBiLi='0',financeJinE='0',financeRemark='',
-        kaiPiaoStatus=0,
+        kaiPiaoStatus=0,busStatus=0,needKaiPiao=0,kaiPiaoMoney=0,
         addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},remark=#{remark},
         updateTime=now(),createTime=now(),isDeleted=FALSE
     </insert>
@@ -168,6 +171,18 @@
         <set>
             kaiPiaoStatus = #{kaiPiaoStatus},
             kaiPiaoId = #{kaiPiaoId},
+            needKaiPiao = #{needKaiPiao},
+            updateTime = now()
+        </set>
+        where id = #{projectId}
+    </update>
+
+    <update id="updateProjectBus">
+        update work_project
+        <set>
+            busStatus = #{busStatus},
+            needKaiPiao = #{needKaiPiao},
+            kaiPiaoMoney = #{kaiPiaoMoney},
             updateTime = now()
         </set>
         where id = #{projectId}

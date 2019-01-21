@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import org.sang.bean.FaMo;
 import org.sang.bean.KaiPiao;
 import org.sang.bean.PageInfoEntity;
+import org.sang.bean.Project;
 import org.sang.mapper.KaiPiaoMapper;
 import org.sang.mapper.ProjectMapper;
 import org.sang.utils.PageBean;
@@ -24,10 +25,22 @@ public class KaiPiaoService {
     ProjectMapper projectMapper;
 
     @Transactional
-    public Boolean addKaiPiao(KaiPiao kaiPiao){
+    public Boolean addKaiPiao(KaiPiao kaiPiao, Project project){
+        if(Integer.parseInt(project.getFinanceBiLi()) < 100){
+            // 欠款开票
+            kaiPiao.setKaiPiaoType(1);
+        }else{
+            // 全款开票
+            kaiPiao.setKaiPiaoType(2);
+        }
+        Double needKaiPiao = project.getNeedKaiPiao() - Double.parseDouble(kaiPiao.getJinE());
         int i = kaiPiaoMapper.addKaiPiao(kaiPiao);
-        int y = projectMapper.updateKiPiaoStatus(kaiPiao.getProjectId(), kaiPiao.getId(), 1);
-        if(i > 0 && y>0){
+        if(needKaiPiao == 0){
+            projectMapper.updateKiPiaoStatus(kaiPiao.getProjectId(), kaiPiao.getId(), 1, needKaiPiao);
+        }else{
+            projectMapper.updateKiPiaoStatus(kaiPiao.getProjectId(), kaiPiao.getId(), 0, needKaiPiao);
+        }
+        if(i > 0 ){
             return true;
         }else{
             return false;
@@ -41,9 +54,9 @@ public class KaiPiaoService {
      * @param pageInfoEntity
      * @return
      */
-    public PageBean<KaiPiao> getKaiPiaoList(PageInfoEntity pageInfoEntity, Integer status) {
+    public PageBean<KaiPiao> getKaiPiaoList(PageInfoEntity pageInfoEntity, Integer status, Integer type) {
         PageHelper.startPage(pageInfoEntity.getCurrentPage(),pageInfoEntity.getPagesize());
-        List<KaiPiao> list = kaiPiaoMapper.getKaiPiaoList(status);
+        List<KaiPiao> list = kaiPiaoMapper.getKaiPiaoList(status, type);
         PageInfo page = new PageInfo(list);
         PageBean<KaiPiao> pageData = new PageBean<>();
         pageData.setItems(list);

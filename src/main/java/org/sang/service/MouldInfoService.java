@@ -143,18 +143,20 @@ public class MouldInfoService {
         Calendar endTime =  Calendar.getInstance();
         Calendar begainTime = Calendar.getInstance();
         // 结束时间
-        endTime.set(Calendar.HOUR,0);
-        endTime.set(Calendar.MINUTE,0);
-        endTime.set(Calendar.SECOND,0);
-        endTime.set(Calendar.MILLISECOND,0);
+        endTime.set(Calendar.HOUR_OF_DAY,23);
+        endTime.set(Calendar.MINUTE,59);
+        endTime.set(Calendar.SECOND,59);
+        endTime.set(Calendar.MILLISECOND,59);
         String endTime1 = sdf.format(endTime.getTime());
 
         begainTime.add(Calendar.DATE ,-days);
-        begainTime.set(Calendar.HOUR,23);
-        begainTime.set(Calendar.MINUTE,59);
-        begainTime.set(Calendar.SECOND,59);
-        begainTime.set(Calendar.MILLISECOND,59);
+        begainTime.set(Calendar.HOUR_OF_DAY,0);
+        begainTime.set(Calendar.MINUTE,0);
+        begainTime.set(Calendar.SECOND,0);
+        begainTime.set(Calendar.MILLISECOND,0);
         String begainTime1 = sdf.format(begainTime.getTime());
+
+
         List<ShouMoListResp> list = shouMoListMapper.getShouMoByTime2(begainTime1, endTime1);
         List<MouldInfo> unSelect = mouldInfoMapper.getUnSelect(begainTime1);
         List<MouldPartTreeResp> resp = new ArrayList<>();
@@ -214,27 +216,27 @@ public class MouldInfoService {
             Calendar endTime = Calendar.getInstance();
             // 结束时间
             nowTime.add(Calendar.DATE ,-i);
-            nowTime.set(Calendar.HOUR,0);
+            nowTime.set(Calendar.HOUR_OF_DAY,0);
             nowTime.set(Calendar.MINUTE,0);
             nowTime.set(Calendar.SECOND,0);
             nowTime.set(Calendar.MILLISECOND,0);
             String begainTime = sdf.format(nowTime.getTime());
 
             endTime.add(Calendar.DATE ,-i);
-            endTime.set(Calendar.HOUR,23);
+            endTime.set(Calendar.HOUR_OF_DAY,23);
             endTime.set(Calendar.MINUTE,59);
             endTime.set(Calendar.SECOND,59);
             endTime.set(Calendar.MILLISECOND,59);
             String endTime1 = sdf.format(endTime.getTime());
 
             // 获取当天的收模列表 --按批次排序
-
                 List<MouldPartChildrenResp> resps = new ArrayList<>();
                 for (ShouMoListResp shouMoList : list) {
                     Date createTime = shouMoList.getCreateTime();
                     Calendar compareTime = Calendar.getInstance();
                     compareTime.setTime(createTime);
-                    if (compareTime.compareTo(endTime) < 0 && compareTime.compareTo(nowTime) >0) {
+                    if ((compareTime.getTimeInMillis() - endTime.getTimeInMillis()) < 0 && (compareTime.getTimeInMillis()-nowTime.getTimeInMillis()) >0) {
+
                         Long id = shouMoList.getId();
                         String  companyName = shouMoList.getClientCompanyName();
                         // 获取该批次中所有模具列表 按时间排序

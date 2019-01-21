@@ -120,6 +120,11 @@ public class YuBaoJiaController extends BaseController{
         if(null == addYuBaoJiaRequest  ) {
             return badResult(ErrCodeMsg.ARGS_MISSING);
         }
+        Long projectId = addYuBaoJiaRequest.getYuBaoJia().getProjectId();
+        YuBaoJia yuBaoJia = yuBaoJiaService.getByProjectId(projectId);
+        if(yuBaoJia != null){
+            return badResult(ErrCodeMsg.YU_BAO_JIA_IS_HAVE);
+        }
         if(addYuBaoJiaRequest.getYuBaoJia().getSubmitType() == 0){
             if(null == addYuBaoJiaRequest.getYuProductList() || addYuBaoJiaRequest.getYuProductList().size() <=0){
                 return badResult(ErrCodeMsg.ARGS_MISSING);

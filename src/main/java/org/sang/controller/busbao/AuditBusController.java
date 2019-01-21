@@ -95,7 +95,7 @@ public class AuditBusController extends BaseController{
         }else{
             remark = rejectRemark;
         }
-        int i = businessBaoJiaService.auditBus(id, audit, auditId, auditName, remark);
+        int i = businessBaoJiaService.auditBus(id, audit, auditId, auditName, remark, businessBaoJia.getProjectId());
         if(i>0){
             String msg = "";
             if(audit == 1){

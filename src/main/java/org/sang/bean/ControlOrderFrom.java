@@ -17,8 +17,8 @@ public class ControlOrderFrom {
     private Integer zuiHouShiMoJian;
     private Integer ckd;
     private Integer guangJian;
-    private Integer fenXingBian;
-    private Integer heMoBian;
+    private String fenXingBian;
+    private String heMoBian;
     private String pengChuanBian;
     private String pengChuanKong;
     private String buPing;
@@ -147,19 +147,20 @@ public class ControlOrderFrom {
         this.guangJian = guangJian;
     }
 
-    public Integer getFenXingBian() {
+
+    public String getFenXingBian() {
         return fenXingBian;
     }
 
-    public void setFenXingBian(Integer fenXingBian) {
+    public void setFenXingBian(String fenXingBian) {
         this.fenXingBian = fenXingBian;
     }
 
-    public Integer getHeMoBian() {
+    public String getHeMoBian() {
         return heMoBian;
     }
 
-    public void setHeMoBian(Integer heMoBian) {
+    public void setHeMoBian(String heMoBian) {
         this.heMoBian = heMoBian;
     }
 

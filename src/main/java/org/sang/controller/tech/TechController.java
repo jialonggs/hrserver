@@ -107,6 +107,15 @@ public class TechController extends BaseController{
         if(null == techCard  ) {
             return badResult(ErrCodeMsg.ARGS_MISSING);
         }
+        // 校验是否已添加完成
+
+        Order order = orderService.getOrderInfoById(techCard.getOrderId());
+        if(null == order){
+            return  badResult(ErrCodeMsg.ORDER_IS_NULL);
+        }
+        if(order.getTechNum() <=0){
+            return  badResult(ErrCodeMsg.TECH_IS_ADD);
+        }
         Boolean i = techCardService.addTech(techCard);
         if(i){
             return succResult();

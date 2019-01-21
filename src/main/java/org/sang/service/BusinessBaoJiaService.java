@@ -73,28 +73,33 @@ public class BusinessBaoJiaService {
         return businessBaoJiaMapper.getById(id);
     }
 
-    public int auditBus(Long id, Integer audit, Long auditId, String auditName, String rejectRemark){
+    @Transactional
+    public int auditBus(Long id, Integer audit, Long auditId, String auditName, String rejectRemark,Long projectId){
+        // 修改审核状态
+        if(audit == 1){
+            // 修改该报价金额
+            BusinessBaoJia businessBaoJia = businessBaoJiaMapper.getById(id);
+            businessBaoJia.getFinalBaoJia();
+            projectMapper.updateProjectBus(projectId,audit,businessBaoJia.getFinalBaoJia());
+        }
         return  businessBaoJiaMapper.auditBus(id, audit, auditId, auditName, rejectRemark);
     }
 
 
     public List<ProjectListResp> getProjectListByAddUserId(Long addUserId){
         List<ProjectListResp> list = projectMapper.getProjectListByUserId(addUserId);
-        if(null == list || list.isEmpty()){
-            return null;
-        }
-        return list;
-//        List<Project> listResp = new ArrayList<>();
-//        for(ProjectListResp projectListResp : list){
-//            if(null != projectListResp.getBusinessBaoJia()){
-//                continue;
-//            }
-//            Project project = new Project();
-//            project.setId(projectListResp.getId());
-//            project.setProjectName(projectListResp.getProjectName());
-//            listResp.add(project);
+//        if(null == list || list.isEmpty()){
+//            return null;
 //        }
-//        return listResp;
+//        return list;
+        List<ProjectListResp> listResp = new ArrayList<>();
+        for(ProjectListResp projectListResp : list){
+            if(null != projectListResp.getBusinessBaoJia()){
+                continue;
+            }
+            listResp.add(projectListResp);
+        }
+        return listResp;
     }
 
 

@@ -11,7 +11,7 @@ public interface KaiPiaoMapper {
 
     int addKaiPiao(KaiPiao kaiPiao);
 
-    List<KaiPiao> getKaiPiaoList(@Param("status") Integer status);
+    List<KaiPiao> getKaiPiaoList(@Param("status") Integer status, @Param("type") Integer type);
 
     int aduitKaiPiao(@Param("id")Long id,@Param("status")Integer status, @Param("auditShangId")String  auditShangId, @Param("auditShangName")String auditShangName,
                      @Param("auditJingId")String  auditJingId, @Param("auditJingName")String auditJingName,
