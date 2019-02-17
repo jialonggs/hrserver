@@ -23,6 +23,10 @@ public class KaiPiao {
     private String fuKuanType;
     private Boolean fuQing;
     private String faPiaoNum;
+    private String xinXiUrl;
+    private String ziLiaoType;
+    private Date daoKuanTime;
+    private String daoKuan;
 
     private String kaiPiaoId;
     private String kaiPiaoName;
@@ -42,7 +46,13 @@ public class KaiPiao {
     private String caiWuRemark;
     private String shangWuRemark;
     private String jingLiRemark;
+    private String wenJianUrl;
 
+
+    private String financeBiLi;
+    private String financeJinE;
+    private String finalBaoJia;
+    private String needKaiPiao;
     private String addUserId;
     private String addUserName;
     private String status;
@@ -50,6 +60,79 @@ public class KaiPiao {
     private Boolean isDeleted;
     private Date updateTime;
     private Date createTime;
+
+
+    public String getFinanceBiLi() {
+        return financeBiLi;
+    }
+
+    public void setFinanceBiLi(String financeBiLi) {
+        this.financeBiLi = financeBiLi;
+    }
+
+    public String getFinanceJinE() {
+        return financeJinE;
+    }
+
+    public void setFinanceJinE(String financeJinE) {
+        this.financeJinE = financeJinE;
+    }
+
+    public String getFinalBaoJia() {
+        return finalBaoJia;
+    }
+
+    public void setFinalBaoJia(String finalBaoJia) {
+        this.finalBaoJia = finalBaoJia;
+    }
+
+    public String getNeedKaiPiao() {
+        return needKaiPiao;
+    }
+
+    public void setNeedKaiPiao(String needKaiPiao) {
+        this.needKaiPiao = needKaiPiao;
+    }
+
+    public Date getDaoKuanTime() {
+        return daoKuanTime;
+    }
+
+    public void setDaoKuanTime(Date daoKuanTime) {
+        this.daoKuanTime = daoKuanTime;
+    }
+
+    public String getDaoKuan() {
+        return daoKuan;
+    }
+
+    public void setDaoKuan(String daoKuan) {
+        this.daoKuan = daoKuan;
+    }
+
+    public String getXinXiUrl() {
+        return xinXiUrl;
+    }
+
+    public void setXinXiUrl(String xinXiUrl) {
+        this.xinXiUrl = xinXiUrl;
+    }
+
+    public String getZiLiaoType() {
+        return ziLiaoType;
+    }
+
+    public void setZiLiaoType(String ziLiaoType) {
+        this.ziLiaoType = ziLiaoType;
+    }
+
+    public String getWenJianUrl() {
+        return wenJianUrl;
+    }
+
+    public void setWenJianUrl(String wenJianUrl) {
+        this.wenJianUrl = wenJianUrl;
+    }
 
     public Integer getKaiPiaoType() {
         return kaiPiaoType;

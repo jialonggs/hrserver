@@ -11,8 +11,9 @@
         unitYinHang=#{unitYinHang},unitZhangHao=#{unitZhangHao},laoWuMingCheng=#{laoWuMingCheng},
         guiGeXingHao=#{guiGeXingHao},danWei=#{danWei},shuLiang=#{shuLiang},jinE=#{jinE},fuKuanType=#{fuKuanType},
         fuQing=#{fuQing},faPiaoNum=#{faPiaoNum},kaiPiaoId=#{kaiPiaoId},kaiPiaoType=#{kaiPiaoType},
-        kaiPiaoName=#{kaiPiaoName},tongZhiId=#{tongZhiId},tongZhiName=#{tongZhiName},
-        auditJson=#{auditJson},
+        kaiPiaoName=#{kaiPiaoName},tongZhiId=#{tongZhiId},tongZhiName=#{tongZhiName},wenJianUrl=#{wenJianUrl},
+        financeBiLi=#{financeBiLi},financeJinE=#{financeJinE},finalBaoJia=#{finalBaoJia},needKaiPiao=#{needKaiPiao},
+        auditJson=#{auditJson},ziLiaoType=#{ziLiaoType},xinXiUrl=#{xinXiUrl},daoKuanTime=#{daoKuanTime},daoKuan=#{daoKuan},
         addUserId=#{addUserId},addUserName=#{addUserName},status=0,remark=#{remark},updateTime=now(),
         createTime=now(),isDeleted=FALSE
     </insert>
@@ -118,6 +119,12 @@
             </if>
             <if test=" kaipiao.auditJson!= null ">
                 auditJson = #{kaipiao.auditJson},
+            </if>
+            <if test=" kaipiao.daoKuanTime!= null ">
+                daoKuanTime = #{kaipiao.daoKuanTime},
+            </if>
+            <if test=" kaipiao.daoKuan!= null ">
+                daoKuan = #{kaipiao.daoKuan},
             </if>
             updateTime = now()
         </set>

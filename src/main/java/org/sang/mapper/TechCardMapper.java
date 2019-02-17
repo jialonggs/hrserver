@@ -11,6 +11,8 @@ public interface TechCardMapper {
 
     TechCard getByOrderId(Long orderId);
 
+    TechCard getByTechId(Long orderId);
+
     List<TechCard> getNewByOrderId(Long orderId);
 
     int updateTechCard(TechCard techCard);

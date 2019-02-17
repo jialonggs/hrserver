@@ -78,7 +78,7 @@ public class TechCardService {
     }
 
     public TechCard getByOrderId(Long orderId){
-        return  techCardMapper.getByOrderId(orderId);
+        return  techCardMapper.getByTechId(orderId);
     }
 
 

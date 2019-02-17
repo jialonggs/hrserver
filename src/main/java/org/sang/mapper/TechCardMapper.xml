@@ -53,6 +53,10 @@
         SELECT * FROM work_tech WHERE isDeleted=FALSE AND orderId=#{orderId} ORDER BY id
     </select>
 
+    <select id="getByTechId" resultType="org.sang.bean.TechCard">
+        SELECT * FROM work_tech WHERE isDeleted=FALSE AND id=#{orderId} ORDER BY id
+    </select>
+
     <select id="getNewByOrderId" resultType="org.sang.bean.TechCard">
         SELECT * FROM work_tech WHERE isDeleted=FALSE AND orderId=#{orderId} ORDER BY id
     </select>

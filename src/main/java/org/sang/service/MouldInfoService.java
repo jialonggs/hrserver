@@ -235,7 +235,7 @@ public class MouldInfoService {
                     Date createTime = shouMoList.getCreateTime();
                     Calendar compareTime = Calendar.getInstance();
                     compareTime.setTime(createTime);
-                    if ((compareTime.getTimeInMillis() - endTime.getTimeInMillis()) < 0 && (compareTime.getTimeInMillis()-nowTime.getTimeInMillis()) >0) {
+                    if ((compareTime.getTimeInMillis() - endTime.getTimeInMillis()) <= 0 && (compareTime.getTimeInMillis()-nowTime.getTimeInMillis()) >=0) {
 
                         Long id = shouMoList.getId();
                         String  companyName = shouMoList.getClientCompanyName();

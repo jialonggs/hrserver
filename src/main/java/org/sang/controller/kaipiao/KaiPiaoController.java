@@ -54,9 +54,6 @@ public class KaiPiaoController extends BaseController{
         if(project.getNeedKaiPiao() == 0){
             return badResult(ErrCodeMsg.PROJECT_NEED_KAIPIAO_ERROR);
         }
-        System.out.print("---------------------------------");
-        System.out.print(project.getNeedKaiPiao() - Double.parseDouble(kaiPiao.getJinE()));
-        System.out.print("---------------------------------");
         if(( project.getNeedKaiPiao() - Double.parseDouble(kaiPiao.getJinE())) < 0){
             return badResult(ErrCodeMsg.PROJECT_KAIPIAO_MONEY);
         }
