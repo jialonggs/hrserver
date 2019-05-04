@@ -279,4 +279,8 @@ public class MouldInfoService {
         }
         return reslist;
     }
+
+    public List<MouldInfo> getMouldOrderId(Long orderId){
+        return  mouldInfoMapper.getByOrderId(orderId);
+    }
 }

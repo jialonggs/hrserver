@@ -12,6 +12,13 @@ public class ShouHou {
     private String danwei;
     private Long userId;
     private String userName;
+    private String days;
+    private String diDian;
+    private String ZJremark;
+    private Date toTime;
+
+    private Long cheJianId;
+    private Long xingZhengId;
 
     private String addUserId;
     private String addUserName;
@@ -21,7 +28,57 @@ public class ShouHou {
     private Boolean isDeleted;
     private Date updateTime;
     private Date createTime;
+    private String wanJieUrls;
+    private String wanJieRemark;
 
+
+    public Long getCheJianId() {
+        return cheJianId;
+    }
+
+    public void setCheJianId(Long cheJianId) {
+        this.cheJianId = cheJianId;
+    }
+
+    public Long getXingZhengId() {
+        return xingZhengId;
+    }
+
+    public void setXingZhengId(Long xingZhengId) {
+        this.xingZhengId = xingZhengId;
+    }
+
+    public String getDays() {
+        return days;
+    }
+
+    public void setDays(String days) {
+        this.days = days;
+    }
+
+    public String getDiDian() {
+        return diDian;
+    }
+
+    public void setDiDian(String diDian) {
+        this.diDian = diDian;
+    }
+
+    public String getZJremark() {
+        return ZJremark;
+    }
+
+    public void setZJremark(String ZJremark) {
+        this.ZJremark = ZJremark;
+    }
+
+    public Date getToTime() {
+        return toTime;
+    }
+
+    public void setToTime(Date toTime) {
+        this.toTime = toTime;
+    }
 
     public Long getId() {
         return id;
@@ -150,5 +207,21 @@ public class ShouHou {
 
     public void setShId(Integer shId) {
         this.shId = shId;
+    }
+
+    public String getWanJieUrls() {
+        return wanJieUrls;
+    }
+
+    public void setWanJieUrls(String wanJieUrls) {
+        this.wanJieUrls = wanJieUrls;
+    }
+
+    public String getWanJieRemark() {
+        return wanJieRemark;
+    }
+
+    public void setWanJieRemark(String wanJieRemark) {
+        this.wanJieRemark = wanJieRemark;
     }
 }

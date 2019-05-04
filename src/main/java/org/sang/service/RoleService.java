@@ -1,6 +1,7 @@
 package org.sang.service;
 
 import org.sang.bean.Role;
+import org.sang.bean.responseEntity.UserInfoResp;
 import org.sang.mapper.RoleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,9 @@ public class RoleService {
     @Autowired
     RoleMapper roleMapper;
 
+    @Autowired
+    HrService hrService;
+
     public List<Role> roles() {
         return roleMapper.roles();
     }
@@ -31,4 +35,6 @@ public class RoleService {
     public int deleteRoleById(Long rid) {
         return roleMapper.deleteRoleById(rid);
     }
+
+
 }

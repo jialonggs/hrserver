@@ -274,7 +274,7 @@
                     select="org.sang.mapper.MouldInfoMapper.getByOrderId">
         </collection>
 
-        <collection property="wenlis" ofType="org.sang.bean.WenLi" select="org.sang.mapper.WenLiMapper.getByOrderId"
+        <collection property="wenlis" ofType="org.sang.bean.WenLi" select="org.sang.mapper.WenLiMapper.getByOrderId2"
                     column="id"></collection>
 
     </resultMap>
@@ -523,8 +523,19 @@
         AND  storageStatus=#{storageStatus} AND faMoStatus=#{faMoStatus} AND isDeleted=FALSE  ORDER BY id
     </select>
 
+    <!--<select id="getOrderAndProject" resultMap="getFaMoOrder">-->
+        <!--SELECT * FROM work_orders WHERE isDeleted=FALSE AND addUserId=#{addUserId} ORDER BY id DESC-->
+    <!--</select>-->
+
     <select id="getOrderAndProject" resultMap="getFaMoOrder">
-        SELECT * FROM work_orders WHERE isDeleted=FALSE AND addUserId=#{addUserId} ORDER BY id DESC
+        SELECT * FROM work_orders
+        <where>
+            <if test=" isHavePower!= 1 ">
+                addUserId = #{addUserId}
+              AND
+            </if>
+        </where>
+         isDeleted=FALSE ORDER BY urgency DESC ,id DESC
     </select>
 
     <select id="getCountUserOrder" resultMap="getCountOrder">
@@ -687,6 +698,16 @@
         where id = #{id}
     </update>
 
+    <update id="updateRealiyArea">
+        update work_orders
+        <set>
+            realityArea = #{realityArea},
+            techNum = #{techNum},
+            updateTime = now()
+        </set>
+        where id = #{orderId}
+    </update>
+
     <update id="updateFaMoStatus">
         update work_orders
         <set>
@@ -757,9 +778,9 @@
             <if test="order.perfectArea != null">
                 perfectArea = #{order.perfectArea},
             </if>
-            <if test="order.finishTime != null">
-                finishTime = #{order.finishTime},
-            </if>
+            <!--<if test="order.finishTime != null">-->
+                <!--finishTime = #{order.finishTime},-->
+            <!--</if>-->
             <if test="order.appliqueArea != null">
                 appliqueArea = #{order.appliqueArea},
             </if>
@@ -772,6 +793,7 @@
             <if test="order.jingFengStatus != null">
                 jingFengStatus = #{order.jingFengStatus},
             </if>
+            finishTime = now(),
            updateTime = now()
         </set>
         where id = #{order.id}

@@ -20,7 +20,7 @@ public interface OrderMapper {
 
     List<Order> getOrdersList(@Param("addUserId") Integer addUserId);
 
-    List<FaMoOrder> getOrderAndProject(@Param("addUserId") Integer addUserId);
+    List<FaMoOrder> getOrderAndProject(@Param("addUserId") Integer addUserId, @Param("isHavePower") Integer isHasPower);
 
     List<OrderAndProject> getPlantOrdersList(@Param("userId") Long userId, @Param("plantStatus") Integer plantStatus);
 
@@ -82,6 +82,9 @@ public interface OrderMapper {
     List<Order> getAfterOrderShouHou(@Param("userId") Integer userId, @Param("status") Integer status);
 
     List<OrderAffterOffice> getOrderAffterOffice(@Param("userId") Integer userId);
+
+    int updateRealiyArea(@Param("realityArea") Double realityArea, @Param("orderId") Long orderId, @Param("techNum") Integer techNum);
+
 
 
 

@@ -17,4 +17,6 @@ public interface QualityOrderUserMapper {
     List<QualityOrderResp> getOverOrdersList();
 
     QualityOrderUser checkOrderAuth(@Param("userId") Long userId, @Param("orderId") Long orderId);
+
+    QualityOrderUser getQualityOrders(@Param("id") Long orderId);
 }

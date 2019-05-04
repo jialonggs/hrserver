@@ -30,7 +30,7 @@
     <insert id="add" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.SHBaoGao">
         INSERT INTO work_sh_bg set orderId=#{orderId},picUrls=#{picUrls},fileUrl=#{fileUrl},addUserId=#{addUserId},
         customerAtti=#{customerAtti},fixContent=#{fixContent},contactPhone=#{contactPhone},contactUser=#{contactUser},
-        companyName=#{companyName},toTime=#{toTime},
+        companyName=#{companyName},toTime=#{toTime},gz=#{gz},zl=#{zl},
         addUserName=#{addUserName},status=0,remark=#{remark},updateTime=now(),createTime=now(),isDeleted=FALSE
     </insert>
 

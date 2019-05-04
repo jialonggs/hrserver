@@ -11,7 +11,7 @@ public class BusinessProduct {
     private Integer area;
     private Boolean dongMo;
     private String coefficient;
-    private Integer price;
+    private Double price;
     private String picUrls;
     private Double noTaxPrice;
     private Integer tax;
@@ -90,11 +90,11 @@ public class BusinessProduct {
         this.coefficient = coefficient;
     }
 
-    public Integer getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -193,4 +193,6 @@ public class BusinessProduct {
     public void setTotal(Double total) {
         this.total = total;
     }
+
+
 }

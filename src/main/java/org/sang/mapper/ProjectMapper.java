@@ -40,4 +40,6 @@ public interface ProjectMapper {
 
     Project getProjectById(@Param("projectId") Long projecId);
 
+    int updateKaiPiao(@Param("projectId") Long projectId, @Param("needKaiPiao") Double needKaiPiao,@Param("kaiPiaoMoney") Double kaiPiaoMoney, @Param("kaiPiaoStatus") Integer kaiPiaoStatus);
+
 }

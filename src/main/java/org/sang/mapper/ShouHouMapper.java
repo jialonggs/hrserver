@@ -18,9 +18,13 @@ public interface ShouHouMapper {
 
     ShouHou getShouHouByOrderId(@Param("orderId") Integer orderId);
 
+    OrderShouhou getShouHouById(@Param("id") Integer id);
+
     List<OrderShouhou> getAfterOrdersList(@Param("status") Integer status);
 
     int updateXzOrBg(@Param("id") Long id, @Param("xzId") Integer xzId, @Param("shId") Integer shId);
 
     int updateBGIdStatus (@Param("orderId") Integer orderId, @Param("shId") Long shId, @Param("status") Integer status);
+
+    int updateWanJie(@Param("id") Integer id, @Param("wanJieUrls") String  urls, @Param("wanJieRemark") String wanJieRemark);
 }

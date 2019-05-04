@@ -75,11 +75,11 @@ public class OrderService {
      * @param pageInfoEntity
      * @return
      */
-    public PageBean<FaMoOrder> getOrdersList(PageInfoEntity pageInfoEntity, Integer addUserId) {
+    public PageBean<FaMoOrder> getOrdersList(PageInfoEntity pageInfoEntity, Integer addUserId, Integer isHasPower) {
        // List<Role> roles = hrMapper.getRolesByHrId(addUserId);
 
         PageHelper.startPage(pageInfoEntity.getCurrentPage(),pageInfoEntity.getPagesize());
-        List<FaMoOrder> list = orderMapper.getOrderAndProject(addUserId);
+        List<FaMoOrder> list = orderMapper.getOrderAndProject(addUserId, isHasPower);
         PageInfo page = new PageInfo(list);
         PageBean<FaMoOrder> pageData = new PageBean<>();
         pageData.setItems(list);
@@ -321,7 +321,6 @@ public class OrderService {
 
     }
 
-
     public Boolean changeJinJi(Integer ugency, Integer orderId){
         int i = orderMapper.updateUgency(ugency, orderId);
         if(i>0){
@@ -329,5 +328,51 @@ public class OrderService {
         }else{
             return false;
         }
+    }
+
+    @Transactional
+    public Boolean updateOrderWenLi(WenLi wenLi) {
+        Order order = orderMapper.getOrderInfoById(wenLi.getOrderId());
+        WenLi wenLi1 = wenLiMapper.getById2(wenLi.getId());
+        if (null == order || null == wenLi1) {
+            return  false;
+        }
+        Double newArea = order.getRealityArea();
+        newArea = newArea - Double.parseDouble(wenLi1.getTimes()) * wenLi1.getArea() + Double.parseDouble(wenLi.getTimes())*wenLi.getArea();
+        // 更新 wenli
+        wenLiMapper.updateWenLi(wenLi);
+        orderMapper.updateRealiyArea(newArea, wenLi.getOrderId(), order.getTechNum());
+        return true;
+    }
+    @Transactional
+    public Boolean addNewOrderWenLi (WenLi wenLi) {
+        Order order = orderMapper.getOrderInfoById(wenLi.getOrderId());
+        if (null == order ) {
+            return  false;
+        }
+        Double newArea = order.getRealityArea();
+        newArea = newArea  + Double.parseDouble(wenLi.getTimes())*wenLi.getArea();
+        List<WenLi> wenList = new ArrayList<>();
+        wenList.add(wenLi);
+        wenLiMapper.addWenLis(wenList);
+        Integer num = order.getTechNum() + 1;
+        orderMapper.updateRealiyArea(newArea, wenLi.getOrderId(), num);
+        return true;
+    }
+
+    @Transactional
+    public Boolean delOrderWenLi(WenLi wenLi) {
+        Order order = orderMapper.getOrderInfoById(wenLi.getOrderId());
+        WenLi wenLi1 = wenLiMapper.getById2(wenLi.getId());
+        if (null == order || null == wenLi1) {
+            return  false;
+        }
+        Double newArea = order.getRealityArea();
+        newArea = newArea - Double.parseDouble(wenLi1.getTimes()) * wenLi1.getArea();
+        Integer num = order.getTechNum() - 1;
+        // 更新 wenli
+        wenLiMapper.delWenli(wenLi.getId());
+        orderMapper.updateRealiyArea(newArea, wenLi.getOrderId(), num);
+        return true;
     }
 }

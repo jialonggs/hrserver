@@ -3,6 +3,36 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.sang.mapper.ProjectMapper">
+
+
+    <resultMap type="org.sang.bean.Project" id="getProjectListProject">
+        <id column="id" property="id"/>
+        <result column="projectName" property="projectName"/>
+        <result column="carId" property="carId"/>
+        <result column="unitId" property="unitId"/>
+        <result column="cilentCompanyName" property="cilentCompanyName"/>
+        <result column="addUserId" property="addUserId"/>
+        <result column="addUserName" property="addUserName"/>
+        <result column="finishTime" property="finishTime"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="isDeleted" property="isDeleted"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="createTime" property="createTime"/>
+        <result column="yuBaoJiaId" property="yuBaoJiaId"/>
+        <result column="yuBaoJiaStatus" property="yuBaoJiaStatus"/>
+        <result column="shangWuId" property="shangWuId"/>
+        <result column="shangWuStatus" property="shangWuStatus"/>
+        <result column="busStatus" property="busStatus"/>
+        <result column="orderNums" property="orderNums"/>
+        <result column="orderSchedule" property="orderSchedule"/>
+        <association property="car" javaType="org.sang.bean.Car" column="carId"
+                     select="org.sang.mapper.CarMapper.getCarById">
+        </association>
+        <association property="processUnit" javaType="org.sang.bean.ProcessUnit" column="unitId"
+                     select="org.sang.mapper.ProcessUnitMapper.getById">
+        </association>
+    </resultMap>
     <!--查询项目列表-->
     <resultMap type="org.sang.bean.responseEntity.ProjectListResp" id="getProjectListMap">
         <id column="id" property="id"/>
@@ -99,7 +129,7 @@
         SELECT * FROM work_project WHERE isDeleted=FALSE ORDER BY id DESC
     </select>
 
-    <select id="getProjectById" resultType="org.sang.bean.Project">
+    <select id="getProjectById" resultMap="getProjectListProject">
         SELECT * FROM work_project WHERE isDeleted=FALSE AND id=#{projectId}
     </select>
 
@@ -182,6 +212,16 @@
         <set>
             busStatus = #{busStatus},
             needKaiPiao = #{needKaiPiao},
+            updateTime = now()
+        </set>
+        where id = #{projectId}
+    </update>
+
+    <update id="updateKaiPiao">
+        update work_project
+        <set>
+            needKaiPiao = #{needKaiPiao},
+            kaiPiaoStatus = #{kaiPiaoStatus},
             kaiPiaoMoney = #{kaiPiaoMoney},
             updateTime = now()
         </set>

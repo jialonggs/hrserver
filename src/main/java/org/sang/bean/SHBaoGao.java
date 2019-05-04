@@ -16,6 +16,9 @@ public class SHBaoGao {
     private String contactPhone;
     private String contactUser;
     private String companyName;
+    private String gz;
+    private String zl;
+
 
     private Long addUserId;
     private String addUserName;
@@ -24,6 +27,22 @@ public class SHBaoGao {
     private Boolean isDeleted;
     private Date updateTime;
     private Date createTime;
+
+    public String getGz() {
+        return gz;
+    }
+
+    public void setGz(String gz) {
+        this.gz = gz;
+    }
+
+    public String getZl() {
+        return zl;
+    }
+
+    public void setZl(String zl) {
+        this.zl = zl;
+    }
 
     public Long getId() {
         return id;

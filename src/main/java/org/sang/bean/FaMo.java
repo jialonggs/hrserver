@@ -13,6 +13,9 @@ public class FaMo {
     private Integer faMoNum;
     private Integer liuChangNum;
     private Boolean liuChang;
+    private String driverPhone;
+    private String chePai;
+    private Integer cheJian;
 
     private Integer infoId;
 
@@ -25,6 +28,31 @@ public class FaMo {
     private Boolean isDeleted;
     private Date updateTime;
     private Date createTime;
+
+
+    public Integer getCheJian() {
+        return cheJian;
+    }
+
+    public void setCheJian(Integer cheJian) {
+        this.cheJian = cheJian;
+    }
+
+    public String getDriverPhone() {
+        return driverPhone;
+    }
+
+    public void setDriverPhone(String driverPhone) {
+        this.driverPhone = driverPhone;
+    }
+
+    public String getChePai() {
+        return chePai;
+    }
+
+    public void setChePai(String chePai) {
+        this.chePai = chePai;
+    }
 
     public String getOrderName() {
         return orderName;

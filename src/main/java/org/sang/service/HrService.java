@@ -2,6 +2,7 @@ package org.sang.service;
 
 import org.sang.bean.AppPic;
 import org.sang.bean.Hr;
+import org.sang.bean.Role;
 import org.sang.bean.responseEntity.UserInfoResp;
 import org.sang.common.HrUtils;
 import org.sang.mapper.AppPicMapper;
@@ -148,6 +149,24 @@ public Long hrReg(Hr hr) {
 
     public AppPic geAppPic(){
         return  appPicMapper.getAppPic();
+    }
+
+    public Boolean isHavePower(Long userId, String[] roles) {
+        UserInfoResp userInfoResp = this.getHrByUserInfo(userId);
+        Boolean flag = false;
+        if (null != userInfoResp) {
+            List<Role> userRoles = userInfoResp.getRoles();
+            if(null != userRoles && !userRoles.isEmpty()) {
+                for (Role role : userRoles) {
+                    for (String roleName : roles) {
+                        if (role.getName().equals(roleName)) {
+                            flag = true;
+                        }
+                    }
+                }
+            }
+        }
+        return flag;
     }
 
 }

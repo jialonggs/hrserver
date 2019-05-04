@@ -7,7 +7,7 @@ public class WenLi {
     private Long id;
     private String wenliName;
     private Long orderId;
-    private Integer times;
+    private String times;
     private Long area;
     private Long techId;
 
@@ -43,11 +43,11 @@ public class WenLi {
         this.orderId = orderId;
     }
 
-    public Integer getTimes() {
+    public String getTimes() {
         return times;
     }
 
-    public void setTimes(Integer times) {
+    public void setTimes(String times) {
         this.times = times;
     }
 

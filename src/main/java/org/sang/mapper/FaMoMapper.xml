@@ -34,8 +34,8 @@
 
     <insert id="addFaMo" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.FaMo">
         INSERT INTO work_famo set orderId=#{orderId}, orderName=#{orderName},faMoRemark=#{faMoRemark},faMoType=#{faMoType},
-        faMoNum=#{faMoNum},liuChang=#{liuChang},liuChangNum=#{liuChangNum},
-       addUserId=#{addUserId},addUserName=#{addUserName},status=0,remark=#{remark},updateTime=now(),
+        faMoNum=#{faMoNum},liuChang=#{liuChang},liuChangNum=#{liuChangNum},chePai=#{chePai},driverPhone=#{driverPhone},
+       addUserId=#{addUserId},addUserName=#{addUserName},status=0,remark=#{remark},updateTime=now(),cheJian=#{cheJian},
         createTime=now(),isDeleted=FALSE
     </insert>
 
@@ -80,6 +80,17 @@
         where id = #{id}
     </update>
 
+    <update id="queRen">
+        update work_famo
+        <set>
+            <if test=" cheJian!= null">
+                cheJian = #{cheJian},
+            </if>
+            updateTime = now()
+        </set>
+        where id = #{id}
+    </update>
+
 
 
     <update id="updateFaMo">
@@ -90,6 +101,15 @@
             </if>
             <if test="faMo.liuChangNum!= null">
                  liuChangNum = #{faMo.liuChangNum},
+            </if>
+            <if test="faMo.driverPhone!= null">
+                driverPhone = #{faMo.driverPhone},
+            </if>
+            <if test="faMo.liuChangNum!= null">
+                chePai = #{faMo.chePai},
+            </if>
+            <if test="faMo.faMoRemark!= null">
+                faMoRemark = #{faMo.faMoRemark},
             </if>
             <if test="faMo.liuChang!= null">
                  liuChang = #{faMo.liuChang},

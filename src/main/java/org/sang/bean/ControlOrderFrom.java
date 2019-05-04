@@ -22,8 +22,8 @@ public class ControlOrderFrom {
     private String pengChuanBian;
     private String pengChuanKong;
     private String buPing;
-    private String pianXi;
-    private String guangze;
+    private String pianXi;//
+    private String guangze;//
 
 
     private String addUserId;

@@ -8,6 +8,7 @@ import org.sang.bean.responseEntity.QualityOrderResp;
 import org.sang.config.ErrCodeMsg;
 import org.sang.controller.BaseController;
 import org.sang.service.AfterSaleService;
+import org.sang.service.HrService;
 import org.sang.utils.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +28,9 @@ public class AfterSaleController extends BaseController{
 
     @Autowired
     private AfterSaleService afterSaleService;
+
+    @Autowired
+    private HrService hrService;
 
     @RequestMapping("/office/list")
     public BaseResponseEntity getWaitOrderList(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size,
@@ -85,6 +89,16 @@ public class AfterSaleController extends BaseController{
     public BaseResponseEntity toUpdateXZ(@RequestBody ShXzOrder shXzOrder){
         Boolean addResult = afterSaleService.updateShXz(shXzOrder);
         if(addResult){
+            return succResult();
+        }else{
+            return badResult(ErrCodeMsg.COMMON_FAIL);
+        }
+    }
+
+    @RequestMapping("/job/wanjie")
+    public BaseResponseEntity toUpdateXZ(Integer id, String urls, String remark){
+        Boolean wanJieResult = afterSaleService.updateWanJie(id, urls, remark);
+        if(wanJieResult){
             return succResult();
         }else{
             return badResult(ErrCodeMsg.COMMON_FAIL);
@@ -155,18 +169,63 @@ public class AfterSaleController extends BaseController{
         return succResult(map);
     }
 
-//    @RequestMapping("/job/add/bg")
-//    public BaseResponseEntity addShouHou(@RequestBody SHBaoGao shBaoGao){
-//        if (null == shBaoGao || null ==shBaoGao.getOrderId()) {
-//            return badResult(ErrCodeMsg.ARGS_MISSING);
-//        }
-//        Boolean result = afterSaleService.addBaoGao(shBaoGao);
-//        if(result){
-//            return succResult();
-//        }else{
-//            return badResult(ErrCodeMsg.COMMON_FAIL);
-//        }
-//    }
 
+    @RequestMapping("/job/info")
+    public BaseResponseEntity getShouHouList(@RequestParam(value = "id") Integer id,
+                                             @RequestParam(value = "userId", required = false) Integer userId){
+
+
+        OrderShouhou orderShouhou = afterSaleService.getAfterOrderShouHouById(id);
+        return succResult(orderShouhou);
+    }
+
+
+
+
+    @RequestMapping("/checked/xz")
+    public BaseResponseEntity checkXz(@RequestParam("orderId") Integer orderId, @RequestParam("status") Integer status){
+        if (null == orderId ) {
+            return badResult(ErrCodeMsg.ARGS_MISSING);
+        }
+        Boolean result = afterSaleService.checkStatus(orderId, status);
+        if(result){
+            return succResult();
+        }else{
+            return badResult(ErrCodeMsg.COMMON_FAIL);
+        }
+
+    }
+
+    @RequestMapping("/course/checked")
+    public BaseResponseEntity courseChecked(@RequestParam("orderId") Integer orderId, @RequestParam("uid") Long uid){
+        if (null == orderId ) {
+            return badResult(ErrCodeMsg.ARGS_MISSING);
+        }
+        Hr hr = hrService.getHrById(uid);
+        if(null == hr){
+            return badResult(ErrCodeMsg.ARGS_MISSING);
+        }
+        List<Role> roles = hr.getRoles();
+        Long cheJianId = null;
+        Long xingZhengId = null;
+        if(null != roles && !roles.isEmpty()){
+            for (Role role : roles){
+                if (role.getName().equals("ROLE_chejian")){
+                    cheJianId = uid;
+                }
+            }
+        }
+        if(null == cheJianId && null == xingZhengId){
+             return badResult(ErrCodeMsg.NO_PERMISSION);
+        }
+        // 校验是否含有
+        Boolean result = afterSaleService.courseChecked(orderId, cheJianId, xingZhengId);
+        if(result){
+            return succResult();
+        }else{
+            return badResult(ErrCodeMsg.COMMON_FAIL);
+        }
+
+    }
 
 }

@@ -35,7 +35,7 @@ public class EmpService {
         return empMapper.getAllPolitics();
     }
 
-    @Transactional
+//    @Transactional
     public int addEmp(Employee employee) {
 //        Date beginContract = employee.getBeginContract();
 //        Date endContract = employee.getEndContract();
@@ -110,7 +110,12 @@ public class EmpService {
     }
 
     public Employee getEmployeeByPhone(String phone){
-        return empMapper.getEmployeeByPhone(phone).get(0);
+        List<Employee> employeeList = empMapper.getEmployeeByPhone(phone);
+        if (employeeList.isEmpty()) {
+            return null;
+        }else {
+            return empMapper.getEmployeeByPhone(phone).get(0);
+        }
     }
 
     public PageBean<Employee> getEmpsList(PageInfoEntity pageInfoEntity) {

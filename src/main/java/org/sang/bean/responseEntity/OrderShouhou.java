@@ -11,6 +11,8 @@ public class OrderShouhou extends ShouHou{
     private ShXzOrder shXzOrder;
 
 
+
+
     public Order getOrder() {
         return order;
     }

@@ -35,11 +35,13 @@ public class KaiPiaoService {
         }
         Double needKaiPiao = project.getNeedKaiPiao() - Double.parseDouble(kaiPiao.getJinE());
         int i = kaiPiaoMapper.addKaiPiao(kaiPiao);
-        if(needKaiPiao == 0){
-            projectMapper.updateKiPiaoStatus(kaiPiao.getProjectId(), kaiPiao.getId(), 1, needKaiPiao);
-        }else{
-            projectMapper.updateKiPiaoStatus(kaiPiao.getProjectId(), kaiPiao.getId(), 0, needKaiPiao);
-        }
+        // 开票中
+        projectMapper.updateKiPiaoStatus(kaiPiao.getProjectId(), kaiPiao.getId(), 1, needKaiPiao);
+//        if(needKaiPiao == 0){
+//            projectMapper.updateKiPiaoStatus(kaiPiao.getProjectId(), kaiPiao.getId(), 1, needKaiPiao);
+//        }else{
+//            projectMapper.updateKiPiaoStatus(kaiPiao.getProjectId(), kaiPiao.getId(), 0, needKaiPiao);
+//        }
         if(i > 0 ){
             return true;
         }else{
@@ -57,6 +59,22 @@ public class KaiPiaoService {
     public PageBean<KaiPiao> getKaiPiaoList(PageInfoEntity pageInfoEntity, Integer status, Integer type) {
         PageHelper.startPage(pageInfoEntity.getCurrentPage(),pageInfoEntity.getPagesize());
         List<KaiPiao> list = kaiPiaoMapper.getKaiPiaoList(status, type);
+        PageInfo page = new PageInfo(list);
+        PageBean<KaiPiao> pageData = new PageBean<>();
+        pageData.setItems(list);
+        pageData.setPageInfo(page);
+        return  pageData;
+    }
+
+
+    /**
+     * 分页查询
+     * @param pageInfoEntity
+     * @return
+     */
+    public PageBean<KaiPiao> getKaiPiaoUserList(PageInfoEntity pageInfoEntity, Integer status, String  userId) {
+        PageHelper.startPage(pageInfoEntity.getCurrentPage(),pageInfoEntity.getPagesize());
+        List<KaiPiao> list = kaiPiaoMapper.getKaiPiaoUserList(status, userId);
         PageInfo page = new PageInfo(list);
         PageBean<KaiPiao> pageData = new PageBean<>();
         pageData.setItems(list);
@@ -101,6 +119,27 @@ public class KaiPiaoService {
     @Transactional
     public Boolean checkKaiPiao(KaiPiao kaiPiao){
         int i = kaiPiaoMapper.updateKaiPiao(kaiPiao);
+        Long projectId = kaiPiao.getProjectId();
+        //商务审核
+        Project project = projectMapper.getProjectById(projectId);
+        if(kaiPiao.getAuditFinanceName() != ""){
+
+            // 通过
+            if(Integer.parseInt(kaiPiao.getStatus()) > 0){
+                Double kaiPiaoJinE = project.getKaiPiaoMoney() + Double.parseDouble(kaiPiao.getJinE());
+                // 已开完票
+                if(project.getNeedKaiPiao() == 0){
+                    projectMapper.updateKaiPiao(projectId, project.getNeedKaiPiao(), kaiPiaoJinE,2);
+                }else{
+                    projectMapper.updateKaiPiao(projectId,project.getNeedKaiPiao(), kaiPiaoJinE, project.getKaiPiaoStatus());
+                }
+            }
+        }
+        if(Integer.parseInt(kaiPiao.getStatus()) < 0){
+            // 不通过
+            Double needKaiPiao =project.getNeedKaiPiao() + Double.parseDouble(kaiPiao.getJinE());
+            projectMapper.updateKaiPiao(projectId,needKaiPiao, project.getKaiPiaoMoney(), project.getKaiPiaoStatus());
+        }
         if(i > 0){
             return true;
         }else{

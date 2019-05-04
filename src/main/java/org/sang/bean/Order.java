@@ -14,7 +14,7 @@ public class Order {
     private Long managerId;
     private String managerName;
     private String expected;
-    private Date expectedTime;
+    private Date expectedTime;//
     private Integer presentStepId;
     private String presentStepName;
     private Double presentSchedule;
@@ -23,7 +23,7 @@ public class Order {
     private Boolean hasRemark;
     private String machiningType;
     private Double realityArea;
-    private Double workArea;
+    private Double workArea;//
     private Double stayArea;
     private Double alreadyArea;
     private Double perfectArea;
@@ -35,35 +35,35 @@ public class Order {
     private Boolean yaoJian;
     private Integer plantStatus;
     private Integer liuChengStatus;
-    private String kuFangRemark;
-    private Integer liuZhuanStatus;
-    private Double liuZhuanArea;
-    private Double liuZhuanBiLi;
-    private String nanDuDengJi;
+    private String kuFangRemark;//
+    private Integer liuZhuanStatus;//
+    private Double liuZhuanArea;//
+    private Double liuZhuanBiLi;//
+    private String nanDuDengJi;//
 
-    private String piWenDaiMa;
+    private String piWenDaiMa;//
 
     private Integer jingFengStatus;
     private Integer storageStatus;
     private Integer financeStatus;
-    private String financeBiLi;
-    private String financeJinE;
-    private Date financeTime;
-    private String financeRemark;
+    private String financeBiLi;//
+    private String financeJinE;//
+    private Date financeTime;//
+    private String financeRemark;//
 
-    private Integer faMoStatus;
+    private Integer faMoStatus;//
 
     private String addUserId;
     private String addUserName;
     private String status;
     private String remark;
     private Boolean isDeleted;
-    private Date storageTime;
+    private Date storageTime;//
     private Date updateTime;
     private Date createTime;
     private Integer techNum;
     private List<WenLi> wenlis;
-    private Integer afterStatus;
+    private Integer afterStatus;//
 
 
     public Long getId() {

@@ -42,14 +42,14 @@ public class AddedController extends BaseController{
      */
     @RequestMapping(value = "/listbypage", method = RequestMethod.GET)
     public BaseResponseEntity getOrdersList(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size
-    ) {
+    ,@RequestParam(value = "wenli", required = false) String wenli, @RequestParam(value = "orderId", required = false) Long orderId) {
 
         Map<String, Object> map = new HashMap<>();
         PageInfoEntity pageInfoEntity = new PageInfoEntity();
         pageInfoEntity.setCurrentPage(page);
         pageInfoEntity.setPagesize(size);
         List<TechAdded> stayorderlist = new ArrayList<>();
-        PageBean<TechAdded> list = techCardService.getOrdersAddedTech(pageInfoEntity);
+        PageBean<TechAdded> list = techCardService.getOrdersAddedTech(pageInfoEntity,wenli,orderId);
         if(null != list && list.getItems()!=null && list.getItems().size() !=0){
             stayorderlist = list.getItems();
             map.put("count",list.getPageInfo().getTotal());

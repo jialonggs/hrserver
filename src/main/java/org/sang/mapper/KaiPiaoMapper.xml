@@ -29,6 +29,25 @@
          ORDER BY id
     </select>
 
+
+    <select id="getKaiPiaoUserList" resultType="org.sang.bean.KaiPiao">
+        SELECT * FROM work_kai_piao WHERE isDeleted=FALSE AND addUserId=#{userId} AND
+
+        <choose>
+            <when test="status !=null and status ==-1 ">
+                 status &lt;=-1
+            </when>
+            <when test="status !=null and status ==1 ">
+                status &gt;=1
+            </when>
+            <otherwise>
+                 status = 0
+            </otherwise>
+        </choose>
+
+        ORDER BY id DESC
+    </select>
+
     <update id="updateKaiPiao">
         update work_kai_piao
         <set>

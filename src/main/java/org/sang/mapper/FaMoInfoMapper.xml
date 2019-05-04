@@ -34,7 +34,7 @@
 
     <insert id="addFaMoInfo" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.FaMoInfo">
         INSERT INTO work_famo_info set chePai=#{chePai}, jiaShiYuan=#{jiaShiYuan},kuaiDi=#{kuaiDi},muXiang=#{muXiang},
-        zhuanChe=#{zhuanChe},huoYun=#{huoYun},ids=#{ids},
+        zhuanChe=#{zhuanChe},huoYun=#{huoYun},ids=#{ids},picUrls=#{picUrls},
         addUserId=#{addUserId},addUserName=#{addUserName},status=0,remark=#{remark},updateTime=now(),
         createTime=now(),isDeleted=FALSE
     </insert>

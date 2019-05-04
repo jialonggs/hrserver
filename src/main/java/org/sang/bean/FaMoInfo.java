@@ -12,6 +12,7 @@ public class FaMoInfo {
     private Boolean zhuanChe;
     private Boolean huoYun;
     private String ids;
+    private String picUrls;
 
     private String addUserId;
     private String addUserName;
@@ -21,6 +22,14 @@ public class FaMoInfo {
     private Date updateTime;
     private Date createTime;
 
+
+    public String getPicUrls() {
+        return picUrls;
+    }
+
+    public void setPicUrls(String picUrls) {
+        this.picUrls = picUrls;
+    }
 
     public Long getId() {
         return id;

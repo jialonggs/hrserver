@@ -55,7 +55,7 @@
     <insert id="addWuLiao" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.WuLiao">
         INSERT INTO work_wu_liao set orderId=#{orderId},orderName=#{orderName},wuLiaoName=#{wuLiaoName},wuLiaoNum=#{wuLiaoNum},
         principalUserId=#{principalUserId},principalUserName=#{principalUserName},haveTime=#{haveTime},
-        liaoJiang=#{liaoJiang},songTime=#{songTime},yinTime=#{yinTime},
+        liaoJiang=#{liaoJiang},songTime=#{songTime},yinTime=#{yinTime},wenliChengCi=#{wenliChengCi},
         addUserId=#{addUserId},addUserName=#{addUserName},status=0,updateTime=now(),createTime=now(),isDeleted=FALSE
     </insert>
 

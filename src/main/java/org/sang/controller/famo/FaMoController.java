@@ -1,15 +1,13 @@
 package org.sang.controller.famo;
 
-import org.sang.bean.FaMo;
-import org.sang.bean.FaMoInfo;
-import org.sang.bean.Order;
-import org.sang.bean.PageInfoEntity;
+import org.sang.bean.*;
 import org.sang.bean.responseEntity.FaMoOrder;
 import org.sang.bean.responseEntity.FaMoResponse;
 import org.sang.bean.responseEntity.BaseResponseEntity;
 import org.sang.config.ErrCodeMsg;
 import org.sang.controller.BaseController;
 import org.sang.service.FaMoService;
+import org.sang.service.MouldInfoService;
 import org.sang.service.SendMessageService;
 import org.sang.utils.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +30,9 @@ public class FaMoController extends BaseController{
 
     @Autowired
     SendMessageService sendMessageService;
+
+    @Autowired
+    MouldInfoService mouldInfoService;
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public BaseResponseEntity addFaMo(FaMo faMo){
@@ -220,6 +221,31 @@ public class FaMoController extends BaseController{
         }else{
             return badResult(ErrCodeMsg.COMMON_FAIL);
         }
+    }
 
+    /**
+     * 添加详情
+     * @param cheJian
+     * @return
+     */
+    @RequestMapping(value = "/que/ren", method = RequestMethod.POST)
+    public BaseResponseEntity addFaMoInfo(@RequestParam(value = "cheJian") Integer cheJian,
+                                          @RequestParam(value = "id") Integer id){
+        if(null == cheJian){
+            return badResult(ErrCodeMsg.ARGS_MISSING);
+        }
+        Boolean result = faMoService.queRen(id, cheJian);
+        if(result){
+            return succResult();
+        }else{
+            return badResult(ErrCodeMsg.COMMON_FAIL);
+        }
+
+    }
+
+    @RequestMapping(value = "/order/famo", method = RequestMethod.GET)
+    public BaseResponseEntity getMouldInfoList(@RequestParam(value = "orderId") Long orderId){
+        List<MouldInfo> list = mouldInfoService.getMouldOrderId(orderId);
+        return succResult(list);
     }
 }

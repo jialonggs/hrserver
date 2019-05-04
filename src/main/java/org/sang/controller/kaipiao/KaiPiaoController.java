@@ -126,4 +126,29 @@ public class KaiPiaoController extends BaseController{
     }
 
 
+
+    /**
+     * @return
+     */
+    @RequestMapping(value = "/order/listbypage", method = RequestMethod.GET)
+    public BaseResponseEntity getUserList(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size,
+                                              @RequestParam(value = "status") Integer status, @RequestParam(value = "userId") String userId) {
+        if(null == status ) {
+            return badResult(ErrCodeMsg.ARGS_MISSING);
+        }
+        Map<String, Object> map = new HashMap<>();
+        PageInfoEntity pageInfoEntity = new PageInfoEntity();
+        pageInfoEntity.setCurrentPage(page);
+        pageInfoEntity.setPagesize(size);
+        List<KaiPiao> famolist = new ArrayList<>();
+        PageBean<KaiPiao> list = kaiPiaoService.getKaiPiaoUserList(pageInfoEntity, status, userId);
+        if(null != list && list.getItems()!=null && list.getItems().size() !=0){
+            famolist = list.getItems();
+            map.put("count",list.getPageInfo().getTotal());
+        }
+        map.put("famolist", famolist);
+        return succResult(map);
+    }
+
+
 }

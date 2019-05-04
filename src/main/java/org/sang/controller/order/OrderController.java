@@ -124,12 +124,21 @@ public class OrderController extends BaseController{
         if(null == addUserId ) {
             return badResult(ErrCodeMsg.ARGS_MISSING);
         }
+        String[] roles = {"ROLE_general_manager", "ROLE_chairman", "ROLE_Administrative_vice_president", "ROLE_admin"};
+        Long userId = Long.parseLong(addUserId+"");
+        Boolean isHasPower = hrService.isHavePower(userId, roles);
+        Integer flag = 0;
+        if (isHasPower) {
+            flag = 1;
+        }else {
+            flag = 0;
+        }
         Map<String, Object> map = new HashMap<>();
         PageInfoEntity pageInfoEntity = new PageInfoEntity();
         pageInfoEntity.setCurrentPage(page);
         pageInfoEntity.setPagesize(size);
         List<FaMoOrder> orderslist = new ArrayList<>();
-        PageBean<FaMoOrder> list = orderService.getOrdersList(pageInfoEntity, addUserId);
+        PageBean<FaMoOrder> list = orderService.getOrdersList(pageInfoEntity, addUserId, flag);
         if(null != list && list.getItems()!=null && list.getItems().size() !=0){
             orderslist = list.getItems();
             map.put("count",list.getPageInfo().getTotal());
@@ -318,6 +327,49 @@ public class OrderController extends BaseController{
         }
     }
 
+    @RequestMapping(value = "/update/wenli", method = RequestMethod.POST)
+    public BaseResponseEntity updateOrder(@RequestBody  WenLi wenLi) {
+        if(null == wenLi  || wenLi.getId() == null || wenLi.getOrderId() == null ||
+                wenLi.getArea() == null || wenLi.getTimes() == null) {
+            return badResult(ErrCodeMsg.ARGS_MISSING);
+        }
+        Boolean result = orderService.updateOrderWenLi(wenLi);
+        if (result) {
+            return  succResult();
+        } else {
+            return badResult(ErrCodeMsg.COMMON_FAIL);
+        }
+    }
+
+    @RequestMapping(value = "/del/wenli", method = RequestMethod.POST)
+    public BaseResponseEntity delWenli(@RequestBody  WenLi wenLi) {
+        if(null == wenLi  || wenLi.getId() == null || wenLi.getOrderId() == null ) {
+            return badResult(ErrCodeMsg.ARGS_MISSING);
+        }
+        Boolean result = orderService.delOrderWenLi(wenLi);
+        if (result) {
+            return  succResult();
+        } else {
+            return badResult(ErrCodeMsg.COMMON_FAIL);
+        }
+    }
+
+    @RequestMapping(value = "/add/wenli", method = RequestMethod.POST)
+    public BaseResponseEntity addOrderNewWenli(@RequestBody  WenLi wenLi) {
+        if(null == wenLi  || wenLi.getOrderId() == null ||
+                wenLi.getArea() == null || wenLi.getTimes() == null) {
+            return badResult(ErrCodeMsg.ARGS_MISSING);
+        }
+        Boolean result = orderService.addNewOrderWenLi(wenLi);
+        if (result) {
+            return  succResult();
+        } else {
+            return badResult(ErrCodeMsg.COMMON_FAIL);
+        }
+    }
+
+
+
 
     /**
      * 查看订单详情
@@ -350,6 +402,11 @@ public class OrderController extends BaseController{
         pageInfoEntity.setCurrentPage(page);
         pageInfoEntity.setPagesize(size);
         List<FaMoOrder> orderslist = new ArrayList<>();
+        String[] roles = {"ROLE_general_manager", "ROLE_chairman", "ROLE_Administrative_vice_president", "ROLE_admin"};
+        Boolean isHasPower = hrService.isHavePower(addUserId, roles);
+        if (isHasPower) {
+            addUserId = 3L;
+        }
         PageBean<FaMoOrder> list = orderService.getOrdersByConditionList(pageInfoEntity, engineId, carId, projectId, addUserId, unitId);
         if(null != list && list.getItems()!=null && list.getItems().size() !=0){
             orderslist = list.getItems();

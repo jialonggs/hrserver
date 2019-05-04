@@ -6,10 +6,7 @@ import org.sang.bean.*;
 import org.sang.bean.responseEntity.OrderAffterOffice;
 import org.sang.bean.responseEntity.OrderShouhou;
 import org.sang.bean.responseEntity.QualityOrderResp;
-import org.sang.mapper.OrderMapper;
-import org.sang.mapper.SHBaoGaoMapper;
-import org.sang.mapper.ShXzOrderMapper;
-import org.sang.mapper.ShouHouMapper;
+import org.sang.mapper.*;
 import org.sang.utils.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +29,11 @@ public class AfterSaleService {
 
     @Autowired
     private ShXzOrderMapper shXzOrderMapper;
+
+    @Autowired
+    private HrMapper hrMapper;
+
+
 
 
     public PageBean<OrderAffterOffice> getOrderAffterOffice(PageInfoEntity pageInfoEntity, Integer userId){
@@ -67,6 +69,18 @@ public class AfterSaleService {
             return false;
         }
 
+    }
+
+    public Boolean checkStatus(Integer orderId, Integer status){
+        ShouHou shouHou = new ShouHou();
+        shouHou.setOrderId(orderId);
+        shouHou.setStatus(status);
+        int i = shouHouMapper.updateShouHou(shouHou);
+        if(i>0){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 
@@ -149,12 +163,44 @@ public class AfterSaleService {
         }
     }
 
+    @Transactional
     public Boolean updateShXz(ShXzOrder shXzOrder){
+        ShouHou shouHou = new ShouHou();
+        shouHou.setStatus(3);
+        shouHou.setOrderId(shXzOrder.getOrderId());
+        shouHouMapper.updateShouHou(shouHou);
+
         int updateRe = shXzOrderMapper.updateSh(shXzOrder);
         if(updateRe>0){
             return true;
         }else {
             return false;
         }
+    }
+
+    public Boolean courseChecked(Integer orderId, Long cheJianId, Long xingZhengId){
+        ShouHou shouHou = new ShouHou();
+        shouHou.setOrderId(orderId);
+        shouHou.setCheJianId(cheJianId);
+        shouHou.setXingZhengId(xingZhengId);
+        int updateRe = shouHouMapper.updateShouHou(shouHou);
+        if(updateRe>0){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public Boolean updateWanJie(Integer id, String urls, String wanJieRemark){
+        int updateResult = shouHouMapper.updateWanJie(id, urls, wanJieRemark);
+        if(updateResult>0){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public OrderShouhou getAfterOrderShouHouById(Integer id){
+        return shouHouMapper.getShouHouById(id);
     }
 }

@@ -150,6 +150,7 @@ public class QualityController extends BaseController {
             return badResult(ErrCodeMsg.ARGS_MISSING);
         }
         QualityOrderUser checkAuth = qualityOrderService.checkUserOrderAuth(userId, orderId);
+
         if(null == checkAuth){
             return badResult(ErrCodeMsg.NO_HAVE_ORDER_AUTH);
         }
@@ -194,7 +195,10 @@ public class QualityController extends BaseController {
         orderFlow.setFlowJson(flows.toJSONString());
         if (isLastStep) {
             order.setLiuChengStatus(2);
-            status = 1;
+            // 如果精封完结
+            if (order.getJingFengStatus() == 1){
+                status = 1;
+            }
         }
         if (auditResult.equals(0)) {
             // 通过进行下一步 并且不是最后一步
@@ -241,6 +245,7 @@ public class QualityController extends BaseController {
                     Double jidDu = 100 * (all / order.getWorkArea());
                     order.setPresentSchedule(jidDu);
                 }
+
                 Boolean reslut = qualityOrderService.shenHe(order, orderFlow, userOrders, orderArgeLogs, status);
                 if (reslut) {
                     return succResult();

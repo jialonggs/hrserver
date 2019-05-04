@@ -35,12 +35,14 @@
                      select="org.sang.mapper.ShXzOrderMapper.getByOrderId">
         </association>
 
+
     </resultMap>
 
 
     <insert id="add" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.ShouHou">
         INSERT INTO work_shou_hou set orderId=#{orderId},userId=#{userId},userName=#{userName},
-         shId=#{shId},xzId=#{xzId},address=#{address}, danwei=#{danwei},addUserId=#{addUserId},
+         shId=#{shId},xzId=#{xzId},address=#{address}, danwei=#{danwei},addUserId=#{addUserId},days=#{days},
+         diDian=#{diDian},toTime=#{toTime},ZJremark=#{ZJremark},cheJianId=#{cheJianId},xingZhengId=#{xingZhengId},
       addUserName=#{addUserName},status=#{status},finishTime=now(),remark=#{remark},updateTime=now(),createTime=now(),isDeleted=FALSE
     </insert>
 
@@ -48,9 +50,9 @@
         SELECT * FROM work_shou_hou
         <where>
             isDeleted=FALSE
-            <if test="userId!= 3">
-               AND userId = #{userId}
-            </if>
+            <!--<if test="userId!= 3 ">-->
+               <!--AND userId = #{userId}-->
+            <!--</if>-->
             <if test="status!= null">
                 AND status = #{status}
             </if>
@@ -68,6 +70,10 @@
 
     <select id="getShouHouByOrderId" resultMap="shouhouModel">
         SELECT * FROM work_shou_hou where orderId = #{orderId} ORDER BY id DESC
+    </select>
+
+    <select id="getShouHouById" resultMap="getShouHouOrder">
+        SELECT * FROM work_shou_hou where id = #{id} ORDER BY id DESC
     </select>
 
     <select id="getAfterOrdersList" resultMap="getShouHouOrder">
@@ -136,6 +142,24 @@
             <if test="addUserId != null">
                 addUserId = #{addUserId},
             </if>
+            <if test="diDian != null">
+                diDian = #{diDian},
+            </if>
+            <if test="days != null">
+                days = #{days},
+            </if>
+            <if test="cheJianId != null">
+                cheJianId = #{cheJianId},
+            </if>
+            <if test="xingZhengId != null">
+                xingZhengId = #{xingZhengId},
+            </if>
+            <if test="toTime != null">
+                toTime = #{toTime},
+            </if>
+            <if test="ZJremark != null">
+                ZJremark = #{ZJremark},
+            </if>
             <if test="addUserName != null">
                 addUserName = #{addUserName},
             </if>
@@ -145,6 +169,21 @@
             updateTime = now()
         </set>
         where orderId = #{orderId}
+    </update>
+
+    <update id="updateWanJie">
+        update work_shou_hou
+        <set>
+            <if test="wanJieRemark != null">
+                wanJieRemark = #{wanJieRemark},
+            </if>
+            <if test="wanJieUrls != null">
+            wanJieUrls = #{wanJieUrls},
+        </if>
+            updateTime = now(),
+            status = 5
+        </set>
+        where id=#{id}
     </update>
 
 

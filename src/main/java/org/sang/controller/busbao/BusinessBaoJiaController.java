@@ -18,6 +18,7 @@ import org.sang.service.BusBaoJiaService;
 import org.sang.service.BusinessBaoJiaService;
 import org.sang.service.BusinessProductService;
 import org.sang.service.ProjectService;
+import org.sang.utils.DoubleUtil;
 import org.sang.utils.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -131,6 +132,8 @@ public class BusinessBaoJiaController extends BaseController{
 
         for (String item : strings) {
             BusinessProduct product = JSONObject.parseObject(item, BusinessProduct.class);
+//            Double price = DoubleUtil.m2(product.getTotal() / (product.getProductNum() * product.getArea()));
+//            product.setPrice(price);
             list.add(product);
         }
 

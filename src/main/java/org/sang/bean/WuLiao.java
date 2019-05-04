@@ -9,6 +9,7 @@ public class WuLiao {
     private String orderName;
     private String wuLiaoName;
     private String wuLiaoNum;
+    private String wenliChengCi;
     private Integer status;
     private Long principalUserId;
     private String principalUserName;
@@ -25,6 +26,14 @@ public class WuLiao {
     private Date updateTime;
     private Date createTime;
 
+
+    public String getWenliChengCi() {
+        return wenliChengCi;
+    }
+
+    public void setWenliChengCi(String wenliChengCi) {
+        this.wenliChengCi = wenliChengCi;
+    }
 
     public Long getId() {
         return id;

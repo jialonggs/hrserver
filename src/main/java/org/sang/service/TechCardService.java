@@ -51,6 +51,7 @@ public class TechCardService {
             int i = orderMapper.updateOrderTech(techCard.getOrderId(), DoubleUtil.m2(workArge), techNum-1);
 
             int y = wenLiMapper.updateTechId(techCard.getOrderId(), techCard.getWenliId());
+
             if(i> 0){
                 return  true;
             }else {
@@ -67,9 +68,12 @@ public class TechCardService {
      * @param pageInfoEntity
      * @return
      */
-    public PageBean<TechAdded> getOrdersAddedTech(PageInfoEntity pageInfoEntity) {
+    public PageBean<TechAdded> getOrdersAddedTech(PageInfoEntity pageInfoEntity, String wenli, Long orderId) {
         PageHelper.startPage(pageInfoEntity.getCurrentPage(),pageInfoEntity.getPagesize());
-        List<TechAdded> list = techCardMapper.getAll();
+        if(null == wenli || wenli.isEmpty()){
+            wenli = null;
+        }
+        List<TechAdded> list = techCardMapper.getAll(wenli, orderId);
         PageInfo page = new PageInfo(list);
         PageBean<TechAdded> pageData = new PageBean<>();
         pageData.setItems(list);

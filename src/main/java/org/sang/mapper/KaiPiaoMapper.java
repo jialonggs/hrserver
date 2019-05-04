@@ -13,6 +13,8 @@ public interface KaiPiaoMapper {
 
     List<KaiPiao> getKaiPiaoList(@Param("status") Integer status, @Param("type") Integer type);
 
+    List<KaiPiao> getKaiPiaoUserList (@Param("status") Integer status, @Param("userId") String userId);
+
     int aduitKaiPiao(@Param("id")Long id,@Param("status")Integer status, @Param("auditShangId")String  auditShangId, @Param("auditShangName")String auditShangName,
                      @Param("auditJingId")String  auditJingId, @Param("auditJingName")String auditJingName,
                      @Param("auditFinanceId")String  auditFinanceId, @Param("auditFinanceName")String auditFinanceName,

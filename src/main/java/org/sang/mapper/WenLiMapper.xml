@@ -25,12 +25,20 @@
         SELECT * FROM work_wenli WHERE isDeleted=FALSE AND orderId=#{orderId}
     </select>
 
+    <select id="getByOrderId2" resultType="org.sang.bean.WenLi">
+        SELECT * FROM work_wenli WHERE isDeleted=FALSE AND orderId=#{orderId} AND techId=0
+    </select>
+
     <select id="getByUnAddTech" resultType="org.sang.bean.WenLi">
         SELECT * FROM work_wenli WHERE isDeleted=FALSE AND orderId=#{orderId} AND techId =0
     </select>
 
     <select id="getById" resultType="org.sang.bean.WenLi">
         SELECT * FROM work_wenli WHERE isDeleted=FALSE AND id=#{wenliId} AND techId !=0
+    </select>
+
+    <select id="getById2" resultType="org.sang.bean.WenLi">
+        SELECT * FROM work_wenli WHERE isDeleted=FALSE AND id=#{wenliId}
     </select>
 
 
@@ -88,6 +96,25 @@
             updateTime = now()
         </set>
         where id = #{id}
+    </update>
+
+    <update id="delWenli">
+        update work_wenli
+        <set>
+            isDeleted = TRUE,
+            updateTime = now()
+        </set>
+        where id = #{wenliId}
+    </update>
+
+    <update id="updateWenLi">
+        update work_wenli
+        <set>
+            wenliName = #{wenli.wenliName},
+            area = #{wenli.area},
+            times = #{wenli.times}
+        </set>
+        where id = #{wenli.id}
     </update>
 
 

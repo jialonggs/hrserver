@@ -33,6 +33,10 @@ public class FaMoService {
 
     @Transactional
     public Boolean addFaMo(FaMo faMo){
+        // 全款发模
+        if(faMo.getFaMoType() == 2){
+            faMo.setStatus("2");
+        }
         int i = faMoMapper.addFaMo(faMo);
         if(i>0){
             orderMapper.updateFaMoStatus( 1, faMo.getOrderId());
@@ -152,7 +156,14 @@ public class FaMoService {
             e.printStackTrace();
             return false;
         }
+    }
 
-
+    public Boolean queRen(Integer id, Integer cheJian){
+        int i = faMoMapper.queRen(id, cheJian);
+        if (i>0) {
+            return true;
+        } else {
+            return  false;
+        }
     }
 }

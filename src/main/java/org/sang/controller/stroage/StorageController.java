@@ -57,12 +57,12 @@ public class StorageController extends BaseController{
      */
     @RequestMapping(value = "/put/listbypage", method = RequestMethod.GET)
     public BaseResponseEntity getOrdersList(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size,
-                                             @RequestParam("liuChengStatus") Integer liuChengStatus,
-                                             @RequestParam("jingFengStatus") Integer jingFengStatus,
+                                             @RequestParam(value = "liuChengStatus", required = false) Integer liuChengStatus,
+                                             @RequestParam(value = "jingFengStatus", required = false) Integer jingFengStatus,
                                              @RequestParam("storageStatus") Integer storageStatus) {
-        if(null == liuChengStatus ) {
-            return badResult(ErrCodeMsg.ARGS_MISSING);
-        }
+//        if(null == liuChengStatus ) {
+//            return badResult(ErrCodeMsg.ARGS_MISSING);
+//        }
         Map<String, Object> map = new HashMap<>();
         PageInfoEntity pageInfoEntity = new PageInfoEntity();
         pageInfoEntity.setCurrentPage(page);

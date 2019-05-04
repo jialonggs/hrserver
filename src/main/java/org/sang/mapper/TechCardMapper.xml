@@ -62,8 +62,22 @@
     </select>
 
 
+    <!--<select id="getAll" resultMap="getAdded">-->
+        <!--SELECT * from work_tech  WHERE isDeleted=FALSE ORDER BY id DESC-->
+    <!--</select>-->
+
     <select id="getAll" resultMap="getAdded">
-        SELECT * from work_tech  WHERE isDeleted=FALSE ORDER BY id DESC
+        SELECT * FROM work_tech
+        <where>
+            isDeleted=FALSE
+            <if test="wenli!= null">
+                AND piWenDaiMa = #{wenli}
+            </if>
+            <if test="orderId!=null">
+                AND orderId = #{orderId}
+            </if>
+        </where>
+          ORDER BY id DESC
     </select>
 
 

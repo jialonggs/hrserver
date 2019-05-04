@@ -24,4 +24,6 @@ public interface FaMoMapper {
     int updateFaMo(@Param("faMo") FaMo faMo);
 
     int updateFaMoStatus(@Param("id") Integer Id, @Param("status") Integer status, @Param("infoId") Long infoId);
+
+    int queRen( @Param("id") Integer id,  @Param("cheJian") Integer cheJian);
 }
