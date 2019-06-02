@@ -36,11 +36,11 @@ public class YuBaoJiaService {
      * @param pageInfoEntity
      * @return
      */
-    public PageBean<YuBaoJia> getYubaoJiaList(PageInfoEntity pageInfoEntity, Integer addUserId) {
+    public PageBean<YuBaoJiaInfoResp> getYubaoJiaList(PageInfoEntity pageInfoEntity, Integer addUserId) {
         PageHelper.startPage(pageInfoEntity.getCurrentPage(),pageInfoEntity.getPagesize());
-        List<YuBaoJia> list = yuBaoJiaMapper.getYuBaoJiaList(addUserId);
+        List<YuBaoJiaInfoResp> list = yuBaoJiaMapper.getYuBaoJiaList(addUserId);
         PageInfo page = new PageInfo(list);
-        PageBean<YuBaoJia> pageData = new PageBean<>();
+        PageBean<YuBaoJiaInfoResp> pageData = new PageBean<>();
         pageData.setItems(list);
         pageData.setPageInfo(page);
         return  pageData;

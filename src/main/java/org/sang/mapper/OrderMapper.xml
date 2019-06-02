@@ -227,6 +227,7 @@
         <result column="realityArea" property="realityArea"/>
         <result column="stayArea" property="stayArea"/>
         <result column="alreadyArea" property="alreadyArea"/>
+        <result column="workArea" property="workArea"/>
         <result column="perfectArea" property="perfectArea"/>
         <result column="appliqueArea" property="appliqueArea"/>
         <result column="ygb" property="ygb"/>
@@ -367,6 +368,10 @@
         <collection property="orderUsers" ofType="org.sang.bean.UserOrder" column="id"
                     select="org.sang.mapper.UserOrderMapper.getByOrderId">
         </collection>
+
+        <collection property="lanMoList" ofType="org.sang.bean.LanMo" column="id"
+                    select="org.sang.mapper.LanMoMapper.getByOrderId">
+        </collection>
         <collection property="wenlis" ofType="org.sang.bean.WenLi" select="org.sang.mapper.WenLiMapper.getByOrderId"
                     column="id"></collection>
 
@@ -399,6 +404,7 @@
         <result column="realityArea" property="realityArea"/>
 
         <result column="stayArea" property="stayArea"/>
+        <result column="workArea" property="workArea"/>
         <result column="alreadyArea" property="alreadyArea"/>
         <result column="perfectArea" property="perfectArea"/>
         <result column="appliqueArea" property="appliqueArea"/>
@@ -433,11 +439,14 @@
         <result column="storageTime" property="storageTime"/>
 
 
-        <association property="project" javaType="org.sang.bean.Project" column="projectId"
-                     select="org.sang.mapper.ProjectMapper.getProjectById">
+        <association property="project" javaType="org.sang.bean.responseEntity.ProjectListResp" column="projectId"
+                     select="org.sang.mapper.ProjectMapper.getProjectById1">
         </association>
         <collection property="wenlis" ofType="org.sang.bean.WenLi" select="org.sang.mapper.WenLiMapper.getByOrderId"
                     column="id"></collection>
+        <collection property="qualityOrderUsers" ofType="org.sang.bean.QualityOrderUser" column="id"
+                    select="org.sang.mapper.QualityOrderUserMapper.getQualityOrders">
+        </collection>
     </resultMap>
 
 
@@ -504,6 +513,10 @@
     </select>
 
     <select id="getOrderInfoResp" resultMap="getOrdersResp">
+        SELECT * FROM work_orders WHERE isDeleted=FALSE AND id=#{orderId}
+    </select>
+
+    <select id="getProjectAndOrder" resultMap="orderAndProject">
         SELECT * FROM work_orders WHERE isDeleted=FALSE AND id=#{orderId}
     </select>
 
@@ -669,7 +682,7 @@
         INSERT INTO work_orders set orderName=#{orderName},qrCode=#{qrCode},beiShu=#{beiShu},projectId=#{projectId},managerId=#{managerId},
         managerName=#{managerName},expected=#{expected},expectedTime=#{expectedTime},presentStepId=#{presentStepId},
         presentStepName=#{presentStepName},presentSchedule=#{presentSchedule},clientCompanyName=#{clientCompanyName},
-        urgency=#{urgency},hasRemark=#{hasRemark},machiningType=#{machiningType},techNum=#{techNum},
+        urgency=#{urgency},hasRemark=#{hasRemark},machiningType=#{machiningType},techNum=#{techNum},workArea=#{workArea},
         realityArea=#{realityArea},stayArea=0,liuChengStatus=0,jingFengStatus=0,piWenDaiMa=#{piWenDaiMa},storageStatus=0,picUrls=#{picUrls},liuZhuanStatus=0,liuZhuanArea=0,liuZhuanBiLi=0,
         financeStatus=0,financeBiLi=0,financeJinE=0,faMoStatus=0,addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},updateTime=now(),createTime=now(),storageTime=now(),isDeleted=FALSE
     </insert>
@@ -702,6 +715,7 @@
         update work_orders
         <set>
             realityArea = #{realityArea},
+            workArea = #{workArea},
             techNum = #{techNum},
             updateTime = now()
         </set>
@@ -901,6 +915,16 @@
             updateTime = now()
         </set>
 
+        where id = #{orderId}
+    </update>
+
+
+    <update id="updateBackPlant">
+        update work_orders
+        <set>
+            plantStatus = 0,
+            updateTime = now()
+        </set>
         where id = #{orderId}
     </update>
 

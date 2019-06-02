@@ -46,8 +46,8 @@ public class YuBaoJiaController extends BaseController{
         PageInfoEntity pageInfoEntity = new PageInfoEntity();
         pageInfoEntity.setCurrentPage(page);
         pageInfoEntity.setPagesize(size);
-        List<YuBaoJia> yubaojialist = new ArrayList<>();
-        PageBean<YuBaoJia> list = yuBaoJiaService.getYubaoJiaList(pageInfoEntity, addUserId);
+        List<YuBaoJiaInfoResp> yubaojialist = new ArrayList<>();
+        PageBean<YuBaoJiaInfoResp> list = yuBaoJiaService.getYubaoJiaList(pageInfoEntity, addUserId);
         if(null != list && list.getItems()!=null && list.getItems().size() !=0){
             yubaojialist = list.getItems();
             map.put("count",list.getPageInfo().getTotal());

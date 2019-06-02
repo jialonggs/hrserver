@@ -122,5 +122,9 @@
     where orderId = #{orderId}
     </update>
 
+    <delete id="delByOrderId" parameterType="Long">
+        DELETE FROM work_quality_order where orderId=#{orderId}
+    </delete>
+
 
 </mapper>

@@ -9,7 +9,25 @@ public class YgaRquest {
     private Double jingFengArea;
     private Double orderNeedArea;
     private Double jingFengBiLi;
+    private String addUserId;
+    private String addUserName;
 
+    public String getAddUserId() {
+        return addUserId;
+    }
+
+
+    public void setAddUserId(String addUserId) {
+        this.addUserId = addUserId;
+    }
+
+    public String getAddUserName() {
+        return addUserName;
+    }
+
+    public void setAddUserName(String addUserName) {
+        this.addUserName = addUserName;
+    }
 
     public Long getUserId() {
         return userId;

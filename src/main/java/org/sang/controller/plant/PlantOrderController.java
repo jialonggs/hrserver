@@ -1,6 +1,7 @@
 package org.sang.controller.plant;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.ibatis.annotations.Param;
 import org.sang.bean.*;
@@ -13,10 +14,7 @@ import org.sang.bean.responseEntity.OrderAndProject;
 import org.sang.bean.responseEntity.OverOrderResponse;
 import org.sang.config.ErrCodeMsg;
 import org.sang.controller.BaseController;
-import org.sang.service.OrderService;
-import org.sang.service.PlantService;
-import org.sang.service.QualityOrderService;
-import org.sang.service.UserOrderService;
+import org.sang.service.*;
 import org.sang.utils.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +39,9 @@ public class PlantOrderController extends BaseController{
 
     @Autowired
     QualityOrderService qualityOrderService;
+
+    @Autowired
+    OrderFlowService orderFlowService;
 
 
 
@@ -317,5 +318,45 @@ public class PlantOrderController extends BaseController{
         }
         map.put("overorderlist", qualityOrderResps);
         return succResult(map);
+    }
+
+
+
+    /**
+     * 获取订单分配用户
+     * @return
+     */
+    @RequestMapping(value = "/back", method = RequestMethod.POST)
+    public BaseResponseEntity backOrder(@RequestParam("orderId") Long orderId, @RequestParam("userId") Integer userId){
+        if(null == orderId || null == userId ) {
+            return badResult(ErrCodeMsg.ARGS_MISSING);
+        }
+        Order order = orderService.getOrderInfoById(orderId);
+        if (order == null) {
+            return badResult(ErrCodeMsg.ORDER_IS_NULL);
+        }
+        if (order.getPlantStatus() != 1) {
+            return badResult(ErrCodeMsg.ORDER_IS_NOT_PLAN);
+        }
+
+        if(order.getAlreadyArea() > 0 || order.getJingFengStatus() >0){
+            return badResult(ErrCodeMsg.ORDER_IS_HAVE_ARE);
+        }
+        // 校验是否已进入加工状态
+//        OrderFlow orderFlow = orderFlowService.getByOrderId(orderId);
+//        if (null == orderFlow) {
+//            return badResult(ErrCodeMsg.ORDER_IS_NOT_PLAN);
+//        }
+//        // 校验是否已经进行第一步
+//        String json = orderFlow.getFlowJson();
+//        JSONObject flows = JSON.parseObject(json);
+//        JSONArray steps = flows.getJSONArray("stepslist");
+
+        Boolean result = userOrderService.backFenPei(orderId);
+        if (result) {
+            return succResult();
+        }else {
+            return badResult(ErrCodeMsg.COMMON_FAIL);
+        }
     }
 }

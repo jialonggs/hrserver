@@ -108,6 +108,8 @@ public class AddedController extends BaseController{
         if(null == lanMo  ) {
             return badResult(ErrCodeMsg.ARGS_MISSING);
         }
+        TechCard techCard = techCardService.getTechId(lanMo.getTechId());
+        lanMo.setOrderId(techCard.getOrderId());
         Long i = lanMoService.addLanMo(lanMo);
         if(i>0){
             return succResult();

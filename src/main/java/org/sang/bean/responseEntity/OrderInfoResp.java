@@ -15,6 +15,8 @@ public class OrderInfoResp extends Order{
     private List<UserOrder> orderUsers;
     private OrderFlow orderFlow;
 
+    private List<LanMo> lanMoList;
+
     public List<MouldInfo> getMouldInfoList() {
         return mouldInfoList;
     }
@@ -72,5 +74,13 @@ public class OrderInfoResp extends Order{
 
     public void setTechCardList(List<TechCard> techCardList) {
         this.techCardList = techCardList;
+    }
+
+    public List<LanMo> getLanMoList() {
+        return lanMoList;
+    }
+
+    public void setLanMoList(List<LanMo> lanMoList) {
+        this.lanMoList = lanMoList;
     }
 }

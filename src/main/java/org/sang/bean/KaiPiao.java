@@ -24,6 +24,7 @@ public class KaiPiao {
     private Boolean fuQing;
     private String faPiaoNum;
     private String xinXiUrl;
+    private String ziLiaoUrl;
     private String ziLiaoType;
     private Date daoKuanTime;
     private String daoKuan;
@@ -61,6 +62,14 @@ public class KaiPiao {
     private Date updateTime;
     private Date createTime;
 
+
+    public String getZiLiaoUrl() {
+        return ziLiaoUrl;
+    }
+
+    public void setZiLiaoUrl(String ziLiaoUrl) {
+        this.ziLiaoUrl = ziLiaoUrl;
+    }
 
     public String getFinanceBiLi() {
         return financeBiLi;

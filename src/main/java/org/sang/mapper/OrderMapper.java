@@ -83,9 +83,12 @@ public interface OrderMapper {
 
     List<OrderAffterOffice> getOrderAffterOffice(@Param("userId") Integer userId);
 
-    int updateRealiyArea(@Param("realityArea") Double realityArea, @Param("orderId") Long orderId, @Param("techNum") Integer techNum);
+    int updateRealiyArea(@Param("realityArea") Double realityArea, @Param("orderId") Long orderId,
+                         @Param("techNum") Integer techNum, @Param("workArea") Double workArea);
 
+    int updateBackPlant(@Param("orderId") Long orderId);
 
+    OrderAndProject getProjectAndOrder(@Param("orderId") Long orderId);
 
 
 }

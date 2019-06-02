@@ -37,11 +37,11 @@ public class BusinessBaoJiaService {
      * @param pageInfoEntity
      * @return
      */
-    public PageBean<BusinessBaoJia> getBusinessbaoJiaList(PageInfoEntity pageInfoEntity, Integer addUserId) {
+    public PageBean<BusInfoResp> getBusinessbaoJiaList(PageInfoEntity pageInfoEntity, Integer addUserId) {
         PageHelper.startPage(pageInfoEntity.getCurrentPage(),pageInfoEntity.getPagesize());
-        List<BusinessBaoJia> list = businessBaoJiaMapper.getBusinessBaoJiaList(addUserId);
+        List<BusInfoResp> list = businessBaoJiaMapper.getBusinessBaoJiaList(addUserId);
         PageInfo page = new PageInfo(list);
-        PageBean<BusinessBaoJia> pageData = new PageBean<>();
+        PageBean<BusInfoResp> pageData = new PageBean<>();
         pageData.setItems(list);
         pageData.setPageInfo(page);
         return  pageData;

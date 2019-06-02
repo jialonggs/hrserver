@@ -12,4 +12,6 @@ public interface StepMapper {
     List<Step> getStepsList();
 
     int delStep(@Param("id") Long id);
+
+    int delByOrderId(@Param("orderId") Long orderId);
 }

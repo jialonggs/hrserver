@@ -5,13 +5,13 @@ import org.sang.bean.Order;
 
 public class FaMoResponse extends FaMo{
 
-    private Order order;
+    private OrderAndProject order;
 
-    public Order getOrder() {
+    public OrderAndProject getOrder() {
         return order;
     }
 
-    public void setOrder(Order order) {
+    public void setOrder(OrderAndProject order) {
         this.order = order;
     }
 }

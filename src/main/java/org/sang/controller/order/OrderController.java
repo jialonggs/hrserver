@@ -333,6 +333,10 @@ public class OrderController extends BaseController{
                 wenLi.getArea() == null || wenLi.getTimes() == null) {
             return badResult(ErrCodeMsg.ARGS_MISSING);
         }
+        Order order = orderService.getOrderInfoById(wenLi.getOrderId());
+        if (order.getPlantStatus() > 0) {
+            return badResult(ErrCodeMsg.ORDER_IS_PLAN);
+        }
         Boolean result = orderService.updateOrderWenLi(wenLi);
         if (result) {
             return  succResult();
@@ -345,6 +349,10 @@ public class OrderController extends BaseController{
     public BaseResponseEntity delWenli(@RequestBody  WenLi wenLi) {
         if(null == wenLi  || wenLi.getId() == null || wenLi.getOrderId() == null ) {
             return badResult(ErrCodeMsg.ARGS_MISSING);
+        }
+        Order order = orderService.getOrderInfoById(wenLi.getOrderId());
+        if (order.getPlantStatus() > 0) {
+            return badResult(ErrCodeMsg.ORDER_IS_PLAN);
         }
         Boolean result = orderService.delOrderWenLi(wenLi);
         if (result) {
@@ -359,6 +367,10 @@ public class OrderController extends BaseController{
         if(null == wenLi  || wenLi.getOrderId() == null ||
                 wenLi.getArea() == null || wenLi.getTimes() == null) {
             return badResult(ErrCodeMsg.ARGS_MISSING);
+        }
+        Order order = orderService.getOrderInfoById(wenLi.getOrderId());
+        if (order.getPlantStatus() > 0) {
+            return badResult(ErrCodeMsg.ORDER_IS_PLAN);
         }
         Boolean result = orderService.addNewOrderWenLi(wenLi);
         if (result) {

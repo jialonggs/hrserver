@@ -5,6 +5,7 @@ import java.util.Date;
 public class LanMo {
     private Long id;
     private Long techId;
+    private Long orderId;
     private Date beginTime;
     private Date lanMoTime;
     private String yaoShui;
@@ -120,5 +121,13 @@ public class LanMo {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 }

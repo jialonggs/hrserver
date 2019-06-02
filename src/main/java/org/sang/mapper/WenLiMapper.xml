@@ -98,21 +98,27 @@
         where id = #{id}
     </update>
 
-    <update id="delWenli">
-        update work_wenli
-        <set>
-            isDeleted = TRUE,
-            updateTime = now()
-        </set>
-        where id = #{wenliId}
-    </update>
+    <delete id="delWenli" parameterType="Long">
+        DELETE FROM work_wenli where id=#{wenliId}
+    </delete>
+
+
+    <!--<update id="delWenli">-->
+        <!--update work_wenli-->
+        <!--<set>-->
+            <!--isDeleted = TRUE,-->
+            <!--updateTime = now()-->
+        <!--</set>-->
+        <!--where id = #{wenliId}-->
+    <!--</update>-->
 
     <update id="updateWenLi">
         update work_wenli
         <set>
             wenliName = #{wenli.wenliName},
             area = #{wenli.area},
-            times = #{wenli.times}
+            times = #{wenli.times},
+            techId = #{wenli.techId}
         </set>
         where id = #{wenli.id}
     </update>

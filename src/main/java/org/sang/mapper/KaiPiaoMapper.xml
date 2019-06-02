@@ -13,7 +13,7 @@
         fuQing=#{fuQing},faPiaoNum=#{faPiaoNum},kaiPiaoId=#{kaiPiaoId},kaiPiaoType=#{kaiPiaoType},
         kaiPiaoName=#{kaiPiaoName},tongZhiId=#{tongZhiId},tongZhiName=#{tongZhiName},wenJianUrl=#{wenJianUrl},
         financeBiLi=#{financeBiLi},financeJinE=#{financeJinE},finalBaoJia=#{finalBaoJia},needKaiPiao=#{needKaiPiao},
-        auditJson=#{auditJson},ziLiaoType=#{ziLiaoType},xinXiUrl=#{xinXiUrl},daoKuanTime=#{daoKuanTime},daoKuan=#{daoKuan},
+        auditJson=#{auditJson},ziLiaoType=#{ziLiaoType},ziLiaoUrl=#{ziLiaoUrl},xinXiUrl=#{xinXiUrl},daoKuanTime=#{daoKuanTime},daoKuan=#{daoKuan},
         addUserId=#{addUserId},addUserName=#{addUserName},status=0,remark=#{remark},updateTime=now(),
         createTime=now(),isDeleted=FALSE
     </insert>

@@ -42,6 +42,9 @@ public class OrderService {
     @Autowired
     ProjectMapper projectMapper;
 
+    @Autowired
+    TechCardMapper techCardMapper;
+
 
     /**
      * 新的添加订单
@@ -54,6 +57,13 @@ public class OrderService {
     public Long addNewOrder(Order order, Long[] mouldIds, ControlOrderFrom controlOrderFrom, List<WenLi> wenLis){
         // 添加订单信息
         order.setTechNum(wenLis.size());
+        Double are = 0.00;
+        for (WenLi wenLi : wenLis){
+            are = are + wenLi.getArea() ;
+        }
+        // 设置实际面积
+        order.setRealityArea(DoubleUtil.m2(are));
+        order.setWorkArea(0.00);
         Long orderId = orderMapper.addOrder(order);
 
         controlOrderFrom.setOrderId(order.getId());
@@ -333,15 +343,29 @@ public class OrderService {
     @Transactional
     public Boolean updateOrderWenLi(WenLi wenLi) {
         Order order = orderMapper.getOrderInfoById(wenLi.getOrderId());
-        WenLi wenLi1 = wenLiMapper.getById2(wenLi.getId());
-        if (null == order || null == wenLi1) {
+        WenLi wenLiOld = wenLiMapper.getById2(wenLi.getId());
+        if (null == order || null == wenLiOld) {
             return  false;
         }
         Double newArea = order.getRealityArea();
-        newArea = newArea - Double.parseDouble(wenLi1.getTimes()) * wenLi1.getArea() + Double.parseDouble(wenLi.getTimes())*wenLi.getArea();
+        newArea = newArea - wenLiOld.getArea() + wenLi.getArea();
+        //是否已有工艺卡，如果有则删除
+        TechCard techCard = techCardMapper.getByWenLiId(wenLi.getId());
+        Double workArea = order.getWorkArea();
+        if (null != techCard) {
+            // 需要删除则订单纹理数量+1
+            techCardMapper.deletWenLiId(wenLi.getId());
+            order.setTechNum(order.getTechNum() + 1);
+            Double oldWorkArea = Double.parseDouble(techCard.getNanDuXiShu()) * Double.parseDouble(wenLiOld.getTimes()) * wenLiOld.getArea();
+            workArea = order.getWorkArea() - oldWorkArea;
+            wenLi.setTechId(0L);
+        }else {
+            wenLi.setTechId(0L);
+        }
         // 更新 wenli
         wenLiMapper.updateWenLi(wenLi);
-        orderMapper.updateRealiyArea(newArea, wenLi.getOrderId(), order.getTechNum());
+        orderMapper.updateRealiyArea(newArea, wenLi.getOrderId(), order.getTechNum(), workArea);
+
         return true;
     }
     @Transactional
@@ -351,28 +375,40 @@ public class OrderService {
             return  false;
         }
         Double newArea = order.getRealityArea();
-        newArea = newArea  + Double.parseDouble(wenLi.getTimes())*wenLi.getArea();
+        newArea = newArea  + wenLi.getArea();
         List<WenLi> wenList = new ArrayList<>();
         wenList.add(wenLi);
         wenLiMapper.addWenLis(wenList);
         Integer num = order.getTechNum() + 1;
-        orderMapper.updateRealiyArea(newArea, wenLi.getOrderId(), num);
+        orderMapper.updateRealiyArea(newArea, wenLi.getOrderId(), num, order.getWorkArea());
         return true;
     }
 
     @Transactional
     public Boolean delOrderWenLi(WenLi wenLi) {
         Order order = orderMapper.getOrderInfoById(wenLi.getOrderId());
+        Double workArea = order.getWorkArea();
         WenLi wenLi1 = wenLiMapper.getById2(wenLi.getId());
         if (null == order || null == wenLi1) {
             return  false;
         }
         Double newArea = order.getRealityArea();
-        newArea = newArea - Double.parseDouble(wenLi1.getTimes()) * wenLi1.getArea();
-        Integer num = order.getTechNum() - 1;
+        newArea = newArea - wenLi1.getArea();
+
         // 更新 wenli
         wenLiMapper.delWenli(wenLi.getId());
-        orderMapper.updateRealiyArea(newArea, wenLi.getOrderId(), num);
+        //是否已有工艺卡，如果有则删除
+        TechCard techCard = techCardMapper.getByWenLiId(wenLi.getId());
+        if (null != techCard) {
+            // 需要删除则订单纹理数量+1
+            techCardMapper.deletWenLiId(wenLi.getId());
+            // 更新面积
+            workArea = Double.parseDouble(techCard.getNanDuXiShu()) * Double.parseDouble(wenLi.getTimes()) * wenLi.getArea();
+            workArea = order.getWorkArea() - workArea;
+        }else {
+           order.setTechNum(order.getTechNum() - 1);
+        }
+        orderMapper.updateRealiyArea(newArea, wenLi.getOrderId(), order.getTechNum(), workArea);
         return true;
     }
 }

@@ -3,30 +3,41 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.sang.mapper.BusinessBaoJiaMapper">
-    <!--查询收模列表-->
-    <!--<resultMap type="org.sang.bean.responseEntity.ShouMoListResp" id="shouMoLisAndMouldInfo">-->
-        <!--<id column="id" property="id"/>-->
-        <!--<result column="clientCompanyName" property="clientCompanyName"/>-->
-        <!--<result column="batch" property="batch"/>-->
-        <!--<result column="freightType" property="freightType"/>-->
-        <!--<result column="woodenCaseNum" property="woodenCaseNum"/>-->
-        <!--<result column="palletNum" property="palletNum"/>-->
-        <!--<result column="diaoHuanNum" property="diaoHuanNum"/>-->
-        <!--<result column="jianBao" property="jianBao"/>-->
-        <!--<result column="carNum" property="carNum"/>-->
-        <!--<result column="driverPhone" property="driverPhone"/>-->
-        <!--<result column="addUserId" property="addUserId"/>-->
-        <!--<result column="addUserName" property="addUserName"/>-->
-        <!--<result column="carNum" property="carNum"/>-->
-        <!--<result column="driverPhone" property="driverPhone"/>-->
-        <!--<result column="status" property="status"/>-->
-        <!--<result column="updateTime" property="updateTime"/>-->
-        <!--<result column="createTime" property="createTime"/>-->
-        <!--&lt;!&ndash; 关联模具信息 &ndash;&gt;-->
-        <!--<collection property="mouldInfos" ofType="org.sang.bean.MouldInfo" column="id"-->
-                    <!--select="org.sang.mapper.MouldInfoMapper.getMouldInfoByShouMoId">-->
-        <!--</collection>-->
-    <!--</resultMap>-->
+    <resultMap type="org.sang.bean.responseEntity.BusInfoResp" id="busInfoResp">
+        <id column="id" property="id"/>
+        <result column="projectId" property="projectId"/>
+        <result column="auditId" property="auditId"/>
+        <result column="auditName" property="auditName"/>
+        <result column="clientCompanyName" property="clientCompanyName"/>
+        <result column="contactPerson" property="contactPerson"/>
+        <result column="contactPhone" property="contactPhone"/>
+        <result column="carType" property="carType"/>
+        <result column="tax" property="tax"/>
+        <result column="audit" property="audit"/>
+        <result column="total" property="total"/>
+        <result column="noTaxTotal" property="noTaxTotal"/>
+        <result column="finalBaoJia" property="finalBaoJia"/>
+        <result column="noTaxfinalBaoJia" property="noTaxfinalBaoJia"/>
+        <result column="expectTime" property="expectTime"/>
+        <result column="submitType" property="submitType"/>
+        <result column="fuJianUrl" property="fuJianUrl"/>
+        <result column="immutable" property="immutable"/>
+        <result column="addUserId" property="addUserId"/>
+        <result column="addUserName" property="addUserName"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="isDeleted" property="isDeleted"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="createTime" property="createTime"/>
+        <association property="project" javaType="org.sang.bean.Project" column="projectId"
+                     select="org.sang.mapper.ProjectMapper.getProjectById">
+        </association>
+        <!-- 关联模具信息 -->
+        <collection property="businessProductList" ofType="org.sang.bean.BusinessProduct" column="id"
+                    select="org.sang.mapper.BusinessProductMapper.getByBusId">
+        </collection>
+
+    </resultMap>
 
     <insert id="addBusinessBaoJia" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.BusinessBaoJia">
         INSERT INTO work_bus_bj set projectId=#{projectId},auditId=0,auditName=#{auditName},clientCompanyName=#{clientCompanyName},contactPerson=#{contactPerson},contactPhone=#{contactPhone},carType=#{carType},tax=#{tax},
@@ -34,7 +45,7 @@
         status=#{status},remark=#{remark},isDeleted=FALSE,immutable=FALSE,updateTime=now(),createTime=now()
     </insert>
 
-    <select id="getBusinessBaoJiaList" resultType="org.sang.bean.BusinessBaoJia">
+    <select id="getBusinessBaoJiaList" resultMap="busInfoResp">
         SELECT * FROM work_bus_bj WHERE isDeleted=FALSE AND addUserId=#{addUserId} ORDER BY id DESC
     </select>
 
@@ -48,37 +59,7 @@
 
 
 
-    <resultMap type="org.sang.bean.responseEntity.BusInfoResp" id="busInfoResp">
-    <id column="id" property="id"/>
-    <result column="projectId" property="projectId"/>
-    <result column="auditId" property="auditId"/>
-    <result column="auditName" property="auditName"/>
-    <result column="clientCompanyName" property="clientCompanyName"/>
-    <result column="contactPerson" property="contactPerson"/>
-    <result column="contactPhone" property="contactPhone"/>
-    <result column="carType" property="carType"/>
-    <result column="tax" property="tax"/>
-    <result column="audit" property="audit"/>
-    <result column="total" property="total"/>
-    <result column="noTaxTotal" property="noTaxTotal"/>
-    <result column="finalBaoJia" property="finalBaoJia"/>
-    <result column="noTaxfinalBaoJia" property="noTaxfinalBaoJia"/>
-    <result column="expectTime" property="expectTime"/>
-    <result column="submitType" property="submitType"/>
-    <result column="fuJianUrl" property="fuJianUrl"/>
-    <result column="immutable" property="immutable"/>
-    <result column="addUserId" property="addUserId"/>
-    <result column="addUserName" property="addUserName"/>
-    <result column="status" property="status"/>
-    <result column="remark" property="remark"/>
-    <result column="isDeleted" property="isDeleted"/>
-    <result column="updateTime" property="updateTime"/>
-    <result column="createTime" property="createTime"/>
-    <!-- 关联模具信息 -->
-    <collection property="businessProductList" ofType="org.sang.bean.BusinessProduct" column="id"
-          select="org.sang.mapper.BusinessProductMapper.getByBusId">
-    </collection>
-    </resultMap>
+
 
 
     <select id="getById" resultMap="busInfoResp">
@@ -136,6 +117,9 @@
             <if test="yuBaoJia.fuJianUrl != null">
                 fuJianUrl = #{yuBaoJia.fuJianUrl},
             </if>
+            <if test="yuBaoJia.remark != null">
+                remark = #{yuBaoJia.remark},
+            </if>
             updateTime = now()
         </set>
         where id = #{yuBaoJia.id}
@@ -150,6 +134,9 @@
             </if>
             <if test="noTaxTotal != null">
                 noTaxTotal=#{noTaxTotal},
+            </if>
+            <if test="total != null">
+                finalBaoJia=#{total},
             </if>
             updateTime = now()
         </set>

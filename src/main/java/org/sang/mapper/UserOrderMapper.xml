@@ -37,7 +37,7 @@
     <insert id="addUserOrder">
         insert into work_user_order (orderId, orderName,
         userId, userName, zongJiArea, shengYuArea,
-        wanChengArea, jingFengArea, tieHuaArea, biLi,
+        wanChengArea, jingFengArea,jingFengBiLi, tieHuaArea, biLi,
         addUserId, addUserName,
         status, remark, isDeleted,
         updateTime, createTime
@@ -46,7 +46,7 @@
         <foreach collection="userOrders" item="emp" separator=",">
             (#{emp.orderId}, #{emp.orderName},
             #{emp.userId}, #{emp.userName}, #{emp.zongJiArea},
-           #{emp.shengYuArea},0, #{emp.jingFengArea}, #{emp.tieHuaArea}, #{emp.biLi},
+           #{emp.shengYuArea},0, #{emp.jingFengArea}, #{emp.jingFengBiLi},#{emp.tieHuaArea}, #{emp.biLi},
             #{emp.addUserId}, #{emp.addUserName},
             0, #{emp.remark}, FALSE,
             now(), now()
@@ -145,6 +145,9 @@
             <if test="userOrder.jingFengArea != null">
                 jingFengArea = #{userOrder.jingFengArea},
             </if>
+            <if test="userOrder.zongJiArea != null">
+                zongJiArea = #{userOrder.zongJiArea},
+            </if>
             <if test="userOrder.shengYuArea != null">
                 shengYuArea = #{userOrder.shengYuArea},
             </if>
@@ -155,6 +158,36 @@
         </set>
         where id=#{userOrder.id}
     </update>
+
+
+    <update id="delJingFeng">
+        update work_user_order
+        <set>
+            <if test="userOrder.jingFengBiLi != null">
+                jingFengBiLi = #{userOrder.jingFengBiLi},
+            </if>
+            <if test="userOrder.jingFengArea != null">
+                jingFengArea = #{userOrder.jingFengArea},
+            </if>
+            <if test="userOrder.shengYuArea != null">
+                shengYuArea = #{userOrder.shengYuArea},
+            </if>
+            <if test="userOrder.wanChengArea != null">
+                wanChengArea = #{userOrder.wanChengArea},
+            </if>
+            <if test="userOrder.zongJiArea != null">
+                zongJiArea = #{userOrder.zongJiArea},
+            </if>
+
+            updateTime = now()
+        </set>
+        where id=#{userOrder.id}
+    </update>
+
+    <delete id="delByOrderId" parameterType="Long">
+        DELETE FROM work_user_order where orderId=#{orderId}
+    </delete>
+
 
 
 </mapper>

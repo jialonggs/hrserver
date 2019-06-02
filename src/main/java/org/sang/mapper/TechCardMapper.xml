@@ -8,6 +8,7 @@
         <id column="id" property="id"/>
         <result column="orderId" property="orderId"/>
         <result column="piWenDaiMa" property="piWenDaiMa"/>
+        <result column="wenliId" property="wenliId"/>
         <result column="nanDuXiShu" property="nanDuXiShu"/>
         <result column="tieHuaBuShu" property="tieHuaBuShu"/>
         <result column="gongYiCanShu" property="gongYiCanShu"/>
@@ -32,6 +33,9 @@
         <association property="wenli" javaType="org.sang.bean.WenLi" column="wenliId"
                      select="org.sang.mapper.WenLiMapper.getById">
         </association>
+        <!--<association property="lanMoList" javaType="org.sang.bean.LanMo" column="id"-->
+                     <!--select="org.sang.mapper.LanMoMapper.getByTechId">-->
+        <!--</association>-->
 
         <!--<result column="orderName" property="orderName"/>-->
         <!--<result column="urgency" property="urgency"/>-->
@@ -40,6 +44,13 @@
         <!--<result column="wenliName" property="wenliName"/>-->
         <!--<result column="area" property="area"/>-->
         <!--<result column="times" property="times"/>-->
+
+    </resultMap>
+
+    <resultMap type="org.sang.bean.responseEntity.TechLanMo" id="getTechMap1" extends="getTechMap">
+        <!--<collection property="lanMoList" javaType="org.sang.bean.LanMo" column="id"-->
+                     <!--select="org.sang.mapper.LanMoMapper.getByTechId">-->
+        <!--</collection>-->
 
     </resultMap>
 
@@ -57,10 +68,17 @@
         SELECT * FROM work_tech WHERE isDeleted=FALSE AND id=#{orderId} ORDER BY id
     </select>
 
-    <select id="getNewByOrderId" resultType="org.sang.bean.TechCard">
+    <select id="getNewByOrderId" resultMap="getTechMap1">
         SELECT * FROM work_tech WHERE isDeleted=FALSE AND orderId=#{orderId} ORDER BY id
     </select>
 
+    <select id="getByWenLiId" resultType="org.sang.bean.TechCard">
+        SELECT * FROM work_tech WHERE isDeleted=FALSE AND wenliId=#{wenliId} ORDER BY id
+    </select>
+
+    <delete id="deletWenLiId" parameterType="Long">
+        DELETE FROM work_tech where wenliId=#{wenliId}
+    </delete>
 
     <!--<select id="getAll" resultMap="getAdded">-->
         <!--SELECT * from work_tech  WHERE isDeleted=FALSE ORDER BY id DESC-->

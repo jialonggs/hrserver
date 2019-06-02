@@ -133,6 +133,10 @@
         SELECT * FROM work_project WHERE isDeleted=FALSE AND id=#{projectId}
     </select>
 
+    <select id="getProjectById1" resultMap="getProjectListMap1">
+        SELECT * FROM work_project WHERE isDeleted=FALSE AND id=#{projectId}
+    </select>
+
     <select id="getProjectListByUserId" resultMap="getProjectListMap1">
         SELECT * FROM work_project WHERE isDeleted=FALSE AND addUserId=#{addUserId} ORDER BY id DESC
     </select>

@@ -281,6 +281,9 @@ public class QualityController extends BaseController {
         if (null == order){
             return badResult(ErrCodeMsg.COMMON_FAIL);
         }
+        if (order.getJingFengStatus() == 1) {
+            return badResult(ErrCodeMsg.ORDER_IS_JINGFENG);
+        }
         List<UserOrder> userOrders = userOrderService.getUserOrderByOrderId(orderId, 0);
         if(null == userOrders || userOrders.isEmpty()){
             return badResult(ErrCodeMsg.COMMON_FAIL);
@@ -340,36 +343,69 @@ public class QualityController extends BaseController {
         if (null == jingFengJieSuanRequest.getYgas()) {
             return badResult(ErrCodeMsg.ARGS_MISSING);
         }
+
         try {
             Order order = orderService.getOrderInfoById(jingFengJieSuanRequest.getOrderId());
+            if (order.getJingFengStatus() == 1) {
+                return badResult(ErrCodeMsg.ORDER_IS_JINGFENG);
+            }
             List<UserOrder> list = userOrderService.getUserOrderByOrderId(jingFengJieSuanRequest.getOrderId(), 0);
             List<YgaRquest> ygas = jingFengJieSuanRequest.getYgas();
             List<YgaRquest> newYgas = new ArrayList<>();
             List<UserOrder> newUserOrders = new ArrayList<>();
+            List<UserOrder> delJingFeng = new ArrayList<>();
             if (null != list && !list.isEmpty()) {
-                for (YgaRquest ygaRquest : ygas) {
+                YgaRquest item = new YgaRquest();
+                for (UserOrder userOrder : list) {
                     Boolean flag = false;
-                    for (UserOrder userOrder : list) {
+                    for (YgaRquest ygaRquest : ygas) {
                         // 如果相同
                         if (userOrder.getUserId().equals(ygaRquest.getUserId())) {
                             userOrder.setJingFengArea(ygaRquest.getJingFengArea());
                             userOrder.setJingFengBiLi(ygaRquest.getJingFengBiLi());
+                            userOrder.setZongJiArea(userOrder.getTieHuaArea() + ygaRquest.getJingFengArea());
                             newUserOrders.add(userOrder);
                             flag = true;
+                            ygas.remove(ygaRquest);
                             break;
                         }
+                        // 不存在需要清除其精封面积
                     }
-                    // 未曾参与者
                     if (!flag) {
-                        newYgas.add(ygaRquest);
+                        userOrder.setZongJiArea(userOrder.getZongJiArea()-userOrder.getJingFengArea());
+                        userOrder.setShengYuArea(userOrder.getShengYuArea() - userOrder.getJingFengArea());
+                        userOrder.setJingFengBiLi(0.0);
+                        userOrder.setJingFengArea(0.0);
+                        delJingFeng.add(userOrder);
                     }
                 }
+                newYgas = ygas;
+
+
+//                for (YgaRquest ygaRquest : ygas) {
+//                    Boolean flag = false;
+//                    for (UserOrder userOrder : list) {
+//                        // 如果相同
+//                        if (userOrder.getUserId().equals(ygaRquest.getUserId())) {
+//                            userOrder.setJingFengArea(ygaRquest.getJingFengArea());
+//                            userOrder.setJingFengBiLi(ygaRquest.getJingFengBiLi());
+//                            newUserOrders.add(userOrder);
+//                            flag = true;
+//                            break;
+//                        }
+//                    }
+//                    // 未曾参与者
+//                    if (!flag) {
+//                        newYgas.add(ygaRquest);
+//                    }
+//                }
                 // 开始结算面积
                 // 员工只有需完成面积 待完成面积 已完成面积 以及比例 以及每步的单独面积需完成的精封面积 需完成每步贴花的面积
                 List<OrderArgeLog> orderArgeLogs = new ArrayList<>();
                 Double wancheng = 0.0;
                 Double stay = 0.0;
                 List<UserOrder> needAdd = new ArrayList<>();
+                // 计算新人员自定义结算面积
                 if (null != newYgas && !newYgas.isEmpty()) {
                     for (YgaRquest ygaRquest : newYgas) {
                         UserOrder newUserOrder = new UserOrder();
@@ -378,10 +414,13 @@ public class QualityController extends BaseController {
                         newUserOrder.setShengYuArea(0.0);
                         newUserOrder.setWanChengArea(ygaRquest.getJingFengArea());
                         newUserOrder.setUserName(ygaRquest.getUserName());
+                        newUserOrder.setOrderName(order.getOrderName());
                         newUserOrder.setUserId(ygaRquest.getUserId());
                         newUserOrder.setOrderId(jingFengJieSuanRequest.getOrderId());
                         newUserOrder.setZongJiArea(ygaRquest.getJingFengArea());
                         newUserOrder.setTieHuaArea(0.0);
+                        newUserOrder.setAddUserName(jingFengJieSuanRequest.getAddUserName());
+                        newUserOrder.setAddUserId(jingFengJieSuanRequest.getAddUserId());
                         newUserOrder.setBiLi(0.0);
 
                         needAdd.add(newUserOrder);
@@ -410,7 +449,7 @@ public class QualityController extends BaseController {
                     orderArgeLog.setOrderId(userOrder.getOrderId());
                     orderArgeLog.setAddUserId(jingFengJieSuanRequest.getAddUserId() + "");
                     orderArgeLog.setAddUserName(jingFengJieSuanRequest.getAddUserName());
-                    orderArgeLog.setOrderName("");
+                    orderArgeLog.setOrderName(order.getOrderName());
                     orderArgeLog.setUserId(userOrder.getUserId());
                     orderArgeLog.setUserName(userOrder.getUserName() + "");
                     orderArgeLog.setArge(userOrder.getJingFengArea());
@@ -418,14 +457,14 @@ public class QualityController extends BaseController {
                     orderArgeLog.setStepType(1);
                     orderArgeLogs.add(orderArgeLog);
                 }
-                order.setAlreadyArea(DoubleUtil.m2(order.getAlreadyArea() + wancheng));
-                order.setStayArea(DoubleUtil.m2(order.getWorkArea() - order.getAlreadyArea()));
                 order.setJingFengStatus(1);
                 Double all = order.getAlreadyArea() + wancheng;
+                order.setAlreadyArea(DoubleUtil.m2(order.getAlreadyArea() + wancheng));
+                order.setStayArea(DoubleUtil.m2(order.getWorkArea() - order.getAlreadyArea()));
                 Double jinDu = 100 * (all / order.getWorkArea());
                 order.setPresentSchedule(jinDu);
                 // 更新
-                Boolean reslut = qualityOrderService.jingFengJieSuan(order, orderArgeLogs, needAdd, newUserOrders);
+                Boolean reslut = qualityOrderService.jingFengJieSuan(order, orderArgeLogs, needAdd, newUserOrders, delJingFeng);
                 if(reslut){
                     return succResult();
                 }else{

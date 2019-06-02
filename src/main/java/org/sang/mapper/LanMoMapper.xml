@@ -25,9 +25,13 @@
         SELECT * FROM work_lan_mo WHERE isDeleted=FALSE AND techId=#{techId} ORDER BY id
     </select>
 
+    <select id="getByOrderId" resultType="org.sang.bean.LanMo">
+        SELECT * FROM work_lan_mo WHERE isDeleted=FALSE AND orderId=#{orderId} ORDER BY id
+    </select>
+
     <insert id="addLanMo" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.LanMo">
         INSERT INTO work_lan_mo set techId=#{techId},beginTime=#{beginTime},lanMoTime=#{lanMoTime},yaoShui=#{yaoShui},
-        shenDu=#{shenDu},addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},remark=#{remark},updateTime=now(),createTime=now(),isDeleted=FALSE
+        shenDu=#{shenDu},orderId=#{orderId},addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},remark=#{remark},updateTime=now(),createTime=now(),isDeleted=FALSE
     </insert>
 
 

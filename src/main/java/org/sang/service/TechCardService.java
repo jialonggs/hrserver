@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import org.sang.bean.Order;
 import org.sang.bean.PageInfoEntity;
 import org.sang.bean.TechCard;
+import org.sang.bean.WenLi;
 import org.sang.bean.responseEntity.TechAdded;
 import org.sang.mapper.OrderMapper;
 import org.sang.mapper.TechCardMapper;
@@ -42,14 +43,19 @@ public class TechCardService {
     public Boolean addTech(TechCard techCard) {
         Long techId = techCardMapper.addTech(techCard);
         if(techId > 0){
-            Order order = orderMapper.getOrderInfoById(techCard.getOrderId());
-            Integer techNum = order.getTechNum();
             Double nanDu = DoubleUtil.m2(Double.parseDouble(techCard.getNanDuXiShu()));
             // 工作面积 = 实际面积 * 难度系数 * 倍数
             // Double beiShu = Double.parseDouble(order.getBeiShu());
-            Double workArge = nanDu * order.getRealityArea();
+            WenLi wenLi = wenLiMapper.getById2(techCard.getWenliId());
+            Order order = orderMapper.getOrderInfoById(wenLi.getOrderId());
+            Integer techNum = order.getTechNum();
+            Double workArge = 0.00;
+//            if (order.getWorkArea() == null || ) {
+//                workArge =  nanDu * wenLi.getArea() * Double.parseDouble(wenLi.getTimes());
+//            }else {
+            workArge = order.getWorkArea()+ nanDu * wenLi.getArea() * Double.parseDouble(wenLi.getTimes());
+           // }
             int i = orderMapper.updateOrderTech(techCard.getOrderId(), DoubleUtil.m2(workArge), techNum-1);
-
             int y = wenLiMapper.updateTechId(techCard.getOrderId(), techCard.getWenliId());
 
             if(i> 0){
@@ -84,6 +90,12 @@ public class TechCardService {
     public TechCard getByOrderId(Long orderId){
         return  techCardMapper.getByTechId(orderId);
     }
+
+    public TechCard getTechId(Long orderId){
+        return  techCardMapper.getByTechId(orderId);
+    }
+
+
 
 
     public Boolean updateTechCard(TechCard techCard){

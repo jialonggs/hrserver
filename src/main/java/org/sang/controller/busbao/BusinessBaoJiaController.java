@@ -57,8 +57,8 @@ public class BusinessBaoJiaController extends BaseController{
         PageInfoEntity pageInfoEntity = new PageInfoEntity();
         pageInfoEntity.setCurrentPage(page);
         pageInfoEntity.setPagesize(size);
-        List<BusinessBaoJia> busbaojialist = new ArrayList<>();
-        PageBean<BusinessBaoJia> list = businessBaoJiaService.getBusinessbaoJiaList(pageInfoEntity, addUserId);
+        List<BusInfoResp> busbaojialist = new ArrayList<>();
+        PageBean<BusInfoResp> list = businessBaoJiaService.getBusinessbaoJiaList(pageInfoEntity, addUserId);
         if(null != list && list.getItems()!=null && list.getItems().size() !=0){
             busbaojialist = list.getItems();
             map.put("count",list.getPageInfo().getTotal());

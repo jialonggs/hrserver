@@ -13,7 +13,7 @@ public interface BusinessBaoJiaMapper {
 
     int aginAudit(@Param("yuBaoJia") BusinessBaoJia businessBaoJia);
 
-    List<BusinessBaoJia> getBusinessBaoJiaList(@Param("addUserId") Integer addUserId);
+    List<BusInfoResp> getBusinessBaoJiaList(@Param("addUserId") Integer addUserId);
 
     int addBusinessBaoJia(BusinessBaoJia yuBaoJia);
 

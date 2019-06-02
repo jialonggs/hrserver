@@ -25,8 +25,8 @@
         <result column="updateTime" property="updateTime"/>
         <result column="createTime" property="createTime"/>
 
-        <association property="order" javaType="org.sang.bean.Order" column="orderId"
-                     select="org.sang.mapper.OrderMapper.getOrderInfoById">
+        <association property="order" javaType="org.sang.bean.responseEntity.OrderAndProject" column="orderId"
+                     select="org.sang.mapper.OrderMapper.getProjectAndOrder">
         </association>
 
     </resultMap>

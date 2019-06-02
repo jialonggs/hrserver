@@ -92,9 +92,7 @@ public class QualityOrderService {
     @Transactional
     public Boolean shenHe(Order order, OrderFlow orderFlow, List<UserOrder> userOrderList, List<OrderArgeLog> orderArgeLogs, Integer status){
         int i =  orderMapper.updateOrder(order);
-        System.out.print("--------222222-----");
         int k = orderFlowMapper.updateOrderFlow(orderFlow);
-        System.out.print("--------33333-----");
         if(null != userOrderList && !userOrderList.isEmpty()){
             for (UserOrder userOrder : userOrderList){
                 userOrderMapper.updateUserAage(userOrder);
@@ -127,13 +125,14 @@ public class QualityOrderService {
                 userOrderMapper.updateUserAage(userOrder);
             }
         }
-       QualityOrderUser qualityOrderUsers = qualityOrderUserMapper.getQualityOrders(order.getId());
-        if(qualityOrderUsers !=null ){
-            if(qualityOrderUsers.getStatus() == 0){
-                qualityOrderUserMapper.updateStatus(1, order.getId());
+       List<QualityOrderUser> qualityOrderUsers = qualityOrderUserMapper.getQualityOrders(order.getId());
+        if(qualityOrderUsers !=null && qualityOrderUsers.isEmpty() ){
+            for (QualityOrderUser qualityOrderUser : qualityOrderUsers) {
+                if(qualityOrderUser.getStatus() == 0 && order.getLiuChengStatus() == 2 ){
+                    qualityOrderUserMapper.updateStatus(1, order.getId());
+                }
             }
         }
-
         int y = 0;
         if(null != orderArgeLogs && !orderArgeLogs.isEmpty()){
            y = orderArgeLogMapper.insertLogs(orderArgeLogs);
@@ -146,7 +145,8 @@ public class QualityOrderService {
     }
 
     @Transactional
-    public Boolean jingFengJieSuan(Order order, List<OrderArgeLog> orderArgeLogs, List<UserOrder> needAdd, List<UserOrder> newUserOrders){
+    public Boolean jingFengJieSuan(Order order, List<OrderArgeLog> orderArgeLogs, List<UserOrder> needAdd,
+                                   List<UserOrder> newUserOrders,List<UserOrder> delJingFeng){
         order.setFinishTime(new Date());
         int i =  orderMapper.updateOrder(order);
         if(null != orderArgeLogs && !orderArgeLogs.isEmpty()){
@@ -159,9 +159,23 @@ public class QualityOrderService {
                 int k = userOrderMapper.updateUserOrder(userOrder);
             }
         }
+        // 需要清除无需精封
+        if(null != delJingFeng && !delJingFeng.isEmpty()){
+            for (UserOrder userOrder : delJingFeng){
+                int k = userOrderMapper.delJingFeng(userOrder);
+            }
+        }
         // 需要添加
         if(null != needAdd && !needAdd.isEmpty()){
             int result = userOrderMapper.addUserOrder(needAdd);
+        }
+        List<QualityOrderUser> qualityOrderUsers = qualityOrderUserMapper.getQualityOrders(order.getId());
+        if(qualityOrderUsers !=null && qualityOrderUsers.isEmpty() ){
+            for (QualityOrderUser qualityOrderUser : qualityOrderUsers) {
+                if(qualityOrderUser.getStatus() == 0 && order.getLiuChengStatus() == 2 ){
+                    qualityOrderUserMapper.updateStatus(1, order.getId());
+                }
+            }
         }
         return true;
     }

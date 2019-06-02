@@ -13,6 +13,8 @@ public interface TechCardMapper {
 
     TechCard getByOrderId(Long orderId);
 
+    TechCard getByWenLiId(@Param("wenliId") Long wenliId);
+
     TechCard getByTechId(Long orderId);
 
     List<TechCard> getNewByOrderId(Long orderId);
@@ -20,4 +22,8 @@ public interface TechCardMapper {
     int updateTechCard(TechCard techCard);
 
     List<TechAdded> getAll(@Param("wenli")String wenli, @Param("orderId") Long orderId);
+
+    int deletWenLiId(@Param("wenliId") Long wenliId);
+
+
 }

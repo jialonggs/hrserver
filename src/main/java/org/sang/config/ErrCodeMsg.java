@@ -54,7 +54,11 @@ public enum ErrCodeMsg {
     NO_HAVE_ORDER_AUTH(1012, "对此订单无审核权限"),
     MESSAGE_NOT_UPDATE(1000, "信息未更新"),
     TECH_IS_ADD(1002, "订单技术卡已添加完成，无需添加"),
-    ORDER_IS_NULL(1001, "订单查询不存在");
+    ORDER_IS_NULL(1001, "订单查询不存在"),
+    ORDER_IS_NOT_PLAN(1004, "订单状态不为已分配"),
+    ORDER_IS_HAVE_ARE(1005, "订单已有面积结算，不可回退"),
+    ORDER_IS_JINGFENG(1006, "订单已完成精封，不可再进行精封"),
+    ORDER_IS_PLAN(1003, "订单已完成分配，不可更改纹理");
 
 
 

@@ -14,7 +14,7 @@ public interface YuBaoJiaMapper {
 
     int aginAudit(@Param("yuBaoJia") YuBaoJia yuBaoJia);
 
-    List<YuBaoJia> getYuBaoJiaList(@Param("addUserId") Integer addUserId);
+    List<YuBaoJiaInfoResp> getYuBaoJiaList(@Param("addUserId") Integer addUserId);
 
     long addYuBaoJia(YuBaoJia yuBaoJia);
 

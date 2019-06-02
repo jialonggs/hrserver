@@ -10,4 +10,6 @@ public interface OrderFlowMapper {
     OrderFlow getByOrderId(@Param("orderId") Long orderId);
 
     int updateOrderFlow(@Param("orderFlow") OrderFlow orderFlow);
+
+    int delByOrderId(@Param("orderId") Long orderId);
 }

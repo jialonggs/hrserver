@@ -60,5 +60,9 @@
         where id = #{orderFlow.id}
     </update>
 
+    <delete id="delByOrderId" parameterType="Long">
+        DELETE FROM work_order_flow where orderId=#{orderId}
+    </delete>
+
 
 </mapper>

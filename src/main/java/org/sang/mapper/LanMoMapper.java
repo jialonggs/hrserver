@@ -11,6 +11,8 @@ public interface LanMoMapper {
 
     List<LanMo> getByTechId(@Param("techId") Long techId);
 
+    List<LanMo> getByOrderId(@Param("orderId") Long orderId);
+
     int updateLanMo(LanMo lanMo);
 
     int delLanMo(@Param("id") Long id);

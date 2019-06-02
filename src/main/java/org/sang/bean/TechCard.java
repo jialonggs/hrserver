@@ -1,6 +1,7 @@
 package org.sang.bean;
 
 import java.util.Date;
+import java.util.List;
 
 public class TechCard {
     private Long id;
@@ -22,6 +23,7 @@ public class TechCard {
     private Boolean isDeleted;
     private Date updateTime;
     private Date createTime;
+
 
     public Long getId() {
         return id;
@@ -158,4 +160,5 @@ public class TechCard {
     public void setWenliId(Long wenliId) {
         this.wenliId = wenliId;
     }
+
 }
