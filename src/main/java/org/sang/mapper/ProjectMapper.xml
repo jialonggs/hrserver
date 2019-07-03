@@ -170,11 +170,25 @@
     <!--</select>-->
 
     <select id="getFinanceProject" resultMap="getProjectListMap1">
-        SELECT * FROM work_project WHERE  financeStatus &lt;3 AND isDeleted=FALSE ORDER BY id DESC
+        SELECT * FROM work_project
+        <where>
+            financeStatus &lt;3
+            <if test="unitId != null and unitId != ''">
+                AND unitId = #{unitId}
+            </if>
+        </where>
+           AND isDeleted=FALSE ORDER BY id DESC
     </select>
 
     <select id="getOverceFinanceProject" resultMap="getProjectListMap1">
-        SELECT * FROM work_project WHERE  financeStatus=3 AND isDeleted=FALSE ORDER BY id DESC
+        SELECT * FROM work_project
+        <where>
+            financeStatus = 3
+            <if test="unitId != null and unitId != ''">
+                AND unitId = #{unitId}
+            </if>
+        </where>
+        AND isDeleted=FALSE ORDER BY id DESC
     </select>
 
     <select id="getAdded" resultMap="getProjectMap" parameterType="map">

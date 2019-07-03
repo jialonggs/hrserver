@@ -563,11 +563,19 @@
     <select id="getPlantOrdersList" resultMap="orderAndProject">
         SELECT * FROM work_orders
         <where>
+            <if test=" projectIds!= null ">
+                work_orders.projectId IN
+                <foreach item="item" index="index"  collection="projectIds"
+                         open="(" separator="," close=")"> #{item.id}</foreach>
+            </if>
             <if test=" userId!= 3 ">
                AND managerId = #{userId}
             </if>
             <if test=" plantStatus!= null">
                AND plantStatus = #{plantStatus}
+            </if>
+            <if test=" orderName!= null">
+                AND orderName like"%"#{orderName}"%"
             </if>
         </where>
          AND isDeleted=FALSE ORDER BY urgency DESC ,id DESC
@@ -586,6 +594,9 @@
                     <if test=" addUserId!= 3 ">
                         AND addUserId=#{addUserId}
                     </if>
+                    <if test=" orderName!= null ">
+                        AND orderName like"%"#{orderName}"%"
+                    </if>
 
                 </where>
         AND isDeleted=FALSE ORDER BY id DESC
@@ -599,6 +610,9 @@
             </if>
             <if test="projectId!= null">
                 AND projectId = #{projectId}
+            </if>
+            <if test=" orderName!= null ">
+                AND orderName like"%"#{orderName}"%"
             </if>
             AND  isDeleted=FALSE
         </where>
@@ -638,7 +652,21 @@
     </select>
 
     <select id="getOverOrdersList" resultMap="getOverOrder">
-        SELECT * FROM work_orders WHERE isDeleted=FALSE AND jingFengStatus=#{jingFengStatus} AND liuChengStatus=#{liuChengStatus} ORDER BY id
+        SELECT * FROM work_orders
+        <where>
+            isDeleted=FALSE
+            <if test=" projectIds!= null ">
+                AND  work_orders.projectId IN
+                <foreach item="item" index="index"  collection="projectIds"
+                         open="(" separator="," close=")"> #{item.id}</foreach>
+            </if>
+
+            <if test=" orderName!= null ">
+                AND orderName like"%"#{orderName}"%"
+            </if>
+
+        </where>
+          AND jingFengStatus=#{jingFengStatus} AND liuChengStatus=#{liuChengStatus} ORDER BY id
     </select>
 
     <select id="getOrdersUnAddTech" resultMap="getOrdersMap">
@@ -672,7 +700,7 @@
 
 
     <select id="getOrderAffterOffice" resultMap="afterOffice">
-        SELECT * FROM work_orders WHERE isDeleted=FALSE  AND financeStatus=1 AND addUserId=#{userId} ORDER BY urgency DESC, id DESC
+        SELECT * FROM work_orders WHERE isDeleted=FALSE  AND faMoOverStatus=1 AND addUserId=#{userId} ORDER BY urgency DESC, id DESC
     </select>
 
 
@@ -684,7 +712,7 @@
         presentStepName=#{presentStepName},presentSchedule=#{presentSchedule},clientCompanyName=#{clientCompanyName},
         urgency=#{urgency},hasRemark=#{hasRemark},machiningType=#{machiningType},techNum=#{techNum},workArea=#{workArea},
         realityArea=#{realityArea},stayArea=0,liuChengStatus=0,jingFengStatus=0,piWenDaiMa=#{piWenDaiMa},storageStatus=0,picUrls=#{picUrls},liuZhuanStatus=0,liuZhuanArea=0,liuZhuanBiLi=0,
-        financeStatus=0,financeBiLi=0,financeJinE=0,faMoStatus=0,addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},updateTime=now(),createTime=now(),storageTime=now(),isDeleted=FALSE
+        financeStatus=0,financeBiLi=0,financeJinE=0,faMoStatus=0,faMoOverStatus=0,addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},updateTime=now(),createTime=now(),storageTime=now(),isDeleted=FALSE
     </insert>
 
 
@@ -698,7 +726,14 @@
     </update>
 
 
-
+    <update id="updateFaMoOverStatus">
+        update work_orders
+        <set>
+            faMoOverStatus = #{faMoOverStatus},
+            updateTime = now()
+        </set>
+        where id = #{id}
+    </update>
 
     <update id="updateOrderTech">
         update work_orders

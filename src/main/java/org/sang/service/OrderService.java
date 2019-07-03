@@ -98,14 +98,45 @@ public class OrderService {
     }
 
 
+
     /**
      * 分页查询车间新的订单
      * @param pageInfoEntity
      * @return
      */
-    public PageBean<OrderAndProject> getPlantOrdersList(PageInfoEntity pageInfoEntity, Long userId, Integer plantStatus) {
+    public PageBean<OrderAndProject> getPlantOrdersList1(PageInfoEntity pageInfoEntity, Long userId, Integer plantStatus) {
         PageHelper.startPage(pageInfoEntity.getCurrentPage(),pageInfoEntity.getPagesize());
-        List<OrderAndProject> list = orderMapper.getPlantOrdersList(userId, plantStatus);
+        List<Project> projects = new ArrayList<>();
+        String projectIds = "";
+        List<OrderAndProject> list = orderMapper.getPlantOrdersList(userId, plantStatus, null, null);
+        PageInfo page = new PageInfo(list);
+        PageBean<OrderAndProject> pageData = new PageBean<>();
+        pageData.setItems(list);
+        pageData.setPageInfo(page);
+        return  pageData;
+    }
+
+    /**
+     * 分页查询车间新的订单
+     * @param pageInfoEntity
+     * @return
+     */
+    public PageBean<OrderAndProject> getPlantOrdersList(PageInfoEntity pageInfoEntity, Long userId, Integer plantStatus,
+                                                        Long projectId, Long unitId, String orderName) {
+        PageHelper.startPage(pageInfoEntity.getCurrentPage(),pageInfoEntity.getPagesize());
+        List<Project> projects = new ArrayList<>();
+        if(unitId != null){
+            // 获取单位下的 projectId
+            projects = projectMapper.getByUnitId(unitId);
+        }
+        if (projectId != null ) {
+            Project project = projectMapper.getProjectById(projectId);
+            projects.add(project);
+        }
+        if (projects.isEmpty()) {
+            projects = null;
+        }
+        List<OrderAndProject> list = orderMapper.getPlantOrdersList(userId, plantStatus,orderName, projects);
         PageInfo page = new PageInfo(list);
         PageBean<OrderAndProject> pageData = new PageBean<>();
         pageData.setItems(list);
@@ -291,11 +322,11 @@ public class OrderService {
 
 
     public PageBean<FaMoOrder> getOrdersByConditionList(PageInfoEntity pageInfoEntity, Long engineId, Long carId, Long projectId,
-                                                        Long addUserId, Long unitId) {
+                                                        Long addUserId, Long unitId, String orderName) {
         List<Project> projects = new ArrayList<>();
         if(projectId != null || (engineId ==null && carId==null && unitId ==null)){
             PageHelper.startPage(pageInfoEntity.getCurrentPage(),pageInfoEntity.getPagesize());
-            List<FaMoOrder> list = orderMapper.getOrdersByPId(addUserId,projectId);
+            List<FaMoOrder> list = orderMapper.getOrdersByPId(addUserId,projectId, orderName);
             PageInfo page = new PageInfo(list);
             PageBean<FaMoOrder> pageData = new PageBean<>();
             pageData.setItems(list);
@@ -321,7 +352,7 @@ public class OrderService {
             return null;
         }
         PageHelper.startPage(pageInfoEntity.getCurrentPage(),pageInfoEntity.getPagesize());
-        List<FaMoOrder> list = orderMapper.getOrderByCondition(addUserId,projects);
+        List<FaMoOrder> list = orderMapper.getOrderByCondition(addUserId,projects, orderName);
         PageInfo page = new PageInfo(list);
         PageBean<FaMoOrder> pageData = new PageBean<>();
         pageData.setItems(list);

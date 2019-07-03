@@ -52,6 +52,7 @@ public class Order {
     private String financeRemark;//
 
     private Integer faMoStatus;//
+    private Integer faMoOverStatus;
 
     private String addUserId;
     private String addUserName;
@@ -65,6 +66,14 @@ public class Order {
     private List<WenLi> wenlis;
     private Integer afterStatus;//
 
+
+    public Integer getFaMoOverStatus() {
+        return faMoOverStatus;
+    }
+
+    public void setFaMoOverStatus(Integer faMoOverStatus) {
+        this.faMoOverStatus = faMoOverStatus;
+    }
 
     public Long getId() {
         return id;

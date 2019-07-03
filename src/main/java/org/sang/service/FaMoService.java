@@ -31,6 +31,8 @@ public class FaMoService {
     @Autowired
     FaMoInfoMapper faMoInfoMapper;
 
+
+
     @Transactional
     public Boolean addFaMo(FaMo faMo){
         // 全款发模
@@ -158,7 +160,10 @@ public class FaMoService {
         }
     }
 
+    @Transactional
     public Boolean queRen(Integer id, Integer cheJian){
+        FaMo faMo = faMoMapper.getById(Long.parseLong(id+""));
+        orderMapper.updateFaMoOverStatus(faMo.getOrderId(), 1);
         int i = faMoMapper.queRen(id, cheJian);
         if (i>0) {
             return true;

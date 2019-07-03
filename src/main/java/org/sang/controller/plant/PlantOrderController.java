@@ -58,7 +58,31 @@ public class PlantOrderController extends BaseController{
         pageInfoEntity.setCurrentPage(page);
         pageInfoEntity.setPagesize(size);
         List<OrderAndProject> orderslist = new ArrayList<>();
-        PageBean<OrderAndProject> list = orderService.getPlantOrdersList(pageInfoEntity, userId, plantStatus);
+        PageBean<OrderAndProject> list = orderService.getPlantOrdersList1(pageInfoEntity, userId, plantStatus);
+        if(null != list && list.getItems()!=null && list.getItems().size() !=0){
+            orderslist = list.getItems();
+            map.put("count",list.getPageInfo().getTotal());
+        }
+        map.put("orderlist", orderslist);
+        return succResult(map);
+    }
+
+
+    @RequestMapping(value = "/new/order/condition", method = RequestMethod.GET)
+    public BaseResponseEntity getNewOrderByCadition(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size,
+                                          @RequestParam("userId") Long userId, @RequestParam("plantStatus") Integer plantStatus,
+                                          @RequestParam(value = "projectId", required = false) Long projectId,
+                                          @RequestParam(value = "unitId", required = false) Long unitId,
+                                          @RequestParam(value = "orderName", required = false) String orderName){
+        if(null == userId){
+            return badResult(ErrCodeMsg.ARGS_MISSING);
+        }
+        Map<String, Object> map = new HashMap<>();
+        PageInfoEntity pageInfoEntity = new PageInfoEntity();
+        pageInfoEntity.setCurrentPage(page);
+        pageInfoEntity.setPagesize(size);
+        List<OrderAndProject> orderslist = new ArrayList<>();
+        PageBean<OrderAndProject> list = orderService.getPlantOrdersList(pageInfoEntity, userId, plantStatus, projectId, unitId, orderName);
         if(null != list && list.getItems()!=null && list.getItems().size() !=0){
             orderslist = list.getItems();
             map.put("count",list.getPageInfo().getTotal());
@@ -305,13 +329,16 @@ public class PlantOrderController extends BaseController{
      * @return
      */
     @RequestMapping(value = "/over/listbypage", method = RequestMethod.GET)
-    public BaseResponseEntity getOrdersList(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size) {
+    public BaseResponseEntity getOrdersList(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size,
+                                            @RequestParam(value = "projectId", required = false) Long projectId,
+                                            @RequestParam(value = "unitId", required = false) Long unitId,
+                                            @RequestParam(value = "orderName", required = false) String orderName) {
         Map<String, Object> map = new HashMap<>();
         PageInfoEntity pageInfoEntity = new PageInfoEntity();
         pageInfoEntity.setCurrentPage(page);
         pageInfoEntity.setPagesize(size);
         List<OverOrderResponse> qualityOrderResps = new ArrayList<>();
-        PageBean<OverOrderResponse> list = qualityOrderService.getOverOrders(pageInfoEntity);
+        PageBean<OverOrderResponse> list = qualityOrderService.getOverOrders1(pageInfoEntity, projectId, unitId, orderName);
         if (null != list && list.getItems() != null && list.getItems().size() != 0) {
             qualityOrderResps = list.getItems();
             map.put("count", list.getPageInfo().getTotal());

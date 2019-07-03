@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +32,9 @@ public class QualityOrderService {
 
     @Autowired
     OrderArgeLogMapper orderArgeLogMapper;
+
+    @Autowired
+    ProjectMapper projectMapper;
 
 
     /**
@@ -72,16 +76,42 @@ public class QualityOrderService {
 
     }
 
-
-
     /**
      * 获取加工完成的列表
      * @param pageInfoEntity
      * @return
      */
     public PageBean<OverOrderResponse> getOverOrders(PageInfoEntity pageInfoEntity) {
+        PageHelper.startPage(pageInfoEntity.getCurrentPage(),pageInfoEntity.getPagesize());
+
+        List<OverOrderResponse> list = orderMapper.getOverOrdersList(1,2, null, null);
+        PageInfo page = new PageInfo(list);
+        PageBean<OverOrderResponse> pageData = new PageBean<>();
+        pageData.setItems(list);
+        pageData.setPageInfo(page);
+        return  pageData;
+    }
+
+    /**
+     * 获取加工完成的列表
+     * @param pageInfoEntity
+     * @return
+     */
+    public PageBean<OverOrderResponse> getOverOrders1(PageInfoEntity pageInfoEntity, Long projectId, Long unitId, String orderName) {
             PageHelper.startPage(pageInfoEntity.getCurrentPage(),pageInfoEntity.getPagesize());
-            List<OverOrderResponse> list = orderMapper.getOverOrdersList(1,2);
+        List<Project> projects = new ArrayList<>();
+        if(unitId != null){
+            // 获取单位下的 projectId
+            projects = projectMapper.getByUnitId(unitId);
+        }
+        if (projectId != null ) {
+            Project project = projectMapper.getProjectById(projectId);
+            projects.add(project);
+        }
+        if (projects.isEmpty()) {
+            projects = null;
+        }
+            List<OverOrderResponse> list = orderMapper.getOverOrdersList(1,2, orderName, projects);
             PageInfo page = new PageInfo(list);
             PageBean<OverOrderResponse> pageData = new PageBean<>();
             pageData.setItems(list);

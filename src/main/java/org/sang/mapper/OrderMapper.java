@@ -22,7 +22,8 @@ public interface OrderMapper {
 
     List<FaMoOrder> getOrderAndProject(@Param("addUserId") Integer addUserId, @Param("isHavePower") Integer isHasPower);
 
-    List<OrderAndProject> getPlantOrdersList(@Param("userId") Long userId, @Param("plantStatus") Integer plantStatus);
+    List<OrderAndProject> getPlantOrdersList(@Param("userId") Long userId, @Param("plantStatus") Integer plantStatus,
+                                             @Param("orderName") String orderName, @Param("projectIds") List<Project>  projects);
 
     List<Order> getStroageOrdersList(@Param("liuChengStatus") Integer liuChengStatus, @Param("jingFengStatus") Integer jingFengStatus, @Param("storageStatus") Integer storageStatus);
 
@@ -65,13 +66,14 @@ public interface OrderMapper {
 
     int updateFaMoStatus(@Param("faMoStatus") Integer faMoStatus, @Param("orderId") Long orderId);
 
-    List<OverOrderResponse> getOverOrdersList(@Param("jingFengStatus") Integer jingFengStatus, @Param("liuChengStatus") Integer liuChengStatus);
+    List<OverOrderResponse> getOverOrdersList(@Param("jingFengStatus") Integer jingFengStatus, @Param("liuChengStatus") Integer liuChengStatus,
+                                              @Param("orderName") String orderName,@Param("projectIds") List<Project> projectList);
 
     List<Order> getCheckOrder(@Param("beginDate") String beginDate);
 
-    List<FaMoOrder> getOrderByCondition(@Param("addUserId") Long addUserId, @Param("projectList") List<Project> projectList);
+    List<FaMoOrder> getOrderByCondition(@Param("addUserId") Long addUserId, @Param("projectList") List<Project> projectList, @Param("orderName") String orderName);
 
-    List<FaMoOrder> getOrdersByPId(@Param("addUserId") Long addUserId,@Param("projectId")Long projectId);
+    List<FaMoOrder> getOrdersByPId(@Param("addUserId") Long addUserId,@Param("projectId")Long projectId, @Param("orderName") String orderName);
 
     int updateUgency(@Param("urgency") Integer urgency ,@Param("orderId") Integer orderId);
 
@@ -89,6 +91,8 @@ public interface OrderMapper {
     int updateBackPlant(@Param("orderId") Long orderId);
 
     OrderAndProject getProjectAndOrder(@Param("orderId") Long orderId);
+
+    int updateFaMoOverStatus( @Param("id") Long id,  @Param("faMoOverStatus") Integer faMoOverStatus);
 
 
 }

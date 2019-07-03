@@ -407,6 +407,7 @@ public class OrderController extends BaseController{
                                             @RequestParam(value = "carId", required = false) Long carId,
                                             @RequestParam(value = "projectId", required = false) Long projectId,
                                             @RequestParam(value = "addUserId") Long addUserId,
+                                            @RequestParam(value = "orderName",required = false) String orderName,
                                             @RequestParam(value = "unitId", required = false) Long unitId) {
 
         Map<String, Object> map = new HashMap<>();
@@ -419,7 +420,7 @@ public class OrderController extends BaseController{
         if (isHasPower) {
             addUserId = 3L;
         }
-        PageBean<FaMoOrder> list = orderService.getOrdersByConditionList(pageInfoEntity, engineId, carId, projectId, addUserId, unitId);
+        PageBean<FaMoOrder> list = orderService.getOrdersByConditionList(pageInfoEntity, engineId, carId, projectId, addUserId, unitId, orderName);
         if(null != list && list.getItems()!=null && list.getItems().size() !=0){
             orderslist = list.getItems();
             map.put("count",list.getPageInfo().getTotal());

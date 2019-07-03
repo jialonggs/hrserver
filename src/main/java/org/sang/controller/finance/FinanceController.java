@@ -7,6 +7,7 @@ import org.sang.bean.PageInfoEntity;
 import org.sang.bean.Project;
 import org.sang.bean.requestEntity.AddFuKuanRequest;
 import org.sang.bean.responseEntity.BaseResponseEntity;
+import org.sang.bean.responseEntity.FaMoOrder;
 import org.sang.bean.responseEntity.ProjectListResp;
 import org.sang.config.ErrCodeMsg;
 import org.sang.controller.BaseController;
@@ -40,17 +41,36 @@ public class FinanceController extends BaseController{
      * 查询项目列表
      * @return
      */
+//    @RequestMapping(value = "/auth/listbypage", method = RequestMethod.GET)
+//    public BaseResponseEntity getOrdersList(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size,
+//                                            @RequestParam(value = "financeStatus",required = false) Integer financeStatus) {
+//
+//
+//        Map<String, Object> map = new HashMap<>();
+//        PageInfoEntity pageInfoEntity = new PageInfoEntity();
+//        pageInfoEntity.setCurrentPage(page);
+//        pageInfoEntity.setPagesize(size);
+//        List<ProjectListResp> orderslist = new ArrayList<>();
+//        PageBean<ProjectListResp> list = projectService.getFinanceProject(pageInfoEntity, financeStatus);
+//        if(null != list && list.getItems()!=null && list.getItems().size() !=0){
+//            orderslist = list.getItems();
+//            map.put("count",list.getPageInfo().getTotal());
+//        }
+//        map.put("putorderlist", orderslist);
+//        return succResult(map);
+//    }
+
     @RequestMapping(value = "/auth/listbypage", method = RequestMethod.GET)
     public BaseResponseEntity getOrdersList(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size,
-                                            @RequestParam(value = "financeStatus",required = false) Integer financeStatus) {
-
+                                            @RequestParam(value = "financeStatus",required = false) Integer financeStatus,
+                                            @RequestParam(value = "unitId", required = false) Long unitId) {
 
         Map<String, Object> map = new HashMap<>();
         PageInfoEntity pageInfoEntity = new PageInfoEntity();
         pageInfoEntity.setCurrentPage(page);
         pageInfoEntity.setPagesize(size);
         List<ProjectListResp> orderslist = new ArrayList<>();
-        PageBean<ProjectListResp> list = projectService.getFinanceProject(pageInfoEntity, financeStatus);
+        PageBean<ProjectListResp> list = projectService.getFinanceProject(pageInfoEntity, financeStatus, unitId);
         if(null != list && list.getItems()!=null && list.getItems().size() !=0){
             orderslist = list.getItems();
             map.put("count",list.getPageInfo().getTotal());
