@@ -19,6 +19,7 @@ public class ShouMoList {
     private Boolean jianBao;
     private String carNum;
     private String driverPhone;
+    private String baoZPicUrl;
     private Long addUserId;
     private String addUserName;
     private String status;
@@ -27,6 +28,14 @@ public class ShouMoList {
     private Date updateTime;
     private Date createTime;
     private Date trueTime;
+
+    public String getBaoZPicUrl() {
+        return baoZPicUrl;
+    }
+
+    public void setBaoZPicUrl(String baoZPicUrl) {
+        this.baoZPicUrl = baoZPicUrl;
+    }
 
     public Long getId() {
         return id;

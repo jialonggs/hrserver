@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.sang.bean.PageInfoEntity;
 import org.sang.bean.ShouMoList;
+import org.sang.bean.responseEntity.ShouMoListResp;
 import org.sang.mapper.ShouMoListMapper;
 import org.sang.utils.DateFormatUtil;
 import org.sang.utils.PageBean;
@@ -23,7 +24,7 @@ public class ShouMoService {
     @Autowired
     ShouMoListMapper shouMoListMapper;
 
-    public List<ShouMoList> getShouMoList() {
+    public List<ShouMoListResp> getShouMoList() {
         return shouMoListMapper.getShouMoList();
     }
 
@@ -32,11 +33,11 @@ public class ShouMoService {
      * @param pageInfoEntity
      * @return
      */
-    public PageBean<ShouMoList> getShouMoListByPage(PageInfoEntity pageInfoEntity) {
+    public PageBean<ShouMoListResp> getShouMoListByPage(PageInfoEntity pageInfoEntity) {
         PageHelper.startPage(pageInfoEntity.getCurrentPage(),pageInfoEntity.getPagesize());
-        List<ShouMoList> list = shouMoListMapper.getShouMoList();
+        List<ShouMoListResp> list = shouMoListMapper.getShouMoList();
         PageInfo page = new PageInfo(list);
-        PageBean<ShouMoList> pageData = new PageBean<>();
+        PageBean<ShouMoListResp> pageData = new PageBean<>();
         pageData.setItems(list);
         pageData.setPageInfo(page);
         return  pageData;

@@ -13,4 +13,6 @@ public interface CaiMoMapper {
     int addCaiMo(CaiMoList caiMoList);
 
     int updateCaiMo(@Param("caiMo") CaiMoList caiMoList);
+
+    int addCaiMoList(@Param("caiMoList") List<CaiMoList> caiMoListList);
 }

@@ -12,6 +12,8 @@ public interface MouldInfoMapper {
 
     List<MouldInfo> getMouldInfoByShouMoId(@Param("id") Long id);
 
+    List<MouldInfo> getMouldInfoByShouMoId1(@Param("id") Long id);
+
     int addMouldInfo( MouldInfo mouldInfo);
 
     int updateMouldInfo(MouldInfo mouldInfo);
@@ -30,5 +32,9 @@ public interface MouldInfoMapper {
    int updateMould(@Param("id") Long id);
 
    List<MouldInfo> getUnSelect(@Param("begainTime") String begainTime);
+
+    int addMoulds(@Param("moulds") List<MouldInfo> moulds);
+
+    int updateCaiStatus(@Param("mouldIds") List<MouldInfo> mouldIds);
 
 }

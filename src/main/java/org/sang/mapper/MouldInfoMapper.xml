@@ -32,6 +32,10 @@
         SELECT e.* FROM work_mould_info e WHERE isDeleted=FALSE AND shouMoId=#{id}
     </select>
 
+    <select id="getMouldInfoByShouMoId1" resultMap="MouldInfoMap" parameterType="java.lang.Long">
+        SELECT e.* FROM work_mould_info e WHERE isDeleted=FALSE AND caiStatus = 0 AND shouMoId=#{id}
+    </select>
+
     <select id="getMouldById" resultMap="MouldInfoMap" parameterType="java.lang.Long">
         SELECT e.* FROM work_mould_info e WHERE isDeleted=FALSE AND id=#{id}
     </select>
@@ -76,7 +80,22 @@
 
     <insert id="addMouldInfo" parameterType="org.sang.bean.MouldInfo">
         INSERT INTO work_mould_info set mouldName=#{mouldName},mouldNum=#{mouldNum},picUrls=#{picUrls},isSelected=0,shouMoId=#{shouMoId},remark=#{remark},
-        addUserId=#{addUserId},addUserName=#{addUserName},isDeleted=0,createTime=now(),updateTime=now()
+        addUserId=#{addUserId},addUserName=#{addUserName},caiStatus=#{0}, isDeleted=0,createTime=now(),updateTime=now()
+    </insert>
+
+
+    <insert id="addMoulds">
+        insert into work_mould_info (mouldName, mouldNum,
+        picUrls, isSelected, shouMoId, remark,addUserId,
+        addUserName, isDeleted,createTime, updateTime
+        )
+        values
+        <foreach collection="moulds" item="mould" separator=",">
+            (#{mould.mouldName}, #{mould.mouldNum},
+            #{mould.picUrls}, #{mould.isSelected}, #{mould.shouMoId}, #{mould.remark},#{mould.addUserId},
+            #{mould.addUserName}, #{mould.isDeleted},#{mould.createTime}, #{mould.updateTime}
+            )
+        </foreach>
     </insert>
 
     <update id="updateMouldInfo" parameterType="org.sang.bean.MouldInfo">
@@ -113,6 +132,20 @@
         updateTime = now()
         where id = #{id}
     </update>
+
+    <update id="updateCaiStatus" >
+    UPDATE
+        work_mould_info
+    SET
+        caiStatus = TRUE
+    WHERE
+        id in
+        <foreach collection="mouldIds" item="item" index="index" open="(" close=")" separator=",">
+           #{item.id}
+        </foreach>
+</update>
+
+
 
 
     <update id="updateMould" >

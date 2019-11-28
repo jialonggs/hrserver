@@ -7,6 +7,7 @@ public class ProcessUnit {
 
     private Long id;
     private String clientCompanyName;
+    private String clinetSortName;
     private String contactPerson;
     private String contactPhone;
     private String address;
@@ -20,6 +21,14 @@ public class ProcessUnit {
     private Boolean isDeleted;
     private Date updateTime;
     private Date createTime;
+
+    public String getClinetSortName() {
+        return clinetSortName;
+    }
+
+    public void setClinetSortName(String clinetSortName) {
+        this.clinetSortName = clinetSortName;
+    }
 
     public Long getId() {
         return id;

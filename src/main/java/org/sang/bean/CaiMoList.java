@@ -8,6 +8,7 @@ public class CaiMoList {
     private Long mouldId;
     private Integer youSiWenNum;
     private Integer wuSiWenNum;
+    private String picUrls;
     private Long addUserId;
     private String addUserName;
     private String status;
@@ -16,6 +17,14 @@ public class CaiMoList {
     private Date updateTime;
     private Date createTime;
 
+
+    public String getPicUrls() {
+        return picUrls;
+    }
+
+    public void setPicUrls(String picUrls) {
+        this.picUrls = picUrls;
+    }
 
     public Long getId() {
         return id;

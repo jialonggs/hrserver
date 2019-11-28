@@ -1,5 +1,6 @@
 package org.sang.bean.responseEntity;
 
+import org.omg.PortableInterceptor.INACTIVE;
 import org.sang.bean.*;
 
 import java.util.List;
@@ -14,6 +15,33 @@ public class OrderInfoResp extends Order{
     private List<QualityOrderUser> qualityOrderUsers;
     private List<UserOrder> orderUsers;
     private OrderFlow orderFlow;
+    private Integer mouldNum;
+    private String mainEngineName;
+    private StorageBill storageBill;
+
+    public StorageBill getStorageBill() {
+        return storageBill;
+    }
+
+    public void setStorageBill(StorageBill storageBill) {
+        this.storageBill = storageBill;
+    }
+
+    public String getMainEngineName() {
+        return mainEngineName;
+    }
+
+    public void setMainEngineName(String mainEngineName) {
+        this.mainEngineName = mainEngineName;
+    }
+
+    public Integer getMouldNum() {
+        return mouldNum;
+    }
+
+    public void setMouldNum(Integer mouldNum) {
+        this.mouldNum = mouldNum;
+    }
 
     private List<LanMo> lanMoList;
 

@@ -30,7 +30,9 @@
     </select>
 
     <insert id="addLanMo" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.LanMo">
-        INSERT INTO work_lan_mo set techId=#{techId},beginTime=#{beginTime},lanMoTime=#{lanMoTime},yaoShui=#{yaoShui},
+        INSERT INTO work_lan_mo set techId=#{techId},beginTime=#{beginTime},lanMoTime=#{lanMoTime},
+        yaoShui=#{yaoShui},lanMoTimeFen=#{lanMoTimeFen},lanMoTimeMiao=#{lanMoTimeMiao},needLanMoTime=#{needLanMoTime},
+        caoZuoRen=#{caoZuoRen},
         shenDu=#{shenDu},orderId=#{orderId},addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},remark=#{remark},updateTime=now(),createTime=now(),isDeleted=FALSE
     </insert>
 

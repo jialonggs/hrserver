@@ -7,6 +7,7 @@ import org.sang.bean.responseEntity.OrderInfoResp;
 import org.sang.common.HrUtils;
 import org.sang.config.ErrCodeMsg;
 import org.sang.service.HrService;
+import org.sang.service.MainEngineService;
 import org.sang.service.MenuService;
 import org.sang.service.OrderService;
 import org.sang.utils.ImageUtil;
@@ -44,6 +45,10 @@ public class ConfigController extends BaseController{
 
     @Autowired
     MenuService menuService;
+
+    @Autowired
+    MainEngineService mainEngineService;
+
     @RequestMapping("/sysmenu")
     public List<Menu> sysmenu() {
         return menuService.getMenusByHrId();
@@ -116,6 +121,12 @@ public class ConfigController extends BaseController{
         }
         Map<String, Object> map = new HashMap<>();
         OrderInfoResp orderInfoResp = orderService.getOrderInfoResp(orderId);
+        MainEngine mainEngine = mainEngineService.getById(orderInfoResp.getProject().getCar().getMainEngineId());
+        orderInfoResp.setMainEngineName(mainEngine.getName());
+        orderInfoResp.setMouldNum(0);
+        if (orderInfoResp.getMouldInfoList() != null && orderInfoResp.getMouldInfoList().size() != 0) {
+            orderInfoResp.setMouldNum(orderInfoResp.getMouldInfoList().size());
+        }
         map.put("orderinfo", orderInfoResp);
         return succResult(map);
     }

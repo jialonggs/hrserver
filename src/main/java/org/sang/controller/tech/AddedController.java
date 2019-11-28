@@ -1,15 +1,13 @@
 package org.sang.controller.tech;
 
-import org.sang.bean.LanMo;
-import org.sang.bean.Order;
-import org.sang.bean.PageInfoEntity;
-import org.sang.bean.TechCard;
+import org.sang.bean.*;
 import org.sang.bean.responseEntity.BaseResponseEntity;
 import org.sang.bean.responseEntity.TechAdded;
 import org.sang.config.ErrCodeMsg;
 import org.sang.controller.BaseController;
 import org.sang.service.LanMoService;
 import org.sang.service.OrderService;
+import org.sang.service.ProjectService;
 import org.sang.service.TechCardService;
 import org.sang.utils.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +33,9 @@ public class AddedController extends BaseController{
 
     @Autowired
     LanMoService lanMoService;
+
+    @Autowired
+    ProjectService projectService;
 
     /**
      * 查询已提交工艺卡
@@ -80,6 +81,29 @@ public class AddedController extends BaseController{
         }
     }
 
+
+    /**
+     * 单独获取项目信息
+     * @param projectId
+     * @return
+     */
+
+    @RequestMapping(value = "/projectInfo", method = RequestMethod.GET)
+    public BaseResponseEntity getTechCardByprojectInfo(@RequestParam("projectId") Long projectId ){
+        if(null == projectId  ) {
+            return badResult(ErrCodeMsg.ARGS_MISSING);
+        }
+        Map<String, Object> map = new HashMap<>();
+        Project project = projectService.getByProjectById(projectId);
+        if(null== project){
+            return badResult(ErrCodeMsg.COMMON_FAIL);
+        }else {
+            map.put("projectInfo", project);
+            return succResult(map);
+        }
+    }
+
+
     /**
      *更新工艺卡
      * @return
@@ -110,6 +134,10 @@ public class AddedController extends BaseController{
         }
         TechCard techCard = techCardService.getTechId(lanMo.getTechId());
         lanMo.setOrderId(techCard.getOrderId());
+        lanMo.setShenDu(lanMo.getShenDu() + " 丝");
+        String miao = lanMo.getLanMoTimeMiao()==null ? "0" : lanMo.getLanMoTimeMiao();
+        String fen = lanMo.getLanMoTimeFen() == null ? "0" : lanMo.getLanMoTimeFen();
+        lanMo.setNeedLanMoTime(fen + " 分 " + miao+ " 秒");
         Long i = lanMoService.addLanMo(lanMo);
         if(i>0){
             return succResult();

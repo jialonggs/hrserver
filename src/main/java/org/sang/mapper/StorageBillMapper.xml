@@ -24,6 +24,9 @@
         <!--</foreach>-->
     <!--</insert>-->
 
+    <select id="getByOrderId" resultType="org.sang.bean.StorageBill">
+        SELECT * FROM work_storage_bill WHERE isDeleted=FALSE AND orderId=#{orderId}
+    </select>
     <insert id="addBill" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.StorageBill">
         INSERT INTO work_storage_bill set orderId=#{orderId},orderName=#{orderName},wenLiStatus=#{wenLiStatus},penXiuQian=#{penXiuQian},quYu=#{quYu},
         guangZe=#{guangZe},qiKong=#{qiKong},pengChuanBian=#{pengChuanBian},chaiZhi=#{chaiZhi},

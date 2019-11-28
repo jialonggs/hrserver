@@ -8,6 +8,7 @@
     <resultMap id="BaseResultMap" type="org.sang.bean.ProcessUnit">
         <id column="id" property="id"/>
         <result column="clientCompanyName" property="clientCompanyName"/>
+        <result column="clinetSortName" property="clinetSortName"/>
         <result column="contactPerson" property="contactPerson"/>
         <result column="contactPhone" property="contactPhone"/>
         <result column="address" property="address"/>
@@ -33,7 +34,7 @@
     </select>
 
     <insert id="addUnit" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.ProcessUnit">
-        INSERT INTO work_process_nuit set clientCompanyName=#{clientCompanyName},contactPerson=#{contactPerson},contactPhone=#{contactPhone}, address=#{address},addUserName=#{addUserName},remark=#{remark},
+        INSERT INTO work_process_nuit set clientCompanyName=#{clientCompanyName},clinetSortName=#{clinetSortName},contactPerson=#{contactPerson},contactPhone=#{contactPhone}, address=#{address},addUserName=#{addUserName},remark=#{remark},
         isDeleted=FALSE,updateTime=now(),createTime=now()
     </insert>
 
@@ -42,6 +43,9 @@
         <set>
             <if test="clientCompanyName != null">
                 clientCompanyName = #{clientCompanyName},
+            </if>
+            <if test="clinetSortName != null">
+                clinetSortName = #{clinetSortName},
             </if>
             <if test="contactPerson != null">
                 contactPerson = #{contactPerson},

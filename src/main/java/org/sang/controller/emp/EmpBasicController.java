@@ -189,7 +189,10 @@ public class EmpBasicController {
 
     @RequestMapping(value = "/importEmp", method = RequestMethod.POST)
     public RespBean importEmp(MultipartFile file) {
-        List<Employee> emps = PoiUtils.importEmp2List(file,empService.getAllNations(),empService.getAllPolitics(),departmentService.getAllDeps(),positionService.getAllPos(),jobLevelService.getAllJobLevels());
+        List<Employee> emps = PoiUtils.importEmp2List(file,
+                empService.getAllNations(),
+                empService.getAllPolitics(),departmentService.getAllDeps(),
+                positionService.getAllPos(),jobLevelService.getAllJobLevels());
         Long maxId = empService.getMaxWorkID();
         if(!emps.isEmpty()){
             for (Employee e : emps){

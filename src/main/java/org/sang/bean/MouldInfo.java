@@ -11,6 +11,7 @@ public class MouldInfo {
     private Long selectId;
     private Long orderId;
     private Integer shouMoId;
+    private Boolean caiStatus;
 
     private Long addUserId;
     private String addUserName;
@@ -20,6 +21,13 @@ public class MouldInfo {
     private Date updateTime;
     private Date createTime;
 
+    public Boolean getCaiStatus() {
+        return caiStatus;
+    }
+
+    public void setCaiStatus(Boolean caiStatus) {
+        this.caiStatus = caiStatus;
+    }
 
     public Long getId() {
         return id;

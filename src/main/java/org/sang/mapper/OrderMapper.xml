@@ -281,6 +281,77 @@
     </resultMap>
 
 
+    <resultMap type="org.sang.bean.responseEntity.TechTyeOrder" id="getTechAddOrder">
+        <id column="id" property="id"/>
+        <result column="orderName" property="orderName"/>
+        <result column="qrCode" property="qrCode"/>
+        <result column="beiShu" property="beiShu"/>
+        <result column="projectId" property="projectId"/>
+        <result column="technologyId" property="technologyId"/>
+        <result column="managerId" property="managerId"/>
+        <result column="managerName" property="managerName"/>
+        <result column="expected" property="expected"/>
+        <result column="expectedTime" property="expected"/>
+        <result column="presentStepId" property="presentStepId"/>
+        <result column="presentStepName" property="presentStepName"/>
+        <result column="presentSchedule" property="presentSchedule"/>
+        <result column="clientCompanyName" property="clientCompanyName"/>
+        <result column="urgency" property="urgency"/>
+        <result column="hasRemark" property="hasRemark"/>
+        <result column="machiningType" property="machiningType"/>
+        <result column="realityArea" property="realityArea"/>
+        <result column="stayArea" property="stayArea"/>
+        <result column="alreadyArea" property="alreadyArea"/>
+        <result column="workArea" property="workArea"/>
+        <result column="perfectArea" property="perfectArea"/>
+        <result column="appliqueArea" property="appliqueArea"/>
+        <result column="ygb" property="ygb"/>
+        <result column="liuZhuanStatus" property="liuZhuanStatus"/>
+        <result column="liuZhuanArea" property="liuZhuanArea"/>
+        <result column="liuZhuanBiLi" property="liuZhuanBiLi"/>
+        <result column="nanDuDengJi" property="nanDuDengJi"/>
+        <result column="picUrls" property="picUrls"/>
+        <result column="finishTime" property="finishTime"/>
+        <result column="techId" property="techId"/>
+        <result column="yaoJian" property="yaoJian"/>
+        <result column="plantStatus" property="plantStatus"/>
+        <result column="liuChengStatus" property="liuChengStatus"/>
+        <result column="jingFengStatus" property="jingFengStatus"/>
+
+        <result column="piWenDaiMa" property="piWenDaiMa"/>
+
+        <result column="financeStatus" property="financeStatus"/>
+        <result column="financeBiLi" property="financeBiLi"/>
+        <result column="financeJinE" property="financeJinE"/>
+        <result column="financeTime" property="financeTime"/>
+
+        <result column="faMoStatus" property="faMoStatus"/>
+
+        <result column="addUserId" property="addUserId"/>
+        <result column="addUserName" property="addUserName"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="isDeleted" property="isDeleted"/>
+        <result column="beiShu" property="beiShu"/>
+        <result column="expectedTime" property="expectedTime"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="createTime" property="createTime"/>
+        <result column="storageTime" property="storageTime"/>
+
+        <association property="controlOrderFrom" javaType="org.sang.bean.ControlOrderFrom" column="id"
+                     select="org.sang.mapper.ControlOrderFromMapper.getByOrderId">
+        </association>
+
+        <association property="project" javaType="org.sang.bean.Project" column="projectId"
+                     select="org.sang.mapper.ProjectMapper.getProjectById">
+        </association>
+
+        <collection property="mouldInfoList" ofType="org.sang.bean.MouldInfo" column="id"
+                    select="org.sang.mapper.MouldInfoMapper.getByOrderId">
+        </collection>
+    </resultMap>
+
+
     <resultMap type="org.sang.bean.responseEntity.OrderInfoResp" id="getOrdersResp">
         <id column="id" property="id"/>
         <result column="orderName" property="orderName"/>
@@ -351,6 +422,10 @@
 
         <association property="orderFlow" javaType="org.sang.bean.OrderFlow" column="id"
                      select="org.sang.mapper.OrderFlowMapper.getByOrderId">
+        </association>
+
+        <association property="storageBill" javaType="org.sang.bean.StorageBill" column="id"
+                     select="org.sang.mapper.StorageBillMapper.getByOrderId">
         </association>
 
         <collection property="techCardList" ofType="org.sang.bean.TechCard" column="id"
@@ -666,7 +741,7 @@
             </if>
 
         </where>
-          AND jingFengStatus=#{jingFengStatus} AND liuChengStatus=#{liuChengStatus} ORDER BY id
+          AND jingFengStatus=#{jingFengStatus} AND liuChengStatus=#{liuChengStatus} ORDER BY createTime DESC
     </select>
 
     <select id="getOrdersUnAddTech" resultMap="getOrdersMap">
@@ -679,6 +754,10 @@
 
     <select id="getOrdersUnAddTech1" resultMap="getTechOrders">
         SELECT * FROM work_orders WHERE isDeleted=FALSE AND techNum!=0 ORDER BY urgency DESC, id DESC
+    </select>
+
+    <select id="getOrdersAddedTech2" resultMap="getTechAddOrder">
+        SELECT * FROM work_orders WHERE isDeleted=FALSE  AND  id=#{orderId} ORDER BY urgency DESC, id DESC
     </select>
 
 

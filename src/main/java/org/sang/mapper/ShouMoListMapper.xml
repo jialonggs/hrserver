@@ -15,6 +15,7 @@
         <result column="jianBao" property="jianBao"/>
         <result column="carNum" property="carNum"/>
         <result column="driverPhone" property="driverPhone"/>
+        <result column="baoZPicUrl" property="baoZPicUrl"/>
         <result column="addUserId" property="addUserId"/>
         <result column="addUserName" property="addUserName"/>
         <result column="carNum" property="carNum"/>
@@ -25,7 +26,35 @@
         <result column="createTime" property="createTime"/>
         <!-- 关联模具信息 -->
         <collection property="mouldInfos" ofType="org.sang.bean.MouldInfo" column="id"
-            select="org.sang.mapper.MouldInfoMapper.getMouldInfoByShouMoId">
+                    select="org.sang.mapper.MouldInfoMapper.getMouldInfoByShouMoId">
+        </collection>
+    </resultMap>
+
+
+    <!--查询收模列表-->
+    <resultMap type="org.sang.bean.responseEntity.ShouMoListResp" id="shouMoLisAndMouldInfo1">
+        <id column="id" property="id"/>
+        <result column="clientCompanyName" property="clientCompanyName"/>
+        <result column="batch" property="batch"/>
+        <result column="freightType" property="freightType"/>
+        <result column="woodenCaseNum" property="woodenCaseNum"/>
+        <result column="palletNum" property="palletNum"/>
+        <result column="diaoHuanNum" property="diaoHuanNum"/>
+        <result column="jianBao" property="jianBao"/>
+        <result column="carNum" property="carNum"/>
+        <result column="driverPhone" property="driverPhone"/>
+        <result column="baoZPicUrl" property="baoZPicUrl"/>
+        <result column="addUserId" property="addUserId"/>
+        <result column="addUserName" property="addUserName"/>
+        <result column="carNum" property="carNum"/>
+        <result column="driverPhone" property="driverPhone"/>
+        <result column="status" property="status"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="trueTime" property="trueTime"/>
+        <result column="createTime" property="createTime"/>
+        <!-- 关联模具信息 -->
+        <collection property="mouldInfos" ofType="org.sang.bean.MouldInfo" column="id"
+                    select="org.sang.mapper.MouldInfoMapper.getMouldInfoByShouMoId1">
         </collection>
     </resultMap>
 
@@ -40,7 +69,7 @@
 
     <insert id="createShouMo" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.ShouMoList">
         INSERT INTO work_shoumo_list set clientCompanyName=#{clientCompanyName},batch=#{batch},freightType=#{freightType},woodenCaseNum=#{woodenCaseNum},palletNum=#{palletNum},diaoHuanNum=#{diaoHuanNum},jianBao=#{jianBao},
-        carNum=#{carNum},driverPhone=#{driverPhone},addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},remark=#{remark},isDeleted=FALSE,updateTime=now(),createTime=#{createTime},trueTime=now()
+        carNum=#{carNum},driverPhone=#{driverPhone},baoZPicUrl=#{baoZPicUrl},addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},remark=#{remark},isDeleted=FALSE,updateTime=now(),createTime=#{createTime},trueTime=now()
     </insert>
 
     <select id="getShouMoByTime" resultMap="shouMoLisAndMouldInfo" parameterType="map">
@@ -58,6 +87,20 @@
 
 
     <select id="getShouMoByTime2" resultMap="shouMoLisAndMouldInfo" parameterType="map">
+        SELECT t1.* FROM work_shoumo_list t1
+        <where>
+            <if test="begainTime != null and begainTime != ''">
+                AND createTime &gt;= #{begainTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND createTime &lt;= #{endTime}
+            </if>
+        </where>
+        AND isDeleted=FALSE ORDER BY id
+    </select>
+
+
+    <select id="getCaiMoMoulds" resultMap="shouMoLisAndMouldInfo1" parameterType="map">
         SELECT t1.* FROM work_shoumo_list t1
         <where>
             <if test="begainTime != null and begainTime != ''">
@@ -104,6 +147,9 @@
             </if>
             <if test="shouMo.carNum != null">
                 carNum = #{shouMo.carNum,jdbcType=VARCHAR},
+            </if>
+            <if test="shouMo.baoZPicUrl != null">
+                baoZPicUrl = #{shouMo.baoZPicUrl,jdbcType=VARCHAR},
             </if>
             <if test="shouMo.driverPhone != null">
                 driverPhone = #{shouMo.driverPhone,jdbcType=VARCHAR},

@@ -16,6 +16,7 @@ public class ShouMoListResp {
     private Boolean jianBao;
     private String carNum;
     private String driverPhone;
+    private String baoZPicUrl;
     private List<MouldInfo> mouldInfos;
     private Long addUserId;
     private String addUserName;
@@ -25,6 +26,24 @@ public class ShouMoListResp {
     private Date trueTime;
     private Date updateTime;
     private Date createTime;
+    private Integer mouldNum;
+
+
+    public String getBaoZPicUrl() {
+        return baoZPicUrl;
+    }
+
+    public void setBaoZPicUrl(String baoZPicUrl) {
+        this.baoZPicUrl = baoZPicUrl;
+    }
+
+    public Integer getMouldNum() {
+        return mouldNum;
+    }
+
+    public void setMouldNum(Integer mouldNum) {
+        this.mouldNum = mouldNum;
+    }
 
     public Date getTrueTime() {
         return trueTime;

@@ -1,14 +1,22 @@
 package org.sang.bean.responseEntity;
 
-import org.sang.bean.Order;
-import org.sang.bean.TechCard;
-import org.sang.bean.WenLi;
+import org.sang.bean.*;
+
+import java.util.List;
 
 public class TechAdded extends TechCard{
 
     private WenLi wenli;
 
-    private Order order;
+    private TechTyeOrder techTyeOrder;
+
+    public TechTyeOrder getTechTyeOrder() {
+        return techTyeOrder;
+    }
+
+    public void setTechTyeOrder(TechTyeOrder techTyeOrder) {
+        this.techTyeOrder = techTyeOrder;
+    }
 
     public WenLi getWenli() {
         return wenli;
@@ -18,11 +26,5 @@ public class TechAdded extends TechCard{
         this.wenli = wenli;
     }
 
-    public Order getOrder() {
-        return order;
-    }
 
-    public void setOrder(Order order) {
-        this.order = order;
-    }
 }

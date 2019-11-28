@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.sang.bean.*;
 import org.sang.bean.requestEntity.RequestBean;
 import org.sang.bean.responseEntity.BaseResponseEntity;
+import org.sang.bean.responseEntity.ShouMoListResp;
 import org.sang.config.ErrCodeMsg;
 import org.sang.controller.BaseController;
 import org.sang.service.MouldInfoService;
@@ -38,7 +39,7 @@ public class ShouMoController extends BaseController{
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public BaseResponseEntity getShouMoList() {
-        List<ShouMoList> list = shouMoService.getShouMoList();
+        List<ShouMoListResp> list = shouMoService.getShouMoList();
         return succResult(list);
     }
 
@@ -53,10 +54,20 @@ public class ShouMoController extends BaseController{
         PageInfoEntity pageInfoEntity = new PageInfoEntity();
         pageInfoEntity.setCurrentPage(page);
         pageInfoEntity.setPagesize(size);
-        List<ShouMoList> shoumoList = new ArrayList<>();
-        PageBean<ShouMoList> list = shouMoService.getShouMoListByPage(pageInfoEntity);
+        List<ShouMoListResp> shoumoList = new ArrayList<>();
+        PageBean<ShouMoListResp> list = shouMoService.getShouMoListByPage(pageInfoEntity);
         if(null != list && list.getItems()!=null && list.getItems().size() !=0){
             shoumoList = list.getItems();
+            for (ShouMoListResp shouMoListResp : shoumoList) {
+                int num = 0;
+                List<MouldInfo> mouldInfoList = shouMoListResp.getMouldInfos();
+                if (mouldInfoList != null && !mouldInfoList.isEmpty()) {
+                    for (MouldInfo mouldInfo : mouldInfoList) {
+                        num = num + mouldInfo.getMouldNum();
+                    }
+                }
+                shouMoListResp.setMouldNum(num);
+            }
             map.put("count",list.getPageInfo().getTotal());
         }
         map.put("shoumolist", shoumoList);
@@ -148,7 +159,7 @@ public class ShouMoController extends BaseController{
     @ResponseBody
     public BaseResponseEntity createMouldInfo(MouldInfo mouldInfo) {
         int i = mouldInfoService.addMouldInfo(mouldInfo);
-        if ( i == 1) {
+        if ( i >= 1) {
             return succResult();
         }
         return badResult(ErrCodeMsg.COMMON_FAIL);

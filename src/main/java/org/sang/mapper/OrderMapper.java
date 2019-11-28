@@ -35,6 +35,8 @@ public interface OrderMapper {
 
     List<TechOrder> getOrdersUnAddTech1();
 
+    List<TechTyeOrder> getOrdersAddedTech2();
+
 
     int updateOrderTech(@Param("id") Long orderId, @Param("workArea") Double workArea, @Param("techNum") Integer techNum);
 

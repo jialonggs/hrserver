@@ -24,7 +24,8 @@ public class ControlOrderFrom {
     private String buPing;
     private String pianXi;//
     private String guangze;//
-
+    private String fangXiang;
+    private String pipeiJian;
 
     private String addUserId;
     private String addUserName;
@@ -34,6 +35,21 @@ public class ControlOrderFrom {
     private Date updateTime;
     private Date createTime;
 
+    public String getPipeiJian() {
+        return pipeiJian;
+    }
+
+    public void setPipeiJian(String pipeiJian) {
+        this.pipeiJian = pipeiJian;
+    }
+
+    public String getFangXiang() {
+        return fangXiang;
+    }
+
+    public void setFangXiang(String fangXiang) {
+        this.fangXiang = fangXiang;
+    }
 
     public Long getId() {
         return id;

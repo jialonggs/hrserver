@@ -23,6 +23,10 @@ public class MainEngineService {
         return  mainEngineMapper.getByName(name);
     }
 
+    public MainEngine getById(Long id){
+        return  mainEngineMapper.getById(id);
+    }
+
 
     public Boolean addMainEngine(String name, String addUserName, String addUserId ,String remark){
         MainEngine mainEngine = new MainEngine();

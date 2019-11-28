@@ -11,11 +11,13 @@ public interface ShouMoListMapper {
 
     List<ShouMoList> getAllShouMoList();
 
-    List<ShouMoList> getShouMoList();
+    List<ShouMoListResp> getShouMoList();
 
     List<ShouMoList> getShouMoByTime(@Param("begainTime") String begainTime, @Param("endTime") String endTime);
 
     List<ShouMoListResp> getShouMoByTime2(@Param("begainTime") String begainTime, @Param("endTime") String endTime);
+
+    List<ShouMoListResp> getCaiMoMoulds(@Param("begainTime") String begainTime, @Param("endTime") String endTime);
 
     int createShouMo(ShouMoList shouMoList);
 

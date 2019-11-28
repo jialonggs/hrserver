@@ -15,6 +15,15 @@ public class Car {
     private Date updateTime;
     private Date createTime;
 
+    private MainEngine mainEngine;
+
+    public MainEngine getMainEngine() {
+        return mainEngine;
+    }
+
+    public void setMainEngine(MainEngine mainEngine) {
+        this.mainEngine = mainEngine;
+    }
 
     public Long getId() {
         return id;

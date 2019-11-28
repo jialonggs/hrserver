@@ -27,24 +27,12 @@
 
 
     <resultMap type="org.sang.bean.responseEntity.TechAdded" id="getAdded" extends="getTechMap">
-        <association property="order" javaType="org.sang.bean.Order" column="orderId"
-                     select="org.sang.mapper.OrderMapper.getOrderInfoById">
+        <association property="techTyeOrder" javaType="org.sang.bean.responseEntity.TechTyeOrder" column="orderId"
+                     select="org.sang.mapper.OrderMapper.getOrdersAddedTech2">
         </association>
         <association property="wenli" javaType="org.sang.bean.WenLi" column="wenliId"
                      select="org.sang.mapper.WenLiMapper.getById">
         </association>
-        <!--<association property="lanMoList" javaType="org.sang.bean.LanMo" column="id"-->
-                     <!--select="org.sang.mapper.LanMoMapper.getByTechId">-->
-        <!--</association>-->
-
-        <!--<result column="orderName" property="orderName"/>-->
-        <!--<result column="urgency" property="urgency"/>-->
-        <!--<result column="orderCreateTime" property="orderCreateTime"/>-->
-        <!--<result column="orderAddUsrName" property="orderAddUsrName"/>-->
-        <!--<result column="wenliName" property="wenliName"/>-->
-        <!--<result column="area" property="area"/>-->
-        <!--<result column="times" property="times"/>-->
-
     </resultMap>
 
     <resultMap type="org.sang.bean.responseEntity.TechLanMo" id="getTechMap1" extends="getTechMap">

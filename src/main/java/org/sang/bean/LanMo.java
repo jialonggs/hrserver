@@ -10,6 +10,10 @@ public class LanMo {
     private Date lanMoTime;
     private String yaoShui;
     private String shenDu;
+    private String needLanMoTime;
+    private String lanMoTimeFen;
+    private String lanMoTimeMiao;
+    private String caoZuoRen;
 
     private String addUserId;
     private String addUserName;
@@ -18,6 +22,39 @@ public class LanMo {
     private Boolean isDeleted;
     private Date updateTime;
     private Date createTime;
+
+
+    public String getCaoZuoRen() {
+        return caoZuoRen;
+    }
+
+    public void setCaoZuoRen(String caoZuoRen) {
+        this.caoZuoRen = caoZuoRen;
+    }
+
+    public String getNeedLanMoTime() {
+        return needLanMoTime;
+    }
+
+    public void setNeedLanMoTime(String needLanMoTime) {
+        this.needLanMoTime = needLanMoTime;
+    }
+
+    public String getLanMoTimeFen() {
+        return lanMoTimeFen;
+    }
+
+    public void setLanMoTimeFen(String lanMoTimeFen) {
+        this.lanMoTimeFen = lanMoTimeFen;
+    }
+
+    public String getLanMoTimeMiao() {
+        return lanMoTimeMiao;
+    }
+
+    public void setLanMoTimeMiao(String lanMoTimeMiao) {
+        this.lanMoTimeMiao = lanMoTimeMiao;
+    }
 
     public Long getId() {
         return id;

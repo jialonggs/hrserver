@@ -28,7 +28,32 @@ public class MouldInfoService {
     ShouMoListMapper shouMoListMapper;
 
     public int addMouldInfo (MouldInfo mouldInfo){
-        return mouldInfoMapper.addMouldInfo(mouldInfo);
+        List<MouldInfo> mouldInfoList = new ArrayList<>();
+        String picUrls = mouldInfo.getPicUrls();
+        if (null != picUrls) {
+            String[] picArray = picUrls.split("\\|");
+            for (int i=0; i < picArray.length; i++) {
+                MouldInfo mouldInfo1 = new MouldInfo();
+                mouldInfo1.setUpdateTime(new Date());
+                mouldInfo1.setAddUserId(mouldInfo.getAddUserId());
+                mouldInfo1.setAddUserName(mouldInfo.getAddUserName());
+                mouldInfo1.setCreateTime(new Date());
+                mouldInfo1.setMouldNum(1);
+                mouldInfo1.setPicUrls(picArray[i]);
+                mouldInfo1.setMouldName("模具");
+                mouldInfo1.setOrderId(mouldInfo.getOrderId());
+                mouldInfo1.setRemark(mouldInfo.getRemark());
+                mouldInfo1.setSelected(false);
+                mouldInfo1.setSelectId(mouldInfo.getSelectId());
+                mouldInfo1.setShouMoId(mouldInfo.getShouMoId());
+                mouldInfo1.setStatus(mouldInfo.getStatus());
+                mouldInfo1.setDeleted(false);
+                mouldInfoList.add(mouldInfo1);
+            }
+            // 批量添加
+
+        }
+        return mouldInfoMapper.addMoulds(mouldInfoList);
     }
 
     public List<MouldInfo> getMouldInfoList (Long shouMoId){
@@ -136,7 +161,36 @@ public class MouldInfoService {
 
     }
 
+    public List<MouldPartTreeResp> getCaiMould(Integer days){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar endTime =  Calendar.getInstance();
+        Calendar begainTime = Calendar.getInstance();
+        // 结束时间
+        endTime.set(Calendar.HOUR_OF_DAY,23);
+        endTime.set(Calendar.MINUTE,59);
+        endTime.set(Calendar.SECOND,59);
+        endTime.set(Calendar.MILLISECOND,59);
+        String endTime1 = sdf.format(endTime.getTime());
 
+        begainTime.add(Calendar.DATE ,-days);
+        begainTime.set(Calendar.HOUR_OF_DAY,0);
+        begainTime.set(Calendar.MINUTE,0);
+        begainTime.set(Calendar.SECOND,0);
+        begainTime.set(Calendar.MILLISECOND,0);
+        String begainTime1 = sdf.format(begainTime.getTime());
+
+
+        List<ShouMoListResp> list = shouMoListMapper.getCaiMoMoulds(begainTime1, endTime1);
+        // List<MouldInfo> unSelect = mouldInfoMapper.getUnSelect(begainTime1);
+        List<MouldPartTreeResp> resp = new ArrayList<>();
+        if(null != list && list.size()>0){
+            resp = this.toFilter(days, list);
+        }
+//        if(null != unSelect && unSelect.size()>0){
+//            resp = this.filterUnselect(unSelect, resp);
+//        }
+        return resp;
+    }
 
     public List<MouldPartTreeResp> getByTimeNew(Integer days){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

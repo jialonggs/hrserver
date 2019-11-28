@@ -4,8 +4,20 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.sang.mapper.CarMapper">
 
-    <resultMap id="user1" type="org.sang.bean.Car">
+    <resultMap id="getCarList1" type="org.sang.bean.Car">
         <id property="id" column="id"/>
+        <result column="name" property="name"/>
+        <result column="mainEngineId" property="mainEngineId"/>
+        <result column="addUserId" property="addUserId"/>
+        <result column="addUserName" property="addUserName"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="isDeleted" property="isDeleted"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="createTime" property="createTime"/>
+        <association property="mainEngine" javaType="org.sang.bean.MainEngine" column="mainEngineId"
+                     select="org.sang.mapper.MainEngineMapper.getById">
+        </association>
     </resultMap>
 
     <resultMap type="org.sang.bean.responseEntity.CarResp" id="getCarList">
@@ -29,7 +41,7 @@
         select * from work_car_type where name=#{carName}
     </select>
 
-    <select id="getCarById" resultType="org.sang.bean.Car">
+    <select id="getCarById" resultMap="getCarList1">
         select * from work_car_type where isDeleted=FALSE AND  id=#{carId}
     </select>
 

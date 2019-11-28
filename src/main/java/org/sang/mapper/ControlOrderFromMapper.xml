@@ -29,8 +29,8 @@
     <insert id="addControlOrderFrom" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.ControlOrderFrom">
         INSERT INTO work_control_from set orderId=#{orderId},qiKong=#{qiKong},queKou=#{queKou},lieFeng=#{lieFeng},hanBa=#{hanBa},
         dianHuoHua=#{dianHuoHua},youShiSi=#{youShiSi},quYu=#{quYu},shenDu=#{shenDu},tongGZ=#{tongGZ},
-        zuiHouShiMoJian=#{zuiHouShiMoJian},ckd=#{ckd},guangJian=#{guangJian},fenXingBian=#{fenXingBian},heMoBian=#{heMoBian},
-        pengChuanBian=#{pengChuanBian},pengChuanKong=#{pengChuanKong},pianXi=#{pianXi},buPing=#{buPing},guangze=#{guangze},addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},
+        zuiHouShiMoJian=#{zuiHouShiMoJian},ckd=#{ckd},pipeiJian=#{pipeiJian},guangJian=#{guangJian},fenXingBian=#{fenXingBian},heMoBian=#{heMoBian},
+        pengChuanBian=#{pengChuanBian},pengChuanKong=#{pengChuanKong},fangXiang=#{fangXiang},pianXi=#{pianXi},buPing=#{buPing},guangze=#{guangze},addUserId=#{addUserId},addUserName=#{addUserName},status=#{status},
         remark=#{remark},isDeleted=0,createTime=now(),updateTime=now()
     </insert>
 
@@ -50,6 +50,9 @@
             </if>
             <if test="order.lieFeng != null">
                 lieFeng = #{order.lieFeng},
+            </if>
+            <if test="order.fangXiang != null">
+                fangXiang = #{order.fangXiang},
             </if>
             <if test="order.hanBa != null">
                 hanBa = #{order.hanBa},

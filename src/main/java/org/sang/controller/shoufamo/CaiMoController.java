@@ -2,13 +2,17 @@ package org.sang.controller.shoufamo;
 
 import org.sang.bean.CaiMoList;
 import org.sang.bean.PageInfoEntity;
+import org.sang.bean.requestEntity.CaiMoListRequest;
 import org.sang.bean.responseEntity.BaseResponseEntity;
 import org.sang.bean.responseEntity.CaiMoListResp;
+import org.sang.bean.responseEntity.MouldPartTreeResp;
 import org.sang.config.ErrCodeMsg;
 import org.sang.controller.BaseController;
 import org.sang.service.CaiMoService;
+import org.sang.service.MouldInfoService;
 import org.sang.utils.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +28,12 @@ public class CaiMoController extends BaseController{
 
     @Autowired
     CaiMoService caiMoService;
+
+    @Autowired
+    MouldInfoService mouldInfoService;
+
+    @Value("${tree.days}")
+    public  String days;
 
 
     /**
@@ -63,6 +73,21 @@ public class CaiMoController extends BaseController{
         }
     }
 
+    /**
+     * 添加记录
+     * @param caiMoListRequest
+     * @return
+     */
+    @RequestMapping(value = "/createNew", method = RequestMethod.PUT)
+    public BaseResponseEntity createCaiMo(CaiMoListRequest caiMoListRequest){
+        int i = caiMoService.addCaiMoNew(caiMoListRequest);
+        if(i>0){
+            return succResult(i);
+        }else {
+            return badResult(ErrCodeMsg.COMMON_FAIL);
+        }
+    }
+
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     public BaseResponseEntity updateCaiMo(CaiMoList caiMoList){
         int i = caiMoService.updateCaiMoList(caiMoList);
@@ -70,6 +95,27 @@ public class CaiMoController extends BaseController{
             return succResult();
         }else {
             return badResult(ErrCodeMsg.COMMON_FAIL);
+        }
+    }
+
+    /**
+     * 获取模具树
+     * @return
+     */
+    @RequestMapping(value = "/mould/tree", method = RequestMethod.GET)
+    public BaseResponseEntity getMouldTree(){
+        try {
+            Map<String, Object> map = new HashMap<>();
+            List<MouldPartTreeResp> list = mouldInfoService.getCaiMould(Integer.parseInt(days));
+            if(null != list && list.size()>0){
+                map.put("tree", list);
+                return succResult(map);
+            }else{
+                return badResult(ErrCodeMsg.COMMON_FAIL);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return  badResult(ErrCodeMsg.SYSTEM_ERROR);
         }
     }
 

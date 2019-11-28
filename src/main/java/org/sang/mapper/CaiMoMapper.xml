@@ -9,9 +9,11 @@
         <result column="mouldId" property="mouldId"/>
         <result column="youSiWenNum" property="youSiWenNum"/>
         <result column="wuSiWenNum" property="wuSiWenNum"/>
+        <result column="picUrls" property="picUrls"/>
         <result column="addUserId" property="addUserId"/>
         <result column="addUserName" property="addUserName"/>
-        <result column="status" property="remark"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
         <result column="isDeleted" property="isDeleted"/>
         <result column="updateTime" property="updateTime"/>
         <result column="createTime" property="createTime"/>
@@ -24,6 +26,7 @@
         <result column="youSiWenNum" property="youSiWenNum"/>
         <result column="wuSiWenNum" property="wuSiWenNum"/>
         <result column="addUserId" property="addUserId"/>
+        <result column="picUrls" property="picUrls"/>
         <result column="addUserName" property="addUserName"/>
         <result column="status" property="status"/>
         <result column="remark" property="remark"/>
@@ -38,12 +41,12 @@
     </resultMap>
 
     <select id="getCaiMoList" resultMap="getCaiMoAndMouldList">
-       select c.id, c.mouldId, c.youSiWenNum, c.wuSiWenNum, c.addUserId, c.addUserName,
-        c.remark, t.mouldName, t.createTime, t.mouldNum from work_caimo_list c, work_mould_info t where c.mouldId=t.id and c.isDeleted=FALSE AND t.isDeleted=FALSE ORDER BY c.id
+       select c.id, c.mouldId, c.youSiWenNum, c.picUrls,c.wuSiWenNum, c.addUserId, c.addUserName,
+        c.remark, t.mouldName, t.createTime, t.mouldNum from work_caimo_list c, work_mould_info t where c.mouldId=t.id and c.isDeleted=FALSE AND t.isDeleted=FALSE ORDER BY c.id DESC
     </select>
 
     <insert id="addCaiMo" useGeneratedKeys="true" keyProperty="id" parameterType="org.sang.bean.CaiMoList">
-        INSERT INTO work_caimo_list set mouldId=#{mouldId},youSiWenNum=#{youSiWenNum},wuSiWenNum=#{wuSiWenNum},addUserId=#{addUserId},addUserName=#{addUserName},remark=#{remark},
+        INSERT INTO work_caimo_list set mouldId=#{mouldId},picUrls=#{picUrls},youSiWenNum=#{youSiWenNum},wuSiWenNum=#{wuSiWenNum},addUserId=#{addUserId},addUserName=#{addUserName},remark=#{remark},
         isDeleted=FALSE,updateTime=now(),createTime=now()
     </insert>
 
@@ -60,9 +63,25 @@
             <if test="caiMo.remark != null">
                 remark = #{caiMo.remark},
             </if>
+             picUrls = #{caiMo.picUrls},
              updateTime = now()
         </set>
         where id = #{caiMo.id}
     </update>
+
+
+    <insert id="addCaiMoList">
+        insert into work_caimo_list (mouldId, youSiWenNum,picUrls,
+        wuSiWenNum, addUserName, remark, isDeleted,updateTime,
+        createTime
+        )
+        values
+        <foreach collection="caiMoList" item="mould" separator=",">
+            (#{mould.mouldId}, #{mould.youSiWenNum},#{mould.picUrls},
+            #{mould.wuSiWenNum}, #{mould.addUserName}, #{mould.remark}, #{mould.isDeleted},#{mould.updateTime},
+            #{mould.createTime}
+            )
+        </foreach>
+    </insert>
 
 </mapper>

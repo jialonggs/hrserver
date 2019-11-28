@@ -1,5 +1,6 @@
 package org.sang.controller.aftersale;
 
+import io.swagger.annotations.Api;
 import org.sang.bean.*;
 import org.sang.bean.responseEntity.BaseResponseEntity;
 import org.sang.bean.responseEntity.OrderAffterOffice;
@@ -11,17 +12,14 @@ import org.sang.service.AfterSaleService;
 import org.sang.service.HrService;
 import org.sang.utils.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+@Api(value = "欢迎", tags = {"用户操作接口说明"})
 @RestController
 @RequestMapping("/after/sale")
 public class AfterSaleController extends BaseController{
@@ -32,12 +30,24 @@ public class AfterSaleController extends BaseController{
     @Autowired
     private HrService hrService;
 
+    @PostMapping("/add")
+    public boolean addUser(@RequestBody  Hr hr) {
+        return false;
+    }
+
+
+    @DeleteMapping("/delete/{id}")
+    public boolean delete(@PathVariable("id") int id) {
+        return true;
+    }
+
     @RequestMapping("/office/list")
     public BaseResponseEntity getWaitOrderList(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size,
                                                @RequestParam(value = "userId") Integer userId){
         if (null == userId) {
             return badResult(ErrCodeMsg.ARGS_MISSING);
         }
+
         Map<String, Object> map = new HashMap<>();
         PageInfoEntity pageInfoEntity = new PageInfoEntity();
         pageInfoEntity.setCurrentPage(page);
